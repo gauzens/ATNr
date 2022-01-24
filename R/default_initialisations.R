@@ -51,7 +51,7 @@ initialise_default_Unscaled_nuts <- function(
   L.mat,
   temperature = 20
 ) {
-  data("schneider", envir = environment())
+  utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
   schneider[["nb_n"]] <- model$nb_n
@@ -66,14 +66,14 @@ initialise_default_Unscaled_nuts <- function(
 
   # Plant nutrient uptake efficiency
   model$K <- with(schneider,
-                  matrix(runif(nb_b * nb_n, nut_up_min, nut_up_max),
+                  matrix(stats::runif(nb_b * nb_n, nut_up_min, nut_up_max),
                          nrow = nb_n, ncol = nb_b))
 
   # turnover rate of the nutrients
   model$D <- schneider$D
 
   # maximal nutrient level
-  model$S <- with(schneider, rnorm(nb_n, mu_nut, sd_nut))
+  model$S <- with(schneider, stats::rnorm(nb_n, mu_nut, sd_nut))
   # growth rate of the basal species
   model$r <- with(schneider, BM[1 : nb_b] ^ -0.25 * exp(-0.22 * (T0 - T.K) / (k * T.K * T0)))
   # per gram metabolic rate
@@ -93,15 +93,15 @@ initialise_default_Unscaled_nuts <- function(
   )
 
   # interference competition
-  model$c <- with(schneider, rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-0.65 * (T0 - T.K) / (k * T.K * T0)))
+  model$c <- with(schneider, stats::rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-0.65 * (T0 - T.K) / (k * T.K * T0)))
   # handling time
   model$h <- with(schneider, create_matrix_parameter(BM, h0, hprey, hpred, E.h, T.K, T0, k))
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
   # Hill exponent
-  model$q <- rnorm(1, 1.5, 0.2)
+  model$q <- stats::rnorm(1, 1.5, 0.2)
   # plant stoichiometry (relative content in  the nutrients) !!!!!!!!!! to update. here assume 2 nutrients only !!!!!!!
   model$V <- with(schneider,
-                  matrix(runif(nb_b * nb_n, 1, 2), nrow = nb_n, ncol = nb_b))
+                  matrix(stats::runif(nb_b * nb_n, 1, 2), nrow = nb_n, ncol = nb_b))
   model$V <- sweep(x = model$V, MARGIN = 2, FUN = "/", colSums(model$V))
   # growth rate of plant species !!!!!!!!!!! temperature independant right now !!!!!!!!!!!!!!!
   model$r <- with(schneider, BM[1:nb_b]^-0.25)
@@ -129,7 +129,7 @@ initialise_default_Unscaled_nuts <- function(
 #'
 initialise_default_Scaled <- function(model) {
 
-  data("schneider", envir = environment())
+  utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
   schneider[["BM"]] <- model$BM
@@ -157,7 +157,7 @@ initialise_default_Scaled <- function(model) {
   # half sturation density:
   model$B0 <- rep(0.5, model$nb_s - model$nb_b)
   # Hill exponent
-  model$q <- rnorm(1, 1.2, 0.2)
+  model$q <- stats::rnorm(1, 1.2, 0.2)
   # max growth rate of plant species
   model$r <- with(schneider, (ar * BM[1:nb_b]^-0.25) / (ar * BM[1]^-0.25))
   # max carrying capacity of all plant species

@@ -27,7 +27,7 @@
 #' sol <- lsoda_wrapper(times, biomasses, mod)
 lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
   deSolve_installed <- ifelse(
-    "deSolve" %in% rownames(installed.packages()),
+    "deSolve" %in% rownames(utils::installed.packages()),
     TRUE,
     FALSE
   )

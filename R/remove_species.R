@@ -32,7 +32,7 @@ remove_species = function(species, model, nuts = NULL){
   new.nb_b <- model$nb_b - sum(species < model$nb_b)
   new.nb_s <- model$nb_s - length(species)
 
-  model2 <- new(Scaled, new.nb_s, new.nb_b)
+  model2 <- methods::new(Scaled, new.nb_s, new.nb_b)
 
   model2$fw <- model$fw[-species, -species]
   model2$BM <- model$BM[-species]
@@ -85,7 +85,7 @@ remove_species = function(species, model, nuts = NULL){
     new.nb_n <- model$nb_n - 1
   }
 
-  model2 <- new(Unscaled_nuts, new.nb_s, new.nb_b, new.nb_n)
+  model2 <- methods::new(Unscaled_nuts, new.nb_s, new.nb_b, new.nb_n)
 
   model2$fw <- model$fw[-species, -species]
   model2$BM <- model$BM[-species]
@@ -148,7 +148,7 @@ remove_species = function(species, model, nuts = NULL){
   new.nb_b <- model$nb_b - sum(species < model$nb_b)
   new.nb_s <- model$nb_s - length(species)
 
-  model2 <- new(Scaled, new.nb_s, new.nb_b)
+  model2 <- methods::new(Scaled, new.nb_s, new.nb_b)
 
   model2$fw <- model$fw[-species, -species]
   model2$BM <- model$BM[-species]

@@ -47,7 +47,7 @@ create_model_Unscaled_nuts <- function(
     stop("Number of species and food web matrix do not match")
   }
 
-  model <- new(Unscaled_nuts, nb_s, nb_b, nb_n)
+  model <- methods::new(Unscaled_nuts, nb_s, nb_b, nb_n)
 
   # THIS WE CAN EVEN PUT IN THE CONSTRUCTOR, PERHAPS?
   model[["BM"]] <- BM
@@ -105,7 +105,7 @@ create_model_Scaled <- function(
     stop("Number of species and food web matrix do not match")
   }
 
-   model <- new(Scaled, nb_s, nb_b)
+   model <- methods::new(Scaled, nb_s, nb_b)
 
   # THIS WE CAN EVEN PUT IN THE CONSTRUCTOR, PERHAPS?
   model[["BM"]] <- BM
@@ -167,7 +167,7 @@ create_model_Unscaled <- function(
     stop("Number of species and food web matrix do not match")
   }
 
-  model <- new(Unscaled, nb_s, nb_b)
+  model <- methods::new(Unscaled, nb_s, nb_b)
 
   # THIS WE CAN EVEN PUT IN THE CONSTRUCTOR, PERHAPS?
   model[["BM"]] <- BM

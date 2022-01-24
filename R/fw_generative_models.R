@@ -18,20 +18,20 @@
 #' image(web_niche)
 create_niche_model <- function(S, C) {
   # niches of species
-  niche <- sort(runif(S))
+  niche <- sort(stats::runif(S))
   # feeding ranges, using the correction from Allesina et al. (2008)
   if (((S - 1) / (2 * S * C)) - 1 < 0) {
     stop("Beta distribution parameter < 0. Try to decrease C.")
   }
-  diet <- rbeta(S, 1, ((S - 1) / (2 * S * C)) - 1) * niche
+  diet <- stats::rbeta(S, 1, ((S - 1) / (2 * S * C)) - 1) * niche
   # feeding center, using the correction from Allesina et al. (2008)
   center <- sapply(seq_len(S),
                    function(i) {
                      n <- niche[i]
                      r <- diet[i]
                      ifelse(n + r / 2 <= 1,
-                            runif(1, r / 2, n),
-                            runif(1, r / 2, 1 - r / 2)
+                            stats::runif(1, r / 2, n),
+                            stats::runif(1, r / 2, 1 - r / 2)
                      )
                    })
   species <- seq_len(S)
@@ -44,7 +44,7 @@ create_niche_model <- function(S, C) {
   }
   # TO DO connected component without igraph?
   # Maybe omit here and clarify in the vignette.
-  if ("igraph" %in% installed.packages()) {
+  if ("igraph" %in% utils::installed.packages()) {
     g <- igraph::graph_from_adjacency_matrix(fw)
     if (igraph::components(g)$no > 1) {
       warning("Several connected components detected")

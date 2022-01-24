@@ -19,6 +19,7 @@ Plot solution of the ODE for the food web. Currently only
 \examples{
 library(ATNr)
 library(deSolve)
+set.seed(123)
 # number of species, nutrients, and body masses
 n_species <- 20
 n_basal <- 5
@@ -29,7 +30,7 @@ L <- create_Lmatrix(masses, n_basal)
 L[, 1:n_basal] <- 0
 fw <- L
 fw[fw > 0] <- 1
-model = create_model_Unscaled_nuts(
+model <- create_model_Unscaled_nuts(
   n_species,
   n_basal,
   n_nutrients,
@@ -37,9 +38,11 @@ model = create_model_Unscaled_nuts(
   fw
 )
 # initialize model as default in Schneider et al. (2016)
-model <- initialise_default_Unscaled_nuts(model_schneider, L)
+model <- initialise_default_Unscaled_nuts(model, L)
+model$initialisations()
 # defining integration time
 times <- seq(0, 500, 5)
-sol <- lsoda_wrapper(times, masses, model)
+biomasses <- runif(n_species + n_nutrients, 2, 3)
+sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
 plot_odeweb(sol, model$nb_s)
 }
