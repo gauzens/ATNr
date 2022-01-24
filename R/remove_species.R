@@ -68,7 +68,7 @@ remove_species = function(species, model, nuts = NULL){
 }
 
 
-#' Internal function to remove species from a Scheinder model
+#' Internal function to remove species from a Unscaled_nuts model
 #'
 #'@keywords internal
 .remove_Unscaled_nuts <- function(species, model, nuts) {
@@ -136,10 +136,10 @@ remove_species = function(species, model, nuts = NULL){
 }
 
 
-#' Internal function to remove species from a Binzer model
+#' Internal function to remove species from a Unscaled model
 #'
 #' @keywords internal
-.remove_Scaled = function(species, model) {
+.remove_Unscaled = function(species, model) {
   # consumers: indices of consumer species in data that does not have basal species
   consumers <- species[species > model$nb_b] - model$nb_b
   # index of basal species
