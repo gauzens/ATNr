@@ -1,0 +1,103 @@
+#' @title Create a food web based on the niche model
+#'
+#' @description Function to generate a food web based on the niche model
+#'   (Williams and Martinez, 2000) based on the number of species and
+#'   connectance. Corrections from Allesina et al. (2008) are used.
+#' @param S integer, number of species.
+#' @param C numeric, connectance i.e. the number of realized links over the all
+#'   possible links.
+#' @return A (square) matrix with zeros (no interaction) and ones (species j
+#'   consume species i).
+#' @references Williams, R. J., & Martinez, N. D. (2000). Simple rules yield
+#'   complex food webs. Nature, 404(6774), 180-183.
+#'
+#'   Allesina, S., Alonso, D., & Pascual, M. (2008). A general model for food
+#'   web structure. science, 320(5876), 658-661.
+#' @examples
+#' web_niche <- create_niche_model(50, .4)
+#' image(niche)
+create_niche_model <- function(S, C) {
+  # niches of species
+  niche <- sort(runif(S))
+  # feeding ranges, using the correction from Allesina et al. (2008)
+  if (((S - 1) / (2 * S * C)) - 1 < 0) {
+    stop("Beta distribution parameter < 0. Try to decrease C.")
+  }
+  diet <- rbeta(S, 1, ((S - 1) / (2 * S * C)) - 1) * niche
+  # feeding center, using the correction from Allesina et al. (2008)
+  center <- sapply(seq_len(S),
+                   function(i) {
+                     n <- niche[i]
+                     r <- diet[i]
+                     ifelse(n + r / 2 <= 1,
+                            runif(1, r / 2, n),
+                            runif(1, r / 2, 1 - r / 2)
+                     )
+                   })
+  species <- seq_len(S)
+  # crate food web adjacency matrix
+  fw <- matrix(rep(0, S ^ 2), S, S)
+  for (sp in species) {
+    preys <- (center[sp] - diet[sp] / 2 <= niche) &
+      (niche <= center[sp] + diet[sp] / 2)
+    fw[preys, sp] <- 1
+  }
+  # TO DO connected component without igraph?
+  # Maybe omit here and clarify in the vignette.
+  if ("igraph" %in% installed.packages()) {
+    g <- igraph::graph_from_adjacency_matrix(fw)
+    if (igraph::components(g)$no > 1) {
+      warning("Several connected components detected")
+    }
+  } else {
+    warning("igraph not installed - install it to check for disconnected components")
+  }
+  return(fw)
+}
+
+#' @title Make L matrix
+#'
+#' @param BM float vector, body mass of species.
+#' @param nb_b integer, number of basal species.
+#' @param Ropt numeric, consumer/resource optimal body mass ratio.
+#' @param gamma numeric, the ... of the Ricker function.
+#' @param th float, the threshold below which attack rates are considered = 0.
+#'
+#' @details The L matrix contains the probability for an attack event to be
+#'   successful based on allometric rules and a Ricker function defined by
+#'   \emph{Ropt} and \emph{gamma}.
+#'
+#' @return A numeric matrix with the probability for an attack event between
+#' two species to be successful.
+#'
+#' @examples
+#' mass <- sort(10 ^ rnorm(50, 4, 3))
+#' L <- create_Lmatrix(mass)
+#' image(L)
+create_Lmatrix <- function(
+  BM,
+  nb_b,
+  Ropt = 100,
+  gamma = 2,
+  th = 0.01
+) {
+  s <- length(BM)
+  L <- matrix(rep(BM, s), s, s, byrow = TRUE) /
+    (matrix(rep(BM, s), s, s) * Ropt)
+  L <- (L * exp(1 - L)) ^ gamma
+  L[L < th] <- 0
+  L[, 1:nb_b] <- 0
+  # check for isolated species
+  if (any(colSums(L) + rowSums(L) == 0)) {
+    warning("Presence of an isolated species.")
+  }
+  # check for isolated consumers
+  if (any(colSums(L[, (nb_b + 1) : s]) == 0)) {
+    warning("Presence of consumer without prey. Try change BM.")
+  }
+  # check if basal species are consumed
+  if (any(rowSums(L[1 : nb_b, ]) == 0)) {
+    warning("Presence of basal species without consumer. Try change BM.")
+  }
+  return(L)
+}

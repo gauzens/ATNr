@@ -1,0 +1,7 @@
+Rcpp::loadModule("UnscaledModule", TRUE)
+Rcpp::loadModule("Unscaled_nutsModule", TRUE)
+Rcpp::loadModule("ScaledModule", TRUE)
+Rcpp::loadModule("Unscaled_loopsModule", TRUE)
+Rcpp::loadModule("Scaled_loopsModule", TRUE)
+Rcpp::loadModule("Unscaled_nuts_loopsModule", TRUE)
+Rcpp::loadModule("Schneider_arma_prefModule", TRUE)

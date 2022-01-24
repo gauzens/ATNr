@@ -1,0 +1,47 @@
+#' Default parameters as in Schneider et al. (2016)
+#'
+#' A dataset containing the default parameters as in the Schneider et al. (2016)
+#' and used to parametrize the default models. See also
+#' \code{\link{create_model_schneider}}, \code{\link{create_Lmatrix}},
+#' \code{\link{initialise_default_Schneider_2016}}, and
+#' \code{\link{initialise_default_Delmas_2016}}.
+#'
+#' @format A list with the default parameters:
+#' \describe{ 
+#' \item{Temperature}{ambient temperature in Celsius}
+#' \item{T.K}{default temperature, 20 degree Celsius in Kelvin}
+#' \item{k}{Boltzmann's constant}
+#' \item{T0}{20 degree Celsius in Kelvin, used to estimate scaling law of metabolic raste}
+#' \item{q}{TBD}
+#' \item{Ropt}{consumer/resource optimal body mass ratio}
+#' \item{gamma}{shape of the Ricker function}
+#' \item{mu_c}{average predator interference}
+#' \item{sd_c}{stdandard deviation of predator interference}
+#' \item{E.c}{TBD}
+#' \item{h0}{scaling constant of the power-law of handling time with consumer and resource body mass}
+#' \item{hpred}{TBD}
+#' \item{hprey}{TBD}
+#' \item{E.h}{TBD}
+#' \item{b0}{capture coefficient}
+#' \item{bprey}{TBD}
+#' \item{bpred}{TBD}
+#' \item{E.b}{TBD}
+#' \item{e_P}{TBD}
+#' \item{e_A}{TBD}
+#' \item{x_P}{TBD}
+#' \item{x_A}{scaling constant of the power-law of metabolic demand per unit of animal biomass}
+#' \item{E.x}{TBD}
+#' \item{expX}{TBD}
+#' \item{D}{turnover rate of nutrients}
+#' \item{nut_up_min}{TBD}
+#' \item{nut_up_max}{TBD}
+#' \item{mu_nut}{TBD}
+#' \item{sd_nut}{TBD}
+#' \item{v1}{TBD} #relative content of nutrient 1 in plant biomass?
+#' \item{v2}{TBD}
+#' }
+#' 
+#' @references Schneider, F. D., Brose, U., Rall, B. C., & Guill, C. (2016).
+#'   Animal diversity and ecosystem functioning in dynamic food webs. Nature
+#'   Communications, 7(1), 1-8.
+"schneider"

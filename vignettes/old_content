@@ -1,0 +1,60 @@
+
+```{r time steps, fig.width=6, fig.height=4, fig.align='center', warning=FALSE}
+# library(tidyverse)
+# 
+# times <- seq(0, 500, 5)
+# sol5 <- lsoda(
+#   biomasses,
+#   times,
+#   function(t, y, params) {
+#     return(list(params$ODE(y, t)))
+#   },
+#   mod
+# )
+# # larger time steps
+# times <- seq(0, 500, 50)
+# sol50 <- lsoda(
+#   biomasses,
+#   times,
+#   function(t, y, params) {
+#     return(list(params$ODE(y, t)))
+#   },
+#   mod
+# )
+# 
+# sol <- left_join(
+#   sol5[sol5[, 1] %in% sol50[, 1], ] %>% 
+#     as_tibble() %>% 
+#     pivot_longer(cols = 2:ncol(.),
+#                  names_to = "Species",
+#                  values_to = "Biomass") %>% 
+#     transmute(`Time step` = 5,
+#               Time = as.numeric(time),
+#               Species,
+#               Biomass = as.numeric(Biomass)),
+#   sol50 %>% 
+#     as_tibble() %>% 
+#     pivot_longer(cols = 2:ncol(.),
+#                  names_to = "Species",
+#                  values_to = "Biomass") %>% 
+#     transmute(`Time step` = 50,
+#               Time = as.numeric(time),
+#               Species,
+#               Biomass = as.numeric(Biomass)),
+#   by = c("Time", "Species")
+# ) %>% 
+#   pivot_longer(cols = c(`Time step.x`, `Time step.y`),
+#                names_to = "null",
+#                values_to = "Time step") %>% 
+#   mutate(`Time step` = factor(`Time step`, levels = c("50", "5"))) %>% 
+#   mutate(`Biomass difference` = abs(Biomass.y - Biomass.x) / mean(c(Biomass.x, Biomass.y)))
+# 
+# sol %>% 
+#   ggplot() +
+#   aes(Time, `Biomass difference`, col = Species) +
+#   geom_point(alpha = .5) +
+#   geom_line(alpha = .5) +
+#   ylab("Normalized biomass difference") +
+#   theme_light()
+```
+

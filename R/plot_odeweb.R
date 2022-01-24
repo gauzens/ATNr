@@ -1,0 +1,49 @@
+#' @title Plot food web dynamics
+#'
+#' @description Plot solution of the ODE for the food web. Currently only
+#'   species and not nutrients are plotted.
+#'
+#' @param x matrix with solutions. First row should be the time vector.
+#' @param nb_s numeric, number of species as in the model (e.g.,
+#'   \code{\link{create_model_schneider}}).
+#'
+#' @examples
+#' library(ATN)
+#' library(deSolve)
+#' # number of species, nutrients, and body masses
+#' n_species <- 20
+#' n_basal <- 5
+#' n_nutrients <- 3
+#' masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+#' # create food web matrix
+#' L <- create_Lmatrix(masses, n_basal)
+#' L[, 1:n_basal] <- 0
+#' fw <- L
+#' fw[fw > 0] <- 1
+#' model_schneider = create_model_schneider(
+#'   n_species,
+#'   n_basal,
+#'   n_nutrients,
+#'   masses,
+#'   fw
+#' )
+#' initialize model as default in Schneider et al. (2016)
+#' model_schneider <- initialise_default_Schneider_2016(model_schneider, L)
+#' # defining integration time
+#' times <- seq(0, 500, 5)
+#' sol <- lsoda_wrapper(times, masses, model_schneider)
+#' plot_odeweb(sol, model_schneider$nb_s)
+plot_odeweb <- function(x, nb_s) {
+  pal <- colorRampPalette(c("blue", "red"))(nb_s)
+  pal <- adjustcolor(pal, alpha.f = .5)
+  plot(c(0, max(x[, 1])), #xlim
+       c(0, max(x[, c((ncol(x) - nb_s + 1) : ncol(x))])), #ylim
+       frame = FALSE,
+       xlab = "Time",
+       ylab = "Biomass",
+       col = NA)
+  for (i in seq(ncol(x) - nb_s + 1, ncol(x))) {
+    points(x[, 1], x[, i], col = pal[i - ncol(x) + nb_s], pch = 20, cex = .5)
+    lines(x[, 1], x[, i], col = pal[i - ncol(x) + nb_s], lw = 1)
+  }
+}
