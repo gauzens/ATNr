@@ -1,4 +1,4 @@
 library(testthat)
-library(ATN)
+library(ATNr)
 
-test_check("ATN")
+test_check("ATNr")
