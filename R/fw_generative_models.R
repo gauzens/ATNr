@@ -15,7 +15,7 @@
 #'   web structure. science, 320(5876), 658-661.
 #' @examples
 #' web_niche <- create_niche_model(50, .4)
-#' image(niche)
+#' image(web_niche)
 create_niche_model <- function(S, C) {
   # niches of species
   niche <- sort(runif(S))
@@ -72,7 +72,7 @@ create_niche_model <- function(S, C) {
 #'
 #' @examples
 #' mass <- sort(10 ^ rnorm(50, 4, 3))
-#' L <- create_Lmatrix(mass)
+#' L <- create_Lmatrix(mass, nb_b = 20)
 #' image(L)
 create_Lmatrix <- function(
   BM,

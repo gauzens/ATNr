@@ -9,11 +9,10 @@ run_checks(model, verbose = TRUE)
 \arguments{
 \item{model}{a model object, created from \code{\link{create_model_schneider}}) or
 \code{\link{create_model_delmas}})}
+
+\item{verbose}{Boolean, whether a message should be printed when all checks were successful}
 }
 \description{
 Check if the dimensions of vectors and matrices used in the model are correct.
 If any dimension is not correct, an error message is returned.
-}
-\examples{
-library(ATN) # is an example truly needed here?
 }

@@ -18,6 +18,7 @@ Suggests:
     knitr,
     deSolve,
     testthat,
+    igraph,
     R.rsp
 VignetteBuilder: 
     knitr,

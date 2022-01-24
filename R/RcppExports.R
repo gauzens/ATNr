@@ -4,8 +4,8 @@
 #' @name Scaled
 #' @title Store parameters and functions associated to the scaled version of ATN
 #' @description Type the name of the class to see its methods
-#' @fiel nb_s Total number of species
-#' @fiel nb_b Number of basal species
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
 #' @field c double: inteference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field max_feed Vector of maximum feeding rates (length = number of consumers)
@@ -31,8 +31,8 @@ NULL
 #' @name Scaled
 #' @title Store parameters and functions associated to the scaled version of ATN
 #' @description Type the name of the class to see its methods
-#' @fiel nb_s Total number of species
-#' @fiel nb_b Number of basal species
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
 #' @field c double: inteference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field max_feed Vector of maximum feeding rates (length = number of consumers)
@@ -55,41 +55,15 @@ NULL
 #' }
 NULL
 
-#' @name Schneider_arma
-#' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
-#' @description Type the name of the class to see its methods
-#' @fiel nb_s Total number of species
-#' @fiel nb_b Number of basal species
-#' @fiel nb_n Number of nutrient pool
-#' @field X Coltor of metabolic rates (length = number of species)
-#' @field K1 Vector of maximum feeding rates (length = number of consumers)
-#' @field K2 Vector of producers maximum growth rates (length = number of basal species)
-#' @field e Vector of assimilation efficiencies (length = number of species)
-#' @field BM Vector of body masses (length = number of species)
-#' @field dB Vector of local derivatives (length = number of species)
-#' @field B0 Vector of half saturation densities (length = number of consumers)
-#' @field fw Adjacency matrix of the food-web (dim = number of species * number of species)
-#' @field w Matrix of relative consumption rates (dim = number of species * number of consumers)
-#' @field F Matrix of per-capita feeding rates (dim = number of species * number of consumers)
-#' @field q parameter for the type of functional response (hill exponent = 1 + q)
-#' @field K Carrying capacity of basal species
-#' @field ext extinction threshold for species
-#' @field ODE Calculate the derivatives for the scaled version of the ATN model \itemize{
-#' \item Parameter: bioms -  Local species biomasses
-#' \item Parameter: t - Integration time point
-#' \item Returns a Coltor of growth rate for each species at time t
-#' }
-NULL
-
 #' @name Unscaled
 #' @title Store parameters and functions associated to the unscaled version of ATN
 #' @description Type the name of the class to see its methods
-#' @fiel nb_s Total number of species
-#' @fiel nb_b Number of basal species
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
 #' @field c double: inteference competition
 #' @field X Vector of metabolic rates (length = number of species)
-#' @fiel a Matrix of attack rates (dim = number of species * number of consumers)
-#' @fiel h Matrix of handling times (dim = number of species * number of consumers)
+#' @field a Matrix of attack rates (dim = number of species * number of consumers)
+#' @field h Matrix of handling times (dim = number of species * number of consumers)
 #' @field e Vector of assimilation efficiencies (length = number of species)
 #' @field r Vector of producers maximum growth rates (length = number of basal species)
 #' @field BM Vector of body masses (length = number of species)
@@ -110,12 +84,12 @@ NULL
 #' @name Unscaled_nuts
 #' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
 #' @description Type the name of the class to see its methods
-#' @fiel nb_s Total number of species
-#' @fiel nb_b Number of basal species
-#' @fiel nb_n Number of nutrient pool
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
+#' @field nb_n Number of nutrient pool
 #' @field c double: inteference competition
-#' @fiel b Matrix of attack rates (dim = number of species * number of consumers)
-#' @fiel h Matrix of handling times (dim = number of species * number of consumers)
+#' @field b Matrix of attack rates (dim = number of species * number of consumers)
+#' @field h Matrix of handling times (dim = number of species * number of consumers)
 #' @field X vector of metabolic rates (length = number of species)
 #' @field K matrix of plant nutrient efficiencies (dim = number of nutrients * number of plants)
 #' @field V matrix of plant relative nutrient content (dim = number of nutrients * number of plants)
@@ -133,6 +107,32 @@ NULL
 #' \item Parameter: bioms -  Local species biomasses
 #' \item Parameter: t - Integration time point
 #' \item Returns a vector of growth rate for each species at time t
+#' }
+NULL
+
+#' @name Unscaled_nuts_prefs
+#' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
+#' @description Type the name of the class to see its methods
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
+#' @field nb_n Number of nutrient pool
+#' @field X Coltor of metabolic rates (length = number of species)
+#' @field K1 Vector of maximum feeding rates (length = number of consumers)
+#' @field K2 Vector of producers maximum growth rates (length = number of basal species)
+#' @field e Vector of assimilation efficiencies (length = number of species)
+#' @field BM Vector of body masses (length = number of species)
+#' @field dB Vector of local derivatives (length = number of species)
+#' @field B0 Vector of half saturation densities (length = number of consumers)
+#' @field fw Adjacency matrix of the food-web (dim = number of species * number of species)
+#' @field w Matrix of relative consumption rates (dim = number of species * number of consumers)
+#' @field F Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+#' @field q parameter for the type of functional response (hill exponent = 1 + q)
+#' @field K Carrying capacity of basal species
+#' @field ext extinction threshold for species
+#' @field ODE Calculate the derivatives for the scaled version of the ATN model \itemize{
+#' \item Parameter: bioms -  Local species biomasses
+#' \item Parameter: t - Integration time point
+#' \item Returns a Coltor of growth rate for each species at time t
 #' }
 NULL
 

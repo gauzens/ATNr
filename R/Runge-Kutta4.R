@@ -1,4 +1,5 @@
-runge_kutta4<- function(t, biomasses, model){
+#' @keywords internal
+.runge_kutta4<- function(t, biomasses, model){
   bioms <- matrix(NA, ncol = length(biomasses), nrow = length(t))
   biom.step<- biomasses
   delta.t <- t[2] - t[1]

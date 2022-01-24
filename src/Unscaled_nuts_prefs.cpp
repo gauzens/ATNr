@@ -8,12 +8,12 @@ using namespace Rcpp;
 // Rcpp::compileAttributes()           # this updates the Rcpp layer from C++ to R
 // roxygen2::roxygenize(roclets="rd")  # this updates the documentation based on roxygen comments
 
-//' @name Schneider_arma
+//' @name Unscaled_nuts_prefs
 //' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
 //' @description Type the name of the class to see its methods
-//' @fiel nb_s Total number of species
-//' @fiel nb_b Number of basal species
-//' @fiel nb_n Number of nutrient pool
+//' @field nb_s Total number of species
+//' @field nb_b Number of basal species
+//' @field nb_n Number of nutrient pool
 //' @field X Coltor of metabolic rates (length = number of species)
 //' @field K1 Vector of maximum feeding rates (length = number of consumers)
 //' @field K2 Vector of producers maximum growth rates (length = number of basal species)
@@ -33,7 +33,7 @@ using namespace Rcpp;
 //' \item Returns a Coltor of growth rate for each species at time t
 //' }
 
-class Schneider_arma_pref{
+class Unscaled_nuts_prefs{
 public:
   int nb_s; // number of species
   int nb_b; // number of basal species
@@ -105,7 +105,7 @@ public:
   uvec non_nut;
   uvec extinct;
   
-  Schneider_arma_pref(int ns, int nb, int nn):
+  Unscaled_nuts_prefs(int ns, int nb, int nn):
     nb_s(ns), nb_b(nb), nb_n(nn) {
       int n_tot = nb_s + nb_n;
       int n_cons = nb_s - nb_b;
@@ -301,37 +301,37 @@ public:
 
 
 
-RCPP_MODULE(Schneider_arma_prefModule){
+RCPP_MODULE(Unscaled_nuts_prefsModule){
   using namespace Rcpp;
-  class_<Schneider_arma_pref>("Schneider_arma_pref")
+  class_<Unscaled_nuts_prefs>("Unscaled_nuts_prefs")
     .constructor<int, int, int>("constructor") //constructor
-    .method("print", &Schneider_arma_pref::print)
-    .method("ODE", &Schneider_arma_pref::ODE)
-    .method("initialisations", &Schneider_arma_pref::initialisations)
-    .field("nb_s", &Schneider_arma_pref::nb_s)
-    .field("nb_b", &Schneider_arma_pref::nb_b)
-    .field("nb_n", &Schneider_arma_pref::nb_n)
-    .field("BM", &Schneider_arma_pref::BM)
-    .field("log_BM", &Schneider_arma_pref::log_BM)
-    .field("K", &Schneider_arma_pref::K)
-    .field("D", &Schneider_arma_pref::D)
-    .field("S", &Schneider_arma_pref::S)
-    .field("r", &Schneider_arma_pref::r)
-    .field("X", &Schneider_arma_pref::X)
-    .field("e", &Schneider_arma_pref::e)
-    .field("w", &Schneider_arma_pref::w)
-    .field("b", &Schneider_arma_pref::b)
-    .field("c", &Schneider_arma_pref::c)
-    .field("h", &Schneider_arma_pref::h)
-    .field("q", &Schneider_arma_pref::q)
-    .field("V", &Schneider_arma_pref::V)
-    .field("temperature", &Schneider_arma_pref::temperature)
-    .field("dB", &Schneider_arma_pref::dB)
-    .field("D", &Schneider_arma_pref::D)
-    .field("F", &Schneider_arma_pref::F)
-    .field("uptake", &Schneider_arma_pref::uptake)
-    .field("h", &Schneider_arma_pref::h)
-    .field("fw", &Schneider_arma_pref::fw)
-    .field("ext", &Schneider_arma_pref::ext)
+    .method("print", &Unscaled_nuts_prefs::print)
+    .method("ODE", &Unscaled_nuts_prefs::ODE)
+    .method("initialisations", &Unscaled_nuts_prefs::initialisations)
+    .field("nb_s", &Unscaled_nuts_prefs::nb_s)
+    .field("nb_b", &Unscaled_nuts_prefs::nb_b)
+    .field("nb_n", &Unscaled_nuts_prefs::nb_n)
+    .field("BM", &Unscaled_nuts_prefs::BM)
+    .field("log_BM", &Unscaled_nuts_prefs::log_BM)
+    .field("K", &Unscaled_nuts_prefs::K)
+    .field("D", &Unscaled_nuts_prefs::D)
+    .field("S", &Unscaled_nuts_prefs::S)
+    .field("r", &Unscaled_nuts_prefs::r)
+    .field("X", &Unscaled_nuts_prefs::X)
+    .field("e", &Unscaled_nuts_prefs::e)
+    .field("w", &Unscaled_nuts_prefs::w)
+    .field("b", &Unscaled_nuts_prefs::b)
+    .field("c", &Unscaled_nuts_prefs::c)
+    .field("h", &Unscaled_nuts_prefs::h)
+    .field("q", &Unscaled_nuts_prefs::q)
+    .field("V", &Unscaled_nuts_prefs::V)
+    .field("temperature", &Unscaled_nuts_prefs::temperature)
+    .field("dB", &Unscaled_nuts_prefs::dB)
+    .field("D", &Unscaled_nuts_prefs::D)
+    .field("F", &Unscaled_nuts_prefs::F)
+    .field("uptake", &Unscaled_nuts_prefs::uptake)
+    .field("h", &Unscaled_nuts_prefs::h)
+    .field("fw", &Unscaled_nuts_prefs::fw)
+    .field("ext", &Unscaled_nuts_prefs::ext)
     ;  
 }

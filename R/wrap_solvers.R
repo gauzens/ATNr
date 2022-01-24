@@ -1,8 +1,8 @@
 #' @title Wrapper for lsoda
 #'
-#' @description This is a wrapper to call \code{\link{lsoda}} from
+#' @description This is a wrapper to call \code{lsoda} from
 #' \emph{deSolve} and solve the ODE.
-#' Package \code{\link{deSolve}} needs to be installed to run
+#' Package \code{deSolve} needs to be installed to run
 #' this wrapper.
 #'
 #' @param t vector of times.
@@ -14,7 +14,7 @@
 #' times as rows.
 #'
 #' @examples
-#' library(ATN)
+#' library(ATNr)
 #' library(deSolve)
 #' masses <- runif(20, 10, 100) #body mass of species
 #' L <- create_Lmatrix(masses, 10, Ropt = 10)
@@ -47,9 +47,9 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
 # #' 
 # #' @keywords internal
 # #'
-# #' @description This is a wrapper to call \code{\link{cvode}} from
+# #' @description This is a wrapper to call \code{cvode} from
 # #' \emph{sundialr} and solve the ODE.
-# #' Package \code{\link{sundialr}} needs to be installed to run
+# #' Package \code{sundialr} needs to be installed to run
 # #' this wrapper.
 # #'
 # #' @param t vector of times.
@@ -60,7 +60,7 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
 # #' times as rows.
 # #'
 # #' @examples
-# #' library(ATN)
+# #' library(ATNr)
 # #' masses <- runif(50, 10, 100) #body mass of species
 # #' L <- create_Lmatrix(masses, 10, Ropt = 50)
 # #' L[L > 0] <- 1

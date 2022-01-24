@@ -9,7 +9,17 @@ Type the name of the class to see its methods
 \section{Fields}{
 
 \describe{
+\item{\code{nb_s}}{Total number of species}
+
+\item{\code{nb_b}}{Number of basal species}
+
+\item{\code{nb_n}}{Number of nutrient pool}
+
 \item{\code{c}}{double: inteference competition}
+
+\item{\code{b}}{Matrix of attack rates (dim = number of species * number of consumers)}
+
+\item{\code{h}}{Matrix of handling times (dim = number of species * number of consumers)}
 
 \item{\code{X}}{vector of metabolic rates (length = number of species)}
 

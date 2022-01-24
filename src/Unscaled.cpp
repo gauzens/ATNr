@@ -10,12 +10,12 @@ using namespace arma;
 //' @name Unscaled
 //' @title Store parameters and functions associated to the unscaled version of ATN
 //' @description Type the name of the class to see its methods
-//' @fiel nb_s Total number of species
-//' @fiel nb_b Number of basal species
+//' @field nb_s Total number of species
+//' @field nb_b Number of basal species
 //' @field c double: inteference competition
 //' @field X Vector of metabolic rates (length = number of species)
-//' @fiel a Matrix of attack rates (dim = number of species * number of consumers)
-//' @fiel h Matrix of handling times (dim = number of species * number of consumers)
+//' @field a Matrix of attack rates (dim = number of species * number of consumers)
+//' @field h Matrix of handling times (dim = number of species * number of consumers)
 //' @field e Vector of assimilation efficiencies (length = number of species)
 //' @field r Vector of producers maximum growth rates (length = number of basal species)
 //' @field BM Vector of body masses (length = number of species)

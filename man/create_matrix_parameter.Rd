@@ -17,11 +17,11 @@ create_matrix_parameter(BM, b0, bprey, bpred, E, T.K, T0, k)
 
 \item{E}{const}
 
-\item{T.K, }{Celcsius to Kelvin conversion}
+\item{T.K, }{Celsius to Kelvin conversion}
+
+\item{T0, }{Default temperature in Kelvin}
 
 \item{k, }{Boltzmann constant}
-
-\item{T.0, }{Celsius to Kelvin conversion}
 }
 \description{
 Make parameter matrix

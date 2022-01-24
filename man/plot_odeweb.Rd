@@ -10,14 +10,14 @@ plot_odeweb(x, nb_s)
 \item{x}{matrix with solutions. First row should be the time vector.}
 
 \item{nb_s}{numeric, number of species as in the model (e.g.,
-\code{\link{create_model_schneider}}).}
+\code{create_model_Unscaled_nuts}).}
 }
 \description{
 Plot solution of the ODE for the food web. Currently only
   species and not nutrients are plotted.
 }
 \examples{
-library(ATN)
+library(ATNr)
 library(deSolve)
 # number of species, nutrients, and body masses
 n_species <- 20
@@ -29,17 +29,17 @@ L <- create_Lmatrix(masses, n_basal)
 L[, 1:n_basal] <- 0
 fw <- L
 fw[fw > 0] <- 1
-model_schneider = create_model_schneider(
+model = create_model_Unscaled_nuts(
   n_species,
   n_basal,
   n_nutrients,
   masses,
   fw
 )
-initialize model as default in Schneider et al. (2016)
-model_schneider <- initialise_default_Schneider_2016(model_schneider, L)
+# initialize model as default in Schneider et al. (2016)
+model <- initialise_default_Unscaled_nuts(model_schneider, L)
 # defining integration time
 times <- seq(0, 500, 5)
-sol <- lsoda_wrapper(times, masses, model_schneider)
-plot_odeweb(sol, model_schneider$nb_s)
+sol <- lsoda_wrapper(times, masses, model)
+plot_odeweb(sol, model$nb_s)
 }

@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' @examples
-#' library(ATN)
+#' library(ATNr)
 #' n_species <- 50
 #' n_basal <- 10
 #' n_nutrients <- 2
@@ -77,7 +77,7 @@ create_model_Unscaled_nuts <- function(
 #'   Ecol Evol, 8: 881-886. https://doi.org/10.1111/2041-210X.12713
 #'
 #' @examples
-#' library(ATN)
+#' library(ATNr)
 #' n_species <- 50
 #' n_basal <- 10
 #' masses <- runif(n_species, 10, 100) #body mass of species
@@ -134,12 +134,12 @@ create_model_Scaled <- function(
 #' @references Binzer, A., Guill, C., Rall, B.C. and Brose, U. (2016),
 #' Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 #' Glob Change Biol, 22: 220-227. https://doi.org/10.1111/gcb.13086
-#' Gauzens, B., Rall, B.C., Mendonça, V. et al.
+#' Gauzens, B., Rall, B.C., Mendonca, V. et al.
 #' Biodiversity of intertidal food webs in response to warming across latitudes.
-#' Nat. Clim. Chang. 10, 264–269 (2020). https://doi.org/10.1038/s41558-020-0698-z
+#' Nat. Clim. Chang. 10, 264-269 (2020). https://doi.org/10.1038/s41558-020-0698-z
 #'
 #' @examples
-#' library(ATN)
+#' library(ATNr)
 #' n_species <- 50
 #' n_basal <- 10
 #' masses <- runif(n_species, 10, 100) #body mass of species

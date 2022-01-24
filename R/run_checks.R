@@ -3,12 +3,8 @@
 #' @description Check if the dimensions of vectors and matrices used in the model are correct.
 #' If any dimension is not correct, an error message is returned.
 #'
-#' @param model a model object, created from \code{\link{create_model_schneider}}) or
-#' \code{\link{create_model_delmas}})
+#' @param model a model object.
 #' @param verbose Boolean, whether a message should be printed when all checks were successful
-#'
-#' @examples
-#' library(ATN) # is an example truly needed here?
 run_checks <- function(model, verbose = TRUE) {
   if (class(model)[1] == "Rcpp_Scaled") {
     with(model, {

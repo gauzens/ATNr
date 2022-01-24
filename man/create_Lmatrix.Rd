@@ -31,6 +31,6 @@ The L matrix contains the probability for an attack event to be
 }
 \examples{
 mass <- sort(10 ^ rnorm(50, 4, 3))
-L <- create_Lmatrix(mass)
+L <- create_Lmatrix(mass, nb_b = 20)
 image(L)
 }

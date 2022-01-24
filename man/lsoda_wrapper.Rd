@@ -4,7 +4,7 @@
 \alias{lsoda_wrapper}
 \title{Wrapper for lsoda}
 \usage{
-lsoda_wrapper(t, y, model, verbose = TRUE)
+lsoda_wrapper(t, y, model, verbose = FALSE)
 }
 \arguments{
 \item{t}{vector of times.}
@@ -12,25 +12,27 @@ lsoda_wrapper(t, y, model, verbose = TRUE)
 \item{y}{vector of biomasses.}
 
 \item{model}{object of class \emph{ATN (Rcpp_parameters_prefs)}.}
+
+\item{verbose}{Boolean, whether a message should be printed when all checks were successful}
 }
 \value{
 A matrix for the ODE solution with species as columns and
 times as rows.
 }
 \description{
-This is a wrapper to call \code{\link{lsoda}} from
+This is a wrapper to call \code{lsoda} from
 \emph{deSolve} and solve the ODE.
-Package \code{\link{deSolve}} needs to be installed to run
+Package \code{deSolve} needs to be installed to run
 this wrapper.
 }
 \examples{
-library(ATN)
+library(ATNr)
 library(deSolve)
 masses <- runif(20, 10, 100) #body mass of species
 L <- create_Lmatrix(masses, 10, Ropt = 10)
 L[L > 0] <- 1
-mod <- create_model_schneider(20, 10, 3, masses, L)
-mod <- initialise_default_Schneider_2016(mod, L)
+mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+mod <- initialise_default_Unscaled_nuts(mod, L)
 biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
 biomasses <- append(runif(3, 20, 30), biomasses)
 times <- seq(0, 100, 1)

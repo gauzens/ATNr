@@ -2,9 +2,8 @@
 #'
 #' A dataset containing the default parameters as in the Schneider et al. (2016)
 #' and used to parametrize the default models. See also
-#' \code{\link{create_model_schneider}}, \code{\link{create_Lmatrix}},
-#' \code{\link{initialise_default_Schneider_2016}}, and
-#' \code{\link{initialise_default_Delmas_2016}}.
+#' \code{create_model_Unscaled_nuts}, \code{create_Lmatrix},
+#' \code{initialise_default_Unscaled_nuts}.
 #'
 #' @format A list with the default parameters:
 #' \describe{ 
@@ -12,7 +11,7 @@
 #' \item{T.K}{default temperature, 20 degree Celsius in Kelvin}
 #' \item{k}{Boltzmann's constant}
 #' \item{T0}{20 degree Celsius in Kelvin, used to estimate scaling law of metabolic raste}
-#' \item{q}{TBD}
+#' \item{q}{Hill's exponent of the functional response}
 #' \item{Ropt}{consumer/resource optimal body mass ratio}
 #' \item{gamma}{shape of the Ricker function}
 #' \item{mu_c}{average predator interference}

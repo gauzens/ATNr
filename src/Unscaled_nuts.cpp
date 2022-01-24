@@ -10,12 +10,12 @@ using namespace arma;
 //' @name Unscaled_nuts
 //' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
 //' @description Type the name of the class to see its methods
-//' @fiel nb_s Total number of species
-//' @fiel nb_b Number of basal species
-//' @fiel nb_n Number of nutrient pool
+//' @field nb_s Total number of species
+//' @field nb_b Number of basal species
+//' @field nb_n Number of nutrient pool
 //' @field c double: inteference competition
-//' @fiel b Matrix of attack rates (dim = number of species * number of consumers)
-//' @fiel h Matrix of handling times (dim = number of species * number of consumers)
+//' @field b Matrix of attack rates (dim = number of species * number of consumers)
+//' @field h Matrix of handling times (dim = number of species * number of consumers)
 //' @field X vector of metabolic rates (length = number of species)
 //' @field K matrix of plant nutrient efficiencies (dim = number of nutrients * number of plants)
 //' @field V matrix of plant relative nutrient content (dim = number of nutrients * number of plants)

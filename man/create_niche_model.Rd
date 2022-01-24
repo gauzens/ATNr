@@ -23,7 +23,7 @@ Function to generate a food web based on the niche model
 }
 \examples{
 web_niche <- create_niche_model(50, .4)
-image(niche)
+image(web_niche)
 }
 \references{
 Williams, R. J., & Martinez, N. D. (2000). Simple rules yield

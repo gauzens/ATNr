@@ -12,7 +12,7 @@ remove_species(species, model, nuts = NULL)
 \item{model}{model object}
 
 \item{nuts}{integer vector, the indices of nutrients to remove. Parameter
-specific to the Schneider model.}
+specific to the Unscaled_nuts model.}
 }
 \value{
 A model object where the data structure has bee updated to remove the

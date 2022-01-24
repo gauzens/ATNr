@@ -6,7 +6,7 @@
 #' @param bpred const
 #' @param E const
 #' @param T.K, Celsius to Kelvin conversion
-#' @param T.0, Default temperature in Kelvin
+#' @param T0, Default temperature in Kelvin
 #' @param k, Boltzmann constant
 #'
 #' @details Make a parameter matrix that depends on both predators
@@ -38,7 +38,7 @@ create_matrix_parameter <- function(
 #'   Schneider et al. (2016).
 #' @param model an object of class \emph{ATN (Rcpp_Unscaled_nuts}.
 #' @param L.mat numeric matrix, probability of a consumer to attack and capture an encountered resource. See \code{\link{create_Lmatrix}}.
-#' @param temperature numeric, ambient temperature of the ecosystem.
+#' @param temperature numeric, ambient temperature of the ecosystem in Celsius.
 #'
 #' @references Schneider, F. D., Brose, U., Rall, B. C., & Guill, C. (2016).
 #'   Animal diversity and ecosystem functioning in dynamic food webs. Nature
@@ -185,13 +185,14 @@ initialise_default_Scaled <- function(model) {
 #'   the ATN model as in Binzer et al. (2016), with updates from Gauzens et al. 2020
 #'
 #' @param model an object of class \emph{ATN (Rcpp_Unscaled)}.
-#'
+#' @param temperature numeric, ambient temperature of the ecosystem in Celsius.
+#' 
 #' @references DBinzer, A., Guill, C., Rall, B. C. & Brose, U.
 #' Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
-#' Glob. Change Biol. 22, 220–227 (2016).
-#' Gauzens, B., Rall, B.C., Mendonça, V. et al.
+#' Glob. Change Biol. 22, 220-227 (2016).
+#' Gauzens, B., Rall, B.C., Mendonca, V. et al.
 #' Biodiversity of intertidal food webs in response to warming across latitudes.
-#' Nat. Clim. Chang. 10, 264–269 (2020). https://doi.org/10.1038/s41558-020-0698-z
+#' Nat. Clim. Chang. 10, 264-269 (2020). https://doi.org/10.1038/s41558-020-0698-z
 #'
 #' @return An object of class \emph{ATN (Rcpp_Unscaled)} with default
 #'   parameters as in Delmas et al. (2017).

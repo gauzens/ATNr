@@ -5,10 +5,10 @@
 #'
 #' @param x matrix with solutions. First row should be the time vector.
 #' @param nb_s numeric, number of species as in the model (e.g.,
-#'   \code{\link{create_model_schneider}}).
+#'   \code{create_model_Unscaled_nuts}).
 #'
 #' @examples
-#' library(ATN)
+#' library(ATNr)
 #' library(deSolve)
 #' # number of species, nutrients, and body masses
 #' n_species <- 20
@@ -20,15 +20,16 @@
 #' L[, 1:n_basal] <- 0
 #' fw <- L
 #' fw[fw > 0] <- 1
-#' model = create_model_Unscaled_nuts(
+#' model <- create_model_Unscaled_nuts(
 #'   n_species,
 #'   n_basal,
 #'   n_nutrients,
 #'   masses,
 #'   fw
 #' )
-#' initialize model as default in Schneider et al. (2016)
-#' model <- initialise_default_Unscaled_nuts(model_schneider, L)
+#' # initialize model as default in Schneider et al. (2016)
+#' model <- initialise_default_Unscaled_nuts(model, L)
+#' model$initialise()
 #' # defining integration time
 #' times <- seq(0, 500, 5)
 #' sol <- lsoda_wrapper(times, masses, model)

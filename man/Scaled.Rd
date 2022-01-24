@@ -11,6 +11,10 @@ Type the name of the class to see its methods
 \section{Fields}{
 
 \describe{
+\item{\code{nb_s}}{Total number of species}
+
+\item{\code{nb_b}}{Number of basal species}
+
 \item{\code{c}}{double: inteference competition}
 
 \item{\code{X}}{Vector of metabolic rates (length = number of species)}
@@ -46,6 +50,10 @@ Type the name of the class to see its methods
 \item Parameter: t - Integration time point
 \item Returns a vector of growth rate for each species at time t
 }}
+
+\item{\code{nb_s}}{Total number of species}
+
+\item{\code{nb_b}}{Number of basal species}
 
 \item{\code{c}}{double: inteference competition}
 
