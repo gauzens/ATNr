@@ -20,7 +20,7 @@
 #' L[, 1:n_basal] <- 0
 #' fw <- L
 #' fw[fw > 0] <- 1
-#' model_schneider = create_model_schneider(
+#' model = create_model_Unscaled_nuts(
 #'   n_species,
 #'   n_basal,
 #'   n_nutrients,
@@ -28,11 +28,11 @@
 #'   fw
 #' )
 #' initialize model as default in Schneider et al. (2016)
-#' model_schneider <- initialise_default_Schneider_2016(model_schneider, L)
+#' model <- initialise_default_Unscaled_nuts(model_schneider, L)
 #' # defining integration time
 #' times <- seq(0, 500, 5)
-#' sol <- lsoda_wrapper(times, masses, model_schneider)
-#' plot_odeweb(sol, model_schneider$nb_s)
+#' sol <- lsoda_wrapper(times, masses, model)
+#' plot_odeweb(sol, model$nb_s)
 plot_odeweb <- function(x, nb_s) {
   pal <- colorRampPalette(c("blue", "red"))(nb_s)
   pal <- adjustcolor(pal, alpha.f = .5)
