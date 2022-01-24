@@ -383,8 +383,6 @@ Predator-prey body mass ratio and envorinment temperature have been shown to aff
 First, we create a food web with 30 species and initialize within a for loop the model with a given value of body mass ratio and temperature. Species persistence is calculate as the fraction of species that are not extinct at the end of the simulations.
 
 ```{r binzer example}
-library(ATN)
-library(deSolve)
 set.seed(1142)
 
 S <- 30
