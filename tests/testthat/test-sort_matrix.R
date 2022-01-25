@@ -1,4 +1,5 @@
 test_that("sorting matrix works properly", {
+  set.seed(123)
   fw <- matrix(as.numeric(runif(100) > .9), 10, 10)
   bm <- runif(10)
   sp <- letters[1:10]

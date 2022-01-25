@@ -1,4 +1,5 @@
 test_that("The two versions of Scaled converge", {
+  set.seed(123)
 
   n_species <- 50
   n_basal <- 20
