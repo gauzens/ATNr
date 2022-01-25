@@ -6,7 +6,7 @@
 #' @description Type the name of the class to see its methods
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field max_feed Vector of maximum feeding rates (length = number of consumers)
 #' @field e Vector of assimilation efficiencies (length = number of species)
@@ -33,7 +33,7 @@ NULL
 #' @description Type the name of the class to see its methods
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field max_feed Vector of maximum feeding rates (length = number of consumers)
 #' @field e Vector of assimilation efficiencies (length = number of species)
@@ -60,7 +60,7 @@ NULL
 #' @description Type the name of the class to see its methods
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field a Matrix of attack rates (dim = number of species * number of consumers)
 #' @field h Matrix of handling times (dim = number of species * number of consumers)
@@ -87,7 +87,7 @@ NULL
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
 #' @field nb_n Number of nutrient pool
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field b Matrix of attack rates (dim = number of species * number of consumers)
 #' @field h Matrix of handling times (dim = number of species * number of consumers)
 #' @field X vector of metabolic rates (length = number of species)
@@ -116,7 +116,7 @@ NULL
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
 #' @field nb_n Number of nutrient pool
-#' @field X Coltor of metabolic rates (length = number of species)
+#' @field X Vector of metabolic rates (length = number of species)
 #' @field K1 Vector of maximum feeding rates (length = number of consumers)
 #' @field K2 Vector of producers maximum growth rates (length = number of basal species)
 #' @field e Vector of assimilation efficiencies (length = number of species)
@@ -132,7 +132,7 @@ NULL
 #' @field ODE Calculate the derivatives for the scaled version of the ATN model \itemize{
 #' \item Parameter: bioms -  Local species biomasses
 #' \item Parameter: t - Integration time point
-#' \item Returns a Coltor of growth rate for each species at time t
+#' \item Returns a vector of growth rate for each species at time t
 #' }
 NULL
 

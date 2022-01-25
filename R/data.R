@@ -10,12 +10,12 @@
 #' \item{Temperature}{ambient temperature in Celsius}
 #' \item{T.K}{default temperature, 20 degree Celsius in Kelvin}
 #' \item{k}{Boltzmann's constant}
-#' \item{T0}{20 degree Celsius in Kelvin, used to estimate scaling law of metabolic raste}
+#' \item{T0}{20 degree Celsius in Kelvin, used to estimate scaling law of metabolic rates}
 #' \item{q}{Hill's exponent of the functional response}
 #' \item{Ropt}{consumer/resource optimal body mass ratio}
 #' \item{gamma}{shape of the Ricker function}
 #' \item{mu_c}{average predator interference}
-#' \item{sd_c}{stdandard deviation of predator interference}
+#' \item{sd_c}{standard deviation of predator interference}
 #' \item{E.c}{TBD}
 #' \item{h0}{scaling constant of the power-law of handling time with consumer and resource body mass}
 #' \item{hpred}{TBD}
