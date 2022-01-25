@@ -116,7 +116,7 @@ initialise_default_Unscaled_nuts <- function(
 #'   2016
 #'
 #' @description Initialise the default parametrisation for the scaled version of
-#'   the ATN model as in Delams et al. (2016).
+#'   the ATN model as in Delmas et al. (2016).
 #'
 #' @param model an object of class \emph{Rcpp_Scaled}.
 #'
@@ -187,7 +187,7 @@ initialise_default_Scaled <- function(model) {
 #' @param model an object of class \emph{ATN (Rcpp_Unscaled)}.
 #' @param temperature numeric, ambient temperature of the ecosystem in Celsius.
 #' 
-#' @references DBinzer, A., Guill, C., Rall, B. C. & Brose, U.
+#' @references Binzer, A., Guill, C., Rall, B. C. & Brose, U.
 #' Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 #' Glob. Change Biol. 22, 220-227 (2016).
 #' Gauzens, B., Rall, B.C., Mendonca, V. et al.
