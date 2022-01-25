@@ -1,4 +1,5 @@
   test_that("The two versions of Unscaled_nuts converge", {
+    set.seed(123)
     temperature = 20
     n_species <- 50
     n_basal <- 20
