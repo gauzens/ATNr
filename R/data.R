@@ -16,28 +16,27 @@
 #' \item{gamma}{shape of the Ricker function}
 #' \item{mu_c}{average predator interference}
 #' \item{sd_c}{standard deviation of predator interference}
-#' \item{E.c}{TBD}
+#' \item{E.c}{Activation energy for interference}
 #' \item{h0}{scaling constant of the power-law of handling time with consumer and resource body mass}
-#' \item{hpred}{TBD}
-#' \item{hprey}{TBD}
-#' \item{E.h}{TBD}
-#' \item{b0}{capture coefficient}
-#' \item{bprey}{TBD}
-#' \item{bpred}{TBD}
-#' \item{E.b}{TBD}
-#' \item{e_P}{TBD}
-#' \item{e_A}{TBD}
-#' \item{x_P}{TBD}
+#' \item{hpred}{exponent associated to predator body mass for the allometric scaling of handling time}
+#' \item{hprey}{exponent associated to prey body mass for the allometric scaling of handling time}
+#' \item{E.h}{Activation energy for handling time}
+#' \item{b0}{normalisation constant for capture coefficient}
+#' \item{bprey}{exponent associated to prey body mass for the allometric scaling of capture coefficient}
+#' \item{bpred}{exponent associated to predator body mass for the allometric scaling of capture coefficient}
+#' \item{E.b}{Activation energy for capture coefficient}
+#' \item{e_P}{Assimilation effiiency associated to the consumption of a plant species}
+#' \item{e_A}{Assimilation effiiency associated to the consumption of an animal species}
+#' \item{x_P}{scaling constant of the power-law of metabolic demand per unit of plant biomass}
 #' \item{x_A}{scaling constant of the power-law of metabolic demand per unit of animal biomass}
-#' \item{E.x}{TBD}
+#' \item{E.x}{Activation energy for metabolic rates}
 #' \item{expX}{TBD}
 #' \item{D}{turnover rate of nutrients}
-#' \item{nut_up_min}{TBD}
-#' \item{nut_up_max}{TBD}
-#' \item{mu_nut}{TBD}
-#' \item{sd_nut}{TBD}
-#' \item{v1}{TBD} #relative content of nutrient 1 in plant biomass?
-#' \item{v2}{TBD}
+#' \item{nut_up_min}{Minimum uptake efficiency of plants}
+#' \item{nut_up_max}{Maximum uptake efficiency of plants}
+#' \item{mu_nut}{Average maximum nutrient concentration}
+#' \item{sd_nut}{standard deviation of maximum nutrient concentration}
+#' \item{v}{relative content of nutrient 1 in plant biomass} 
 #' }
 #' 
 #' @references Schneider, F. D., Brose, U., Rall, B. C., & Guill, C. (2016).
