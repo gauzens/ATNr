@@ -49,7 +49,7 @@ conn <- 0.3 # connectance
 fw <- create_niche_model(n_species, conn)
 ```
 
-The allometric scaling model generate links based on species body masses. Therefore, it requires as an input a vector containing the body mass of species, as well as a parameter informing on the number of basal species desired. It produces a so-called L matrix which formally quantifies the probability for a consumer to successfuly attack and consumer an encountered resource: 
+The allometric scaling model generate links based on species body masses. Therefore, it requires as an input a vector containing the body mass of species, as well as a parameter informing on the number of basal species desired. It produces a so-called L matrix which formally quantifies the probability for a consumer to successfully attack and consumer an encountered resource: 
 
 ```{r}
 n_species <- 20
@@ -160,7 +160,7 @@ plot_odeweb(sol, model_unscaled_nuts$nb_s)
 
 # The food web generative functions
 
-**Note: in all the different example scripts, generating the food webs is what is the most complicated. We could maybe simplify everything by adding all the cecks directly in the generative function. I mean, it seems rather OK to not return a food web with disconnected components, no?**
+**Note: in all the different example scripts, generating the food webs is what is the most complicated. We could maybe simplify everything by adding all the checks directly in the generative function. I mean, it seems rather OK to not return a food web with disconnected components, no?**
 
 It is possible to create a model object using empirical food webs, however synthetic ones can be valuable tools to explore different theoretical questions. To allow this possibility, two different models are available in the package: the niche model (@williams2000simple) or the allometric scaling model (@schneider2016animal). Thereafter, we use the following function to visualise the adjacency matrices of the food webs:
 
@@ -378,7 +378,7 @@ lines(richness, persistence, col = 'blue')
 
 ## Effect of predator-prey body mass ratio and temperature on species persistence
 
-Predator-prey body mass ratio and envorinment temperature have been shown to affect persistence of species in local communities, e.g. @binzer2016interactive. Here, we use the _ATNr_ model (**name here**) to replicate the results from @binzer2016interactive. In particular, we compute the fraction of species species that persist for predator-prey body mass ratio values in $\left[ 10^{-1}, 10^4 \right]$ and temperature values in $\{0, 40\}$ °C.
+Predator-prey body mass ratio and environment temperature have been shown to affect persistence of species in local communities, e.g. @binzer2016interactive. Here, we use the _ATNr_ model (**name here**) to replicate the results from @binzer2016interactive. In particular, we compute the fraction of species species that persist for predator-prey body mass ratio values in $\left[ 10^{-1}, 10^4 \right]$ and temperature values in $\{0, 40\}$ °C.
 
 First, we create a food web with 30 species and initialize within a for loop the model with a given value of body mass ratio and temperature. Species persistence is calculate as the fraction of species that are not extinct at the end of the simulations.
 
@@ -528,7 +528,7 @@ model_unscaled_nuts$nb_s #this is the model parameter
 
 ## Updating key parameters without creating a new model object
 
-Changing parameters that are used in the `create_model` functions without creating a new model object is almost always a bad idea. Those parameters are important structural parameters, and changing one of them implies changes in most of the other variables contained in the model object. For instance, the example above,  changing the number of species in the model object will lead to inconsistancies in the different variables: the dimensions of objects storing attack rates, body masses and so on won't match the updated number of species. Some basic checks are made before starting the integration in the `lsoda_wrapper` function, based on the `run_checks` procedure also available in the package.   
+Changing parameters that are used in the `create_model` functions without creating a new model object is almost always a bad idea. Those parameters are important structural parameters, and changing one of them implies changes in most of the other variables contained in the model object. For instance, the example above,  changing the number of species in the model object will lead to inconsistencies in the different variables: the dimensions of objects storing attack rates, body masses and so on won't match the updated number of species. Some basic checks are made before starting the integration in the `lsoda_wrapper` function, based on the `run_checks` procedure also available in the package.   
 
 ```{r}
 times <- seq(0, 15000, 150)
@@ -638,4 +638,4 @@ model_2$q
 Therefore, to create a new model object based on another one, it is important to formally create one (either with one of the `create_model_` function, or using `new`). More information on copying variables using pointers here: https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
 
 
-**Note: Should we let the possibility for users to update these key parameters (i.e. the ones in the create_model() functions)? Should we restrict them that they can only be read and not modified? For instance by not exporting them and creating a get_x() method that would return the value of x? This options is much better in terms of "security" but much less straightfoward to use. **
+**Note: Should we let the possibility for users to update these key parameters (i.e. the ones in the create_model() functions)? Should we restrict them that they can only be read and not modified? For instance by not exporting them and creating a get_x() method that would return the value of x? This options is much better in terms of "security" but much less straightforward to use. **
