@@ -5,8 +5,7 @@ Version: 1.0
 Date: 2022-01-25
 Author: Benoit Gauzens, Emilio Berti
 Maintainer: Benoit Gauzens <benoit.gauzens@idiv.de>
-Description: One paragraph description of what the package does as
-       one or more full sentences.
+Description: The ATNr package implements different version of Allometric Trophic Models to estimate populations dynamics in food webs. 
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7), methods, stats, utils
 LinkingTo: Rcpp, RcppArmadillo
