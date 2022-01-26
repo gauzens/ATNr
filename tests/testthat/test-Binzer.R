@@ -47,14 +47,7 @@ test_that("The two versions of Unscaled converge", {
 
   sol <- lsoda_wrapper(times, biomasses, model)
   sol2 <- lsoda_wrapper(times, biomasses, model2)
-<<<<<<< HEAD
   
-  # plot_odeweb(sol, 50)
-  # plot_odeweb(sol2, 50)
-  
-=======
-
->>>>>>> ad4e38c317af85f777f54247cf76f69ee7be8dcc
   extinct = tail(sol,1) < model$ext
   
   expect_equal(sol[nrow(sol),], sol2[nrow(sol2),], tolerance = 0.0001)

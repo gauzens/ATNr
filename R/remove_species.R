@@ -143,7 +143,7 @@ remove_species = function(species, model, nuts = NULL){
   # consumers: indices of consumer species in data that does not have basal species
   consumers <- species[species > model$nb_b] - model$nb_b
   # index of basal species
-  basals <- species[species <<- model$nb_b]
+  basals <- species[species <= model$nb_b]
 
   new.nb_b <- model$nb_b - sum(species < model$nb_b)
   new.nb_s <- model$nb_s - length(species)
