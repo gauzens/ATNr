@@ -10,6 +10,7 @@ License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7), methods, stats, utils
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.2
+LazyData: true
 Depends: 
     R (>= 2.10)
 Suggests: 
