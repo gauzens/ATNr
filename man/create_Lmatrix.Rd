@@ -18,8 +18,8 @@ create_Lmatrix(BM, nb_b, Ropt = 100, gamma = 2, th = 0.01)
 \item{th}{float, the threshold below which attack rates are considered = 0.}
 }
 \value{
-A numeric matrix with the probability for an attack event between
-two species to be successful.
+A numeric matrix with the probability for an attack event between two
+  species to be successful.
 }
 \description{
 Make L matrix
@@ -27,10 +27,7 @@ Make L matrix
 \details{
 The L matrix contains the probability for an attack event to be
   successful based on allometric rules and a Ricker function defined by
-  \emph{Ropt} and \emph{gamma}.
-}
-\examples{
-mass <- sort(10 ^ rnorm(50, 4, 3))
-L <- create_Lmatrix(mass, nb_b = 20)
-image(L)
+  \emph{Ropt} and \emph{gamma}. If at least one species has not resource or
+  consumer (i.e. it is an isolated species), another food web is generated,
+  until a maximum of 100 iterations.
 }

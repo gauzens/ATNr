@@ -16,7 +16,7 @@ An object of class \emph{Rcpp_Scaled} with default
 }
 \description{
 Initialise the default parametrisation for the scaled version of
-  the ATN model as in Delams et al. (2016).
+  the ATN model as in Delmas et al. (2016).
 }
 \references{
 Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.

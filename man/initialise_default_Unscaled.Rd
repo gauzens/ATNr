@@ -21,7 +21,7 @@ Initialise the default parametrisation for the scaled version of
   the ATN model as in Binzer et al. (2016), with updates from Gauzens et al. 2020
 }
 \references{
-DBinzer, A., Guill, C., Rall, B. C. & Brose, U.
+Binzer, A., Guill, C., Rall, B. C. & Brose, U.
 Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 Glob. Change Biol. 22, 220-227 (2016).
 Gauzens, B., Rall, B.C., Mendonca, V. et al.

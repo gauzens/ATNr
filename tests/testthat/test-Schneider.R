@@ -64,4 +64,3 @@ test_that("The two versions of Unscaled_nuts converge", {
 # benchmark("arma: " = {sol <- lsoda_wrapper(times, biomasses, model)},
 #           "loops:  " = {sol2 <- lsoda_wrapper(times, biomasses, model2)},
 #           replications = 100)
-# 

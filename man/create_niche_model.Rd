@@ -21,6 +21,11 @@ Function to generate a food web based on the niche model
   (Williams and Martinez, 2000) based on the number of species and
   connectance. Corrections from Allesina et al. (2008) are used.
 }
+\details{
+If at least one species has not resource or consumer (i.e. it is an
+  isolated species), another food web is generated, until a maximum of 100
+  iterations.
+}
 \examples{
 web_niche <- create_niche_model(50, .4)
 image(web_niche)

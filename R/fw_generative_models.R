@@ -3,6 +3,9 @@
 #' @description Function to generate a food web based on the niche model
 #'   (Williams and Martinez, 2000) based on the number of species and
 #'   connectance. Corrections from Allesina et al. (2008) are used.
+#' @details If at least one species has not resource or consumer (i.e. it is an
+#'   isolated species), another food web is generated, until a maximum of 100
+#'   iterations.
 #' @param S integer, number of species.
 #' @param C numeric, connectance i.e. the number of realized links over the all
 #'   possible links.
@@ -17,31 +20,43 @@
 #' web_niche <- create_niche_model(50, .4)
 #' image(web_niche)
 create_niche_model <- function(S, C) {
-  # niches of species
-  niche <- sort(stats::runif(S))
-  # feeding ranges, using the correction from Allesina et al. (2008)
-  if (((S - 1) / (2 * S * C)) - 1 < 0) {
-    stop("Beta distribution parameter < 0. Try to decrease C.")
+  niche_model <- function(S, C) {
+    # niches of species
+    niche <- sort(stats::runif(S))
+    # feeding ranges, using the correction from Allesina et al. (2008)
+    if (((S - 1) / (2 * S * C)) - 1 < 0) {
+      stop("Beta distribution parameter < 0. Try to decrease C.")
+    }
+    diet <- stats::rbeta(S, 1, ((S - 1) / (2 * S * C)) - 1) * niche
+    # feeding center, using the correction from Allesina et al. (2008)
+    center <- sapply(seq_len(S),
+                     function(i) {
+                       n <- niche[i]
+                       r <- diet[i]
+                       ifelse(n + r / 2 <= 1,
+                              stats::runif(1, r / 2, n),
+                              stats::runif(1, r / 2, 1 - r / 2)
+                       )
+                     })
+    species <- seq_len(S)
+    # crate food web adjacency matrix
+    fw <- matrix(rep(0, S ^ 2), S, S)
+    for (sp in species) {
+      preys <- (center[sp] - diet[sp] / 2 <= niche) &
+        (niche <= center[sp] + diet[sp] / 2)
+      fw[preys, sp] <- 1
+    }
+    return(fw)
   }
-  diet <- stats::rbeta(S, 1, ((S - 1) / (2 * S * C)) - 1) * niche
-  # feeding center, using the correction from Allesina et al. (2008)
-  center <- sapply(seq_len(S),
-                   function(i) {
-                     n <- niche[i]
-                     r <- diet[i]
-                     ifelse(n + r / 2 <= 1,
-                            stats::runif(1, r / 2, n),
-                            stats::runif(1, r / 2, 1 - r / 2)
-                     )
-                   })
-  species <- seq_len(S)
-  # crate food web adjacency matrix
-  fw <- matrix(rep(0, S ^ 2), S, S)
-  for (sp in species) {
-    preys <- (center[sp] - diet[sp] / 2 <= niche) &
-      (niche <= center[sp] + diet[sp] / 2)
-    fw[preys, sp] <- 1
+  fw <- niche_model(S, C)
+  isolated <- ifelse(any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
+  i <- 0
+  while(isolated & i < 100) {
+    fw <- niche_model(S, C)
+    isolated <- ifelse (any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
+    i <- i + 1
   }
+  if (isolated) warning("Presence of an isolated species after 100 iterations.")
   # TO DO connected component without igraph?
   # Maybe omit here and clarify in the vignette.
   if ("igraph" %in% utils::installed.packages()) {
@@ -65,15 +80,18 @@ create_niche_model <- function(S, C) {
 #'
 #' @details The L matrix contains the probability for an attack event to be
 #'   successful based on allometric rules and a Ricker function defined by
-#'   \emph{Ropt} and \emph{gamma}.
+#'   \emph{Ropt} and \emph{gamma}. If at least one species has not resource or
+#'   consumer (i.e. it is an isolated species), another food web is generated,
+#'   until a maximum of 100 iterations.
 #'
-#' @return A numeric matrix with the probability for an attack event between
-#' two species to be successful.
+#' @return A numeric matrix with the probability for an attack event between two
+#'   species to be successful.
 #'
 #' @examples
-#' mass <- sort(10 ^ rnorm(50, 4, 3))
-#' L <- create_Lmatrix(mass, nb_b = 20)
-#' image(L)
+# set.seed(123)
+# mass <- sort(10 ^ rnorm(50, 1, 2))
+# L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
+# image(L)
 create_Lmatrix <- function(
   BM,
   nb_b,
@@ -81,23 +99,29 @@ create_Lmatrix <- function(
   gamma = 2,
   th = 0.01
 ) {
+  Lmatrix <- function(BM, nb_b, Ropt, gamma, th) {
+    s <- length(BM)
+    L <- matrix(rep(BM, s), s, s, byrow = TRUE) /
+      (matrix(rep(BM, s), s, s) * Ropt)
+    L <- (L * exp(1 - L)) ^ gamma
+    L[L < th] <- 0
+    L[, 1:nb_b] <- 0
+    return(L)
+  }
   s <- length(BM)
-  L <- matrix(rep(BM, s), s, s, byrow = TRUE) /
-    (matrix(rep(BM, s), s, s) * Ropt)
-  L <- (L * exp(1 - L)) ^ gamma
-  L[L < th] <- 0
-  L[, 1:nb_b] <- 0
+  L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
   # check for isolated species
-  if (any(colSums(L) + rowSums(L) == 0)) {
-    warning("Presence of an isolated species.")
-  }
+  isolated <- ifelse(any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
   # check for isolated consumers
-  if (any(colSums(L[, (nb_b + 1) : s]) == 0)) {
-    warning("Presence of consumer without prey. Try change BM.")
+  cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
+  i <- 0
+  while((isolated | cons_no_prey) & i < 100) {
+    L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
+    isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
+    cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
+    i <- i + 1
   }
-  # check if basal species are consumed
-  if (any(rowSums(L[1 : nb_b, ]) == 0)) {
-    warning("Presence of basal species without consumer. Try change BM.")
-  }
+  if (isolated) warning("Presence of an isolated species after 100 iterations.")
+  if (cons_no_prey) warning("Presence of consumer without prey after 100 iterations.")
   return(L)
 }
