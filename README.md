@@ -1,4 +1,4 @@
-Beta version of the ATNr package that propose solutions to estimate populations dynamics in food webs with Allomteric Trophic Networks
+Beta version of the ATNr package that propose solutions to estimate populations dynamics in food webs with Allometric Trophic Networks
 
 # To do
 
