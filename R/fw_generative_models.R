@@ -49,14 +49,19 @@ create_niche_model <- function(S, C) {
     return(fw)
   }
   fw <- niche_model(S, C)
+  # check for isolated species
   isolated <- ifelse(any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
+  # check if trophic levels can be calculated
+  tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
   i <- 0
-  while(isolated & i < 100) {
+  while((isolated | is.null(tro_lev)) & i < 100) {
     fw <- niche_model(S, C)
     isolated <- ifelse (any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
+    tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
     i <- i + 1
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
+  if (is.null(tro_lev)) warning("Trophic levels cannot be calcualted after 100 iterations.")
   # TO DO connected component without igraph?
   # Maybe omit here and clarify in the vignette.
   if ("igraph" %in% utils::installed.packages()) {
@@ -118,11 +123,14 @@ create_Lmatrix <- function(
   isolated <- ifelse(any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
   # check for isolated consumers
   cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
+  # check if trophic levels can be calculated
+  tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
   i <- 0
-  while((isolated | cons_no_prey) & i < 100) {
+  while((isolated | cons_no_prey | is.null(tro_lev)) & i < 100) {
     L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
     isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
     cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
+    tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
     i <- i + 1
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
