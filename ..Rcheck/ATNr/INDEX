@@ -1,0 +1,46 @@
+Joacobian               Estimate the Jacobian matrix of a ODE system
+Scaled                  Store parameters and functions associated to
+                        the scaled version of ATN
+Scaled_loops            Store parameters and functions associated to
+                        the scaled version of ATN
+TroLev                  Calculate trophic level of species
+Unscaled                Store parameters and functions associated to
+                        the unscaled version of ATN
+Unscaled_loops          Store parameters and functions associated to
+                        the unscaled version of ATN
+Unscaled_nuts           Store parameters and functions associated to
+                        the unscaled version of ATN including nutrient
+                        dynamics
+Unscaled_nuts_loops     Store parameters and functions associated to
+                        the unscaled version of ATN
+Unscaled_nuts_prefs     Store parameters and functions associated to
+                        the unscaled version of ATN including nutrient
+                        dynamics
+create_Lmatrix          Make L matrix
+create_matrix_parameter
+                        Make parameter matrix
+create_model_Scaled     Initialize an ATN model, following Delmas et
+                        al. 2017, Methods in Ecology and Evolution
+create_model_Unscaled   Initialize an ATN model, following Binzer et
+                        al. 201, Global Change Biology
+create_model_Unscaled_nuts
+                        Initialize an ATN model, following Schneider et
+                        al. 2016, Nature Communication
+create_niche_model      Create a food web based on the niche model
+initialise_default_Scaled
+                        Default parameters for the scaled version of
+                        ATN as in Delmas et al. 2016
+initialise_default_Unscaled
+                        Default parameters for the scaled version of
+                        ATN as in Binzer et al. 2016, with updates from
+                        Gauzens et al. 2020
+initialise_default_Unscaled_nuts
+                        Default model parameters as in Schneider et al.
+                        2016
+lsoda_wrapper           Wrapper for lsoda
+plot_odeweb             Plot food web dynamics
+remove_species          Function to remove species from a model class
+run_checks              Run checks on model parameters
+schneider               Default parameters as in Schneider et al.
+                        (2016)
+sort_input              Sort custom input
