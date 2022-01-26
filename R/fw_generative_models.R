@@ -39,7 +39,7 @@ create_niche_model <- function(S, C) {
                        )
                      })
     species <- seq_len(S)
-    # crate food web adjacency matrix
+    # create food web adjacency matrix
     fw <- matrix(rep(0, S ^ 2), S, S)
     for (sp in species) {
       preys <- (center[sp] - diet[sp] / 2 <= niche) &

@@ -25,7 +25,7 @@ Initialize an ATN model, following Binzer et al. 201, Global Change Biology
 A model is defined by the total number of species
 (\emph{nb_s}), the number of basal species (\emph{nb_b}),
 the number of nutrients (\emph{nb_n}), the body masses
- (\emph{BM}) of species, and the adjaceny matrix (\emph{fw})
+ (\emph{BM}) of species, and the adjacency matrix (\emph{fw})
  representing species interactions.
 }
 \examples{

@@ -25,8 +25,8 @@ A list with the default parameters:
 \item{bprey}{exponent associated to prey body mass for the allometric scaling of capture coefficient}
 \item{bpred}{exponent associated to predator body mass for the allometric scaling of capture coefficient}
 \item{E.b}{Activation energy for capture coefficient}
-\item{e_P}{Assimilation effiiency associated to the consumption of a plant species}
-\item{e_A}{Assimilation effiiency associated to the consumption of an animal species}
+\item{e_P}{Assimilation efficiency associated to the consumption of a plant species}
+\item{e_A}{Assimilation efficiency associated to the consumption of an animal species}
 \item{x_P}{scaling constant of the power-law of metabolic demand per unit of plant biomass}
 \item{x_A}{scaling constant of the power-law of metabolic demand per unit of animal biomass}
 \item{E.x}{Activation energy for metabolic rates}

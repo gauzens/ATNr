@@ -65,7 +65,7 @@ create_model_Unscaled_nuts <- function(
 #' @details A model is defined by the total number of species
 #' (\emph{nb_s}), the number of basal species (\emph{nb_b}),
 #' the number of nutrients (\emph{nb_n}), the body masses
-#' (\emph{BM}) of species, and the adjaceny matrix (\emph{fw})
+#' (\emph{BM}) of species, and the adjacency matrix (\emph{fw})
 #' representing species interactions.
 #'
 #' @return An object of class \emph{ATN (Rcpp_parameters_prefs)}.
@@ -124,7 +124,7 @@ create_model_Scaled <- function(
 #' @details A model is defined by the total number of species
 #' (\emph{nb_s}), the number of basal species (\emph{nb_b}),
 #' the number of nutrients (\emph{nb_n}), the body masses
-#'  (\emph{BM}) of species, and the adjaceny matrix (\emph{fw})
+#'  (\emph{BM}) of species, and the adjacency matrix (\emph{fw})
 #'  representing species interactions.
 #'
 #' @return An object of class \emph{ATN (Rcpp_parameters_prefs)}.
