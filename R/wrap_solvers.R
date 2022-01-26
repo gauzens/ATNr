@@ -64,8 +64,8 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
 # #' masses <- runif(50, 10, 100) #body mass of species
 # #' L <- create_Lmatrix(masses, 10, Ropt = 50)
 # #' L[L > 0] <- 1
-# #' mod <- create_model_schneider(50, 10, 3, masses, L)
-# #' mod <- initialise_default_Schneider_2016(mod, L)
+# #' mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+# #' mod <- initialise_default_Unscaled_nuts(mod, L)
 # #' biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
 # #' biomasses <- append(runif(3, 20, 30), biomasses)
 # #' times <- seq(0, 100, 1)

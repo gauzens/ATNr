@@ -3,6 +3,15 @@
 
 using namespace Rcpp;
 
+// generate documentation with:
+// Rcpp::compileAttributes()           # this updates the Rcpp layer from C++ to R
+// roxygen2::roxygenize(roclets="rd")  # this updates the documentation based on roxygen comments
+
+//' @name Unscaled_nuts_loops
+//' @title Store parameters and functions associated to the unscaled version of ATN
+//' @description To not use. For testing purpose only. please use Rcpp_Unscaled_nuts instead. 
+//' }
+
 
 class Unscaled_nuts_loops{
 public:
