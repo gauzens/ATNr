@@ -4,5 +4,5 @@
 \alias{Scaled_loops}
 \title{Store parameters and functions associated to the scaled version of ATN}
 \description{
-
+To not use. For testing purpose only. please use Rcpp_Scaled instead.
 }

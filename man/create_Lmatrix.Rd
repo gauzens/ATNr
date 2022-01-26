@@ -31,3 +31,9 @@ The L matrix contains the probability for an attack event to be
   consumer (i.e. it is an isolated species), another food web is generated,
   until a maximum of 100 iterations.
 }
+\examples{
+set.seed(123)
+mass <- sort(10 ^ rnorm(50, 1, 2))
+L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
+image(L)
+}
