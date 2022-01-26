@@ -16,7 +16,6 @@
 #' @return An object of class \emph{ATN (Rcpp_parameters_prefs)}.
 #'
 #' @examples
-#' @examples
 #' library(ATNr)
 #' n_species <- 50
 #' n_basal <- 10
