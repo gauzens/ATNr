@@ -67,6 +67,10 @@ create_niche_model <- function(S, C) {
   } else {
     warning("igraph not installed - install it to check for disconnected components")
   }
+  # reorder matrix to put basal species first
+  basals <- which(colSums(fw) == 0)
+  consumers <- which(colSums(fw) > 0)
+  fw <- fw[c(basals, consumers), c(basals, consumers)]
   return(fw)
 }
 
