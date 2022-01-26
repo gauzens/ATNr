@@ -97,10 +97,10 @@ create_niche_model <- function(S, C) {
 #'   species to be successful.
 #'
 #' @examples
-# set.seed(123)
-# mass <- sort(10 ^ rnorm(50, 1, 2))
-# L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
-# image(L)
+#' set.seed(123)
+#' mass <- sort(10 ^ rnorm(50, 1, 2))
+#' L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
+#' image(L)
 create_Lmatrix <- function(
   BM,
   nb_b,
