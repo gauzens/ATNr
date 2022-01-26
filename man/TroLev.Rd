@@ -2,7 +2,7 @@
 % Please edit documentation in R/trophic_level.R
 \name{TroLev}
 \alias{TroLev}
-\title{Calculate trophic level of specie}
+\title{Calculate trophic level of species}
 \usage{
 TroLev(fw)
 }
@@ -13,5 +13,13 @@ TroLev(fw)
 A numeric vector of species' trophic level.
 }
 \description{
-Calculate trophic level of specie
+Calculate trophic level of species
+}
+\examples{
+library(ATNr)
+# create a food web from the niche model with 35 species and connectance of 0.1
+fw <- create_niche_model(35, 0.1)
+TL = TroLev(fw)
+ 
+
 }

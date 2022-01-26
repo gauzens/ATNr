@@ -5,8 +5,6 @@
 \title{Store parameters and functions associated to the scaled version of ATN}
 \description{
 Type the name of the class to see its methods
-
-Type the name of the class to see its methods
 }
 \section{Fields}{
 
@@ -44,46 +42,6 @@ Type the name of the class to see its methods
 \item{\code{ext}}{Extinction threshold for species}
 
 \item{\code{alpha}}{Plant resource competition}
-
-\item{\code{ODE}}{Calculate the derivatives for the scaled version of the ATN model \itemize{
-\item Parameter: bioms -  Local species biomasses
-\item Parameter: t - Integration time point
-\item Returns a vector of growth rate for each species at time t
-}}
-
-\item{\code{nb_s}}{Total number of species}
-
-\item{\code{nb_b}}{Number of basal species}
-
-\item{\code{c}}{double: inteference competition}
-
-\item{\code{X}}{Vector of metabolic rates (length = number of species)}
-
-\item{\code{max_feed}}{Vector of maximum feeding rates (length = number of consumers)}
-
-\item{\code{e}}{Vector of assimilation efficiencies (length = number of species)}
-
-\item{\code{r}}{Vector of producers maximum growth rates (length = number of basal species)}
-
-\item{\code{BM}}{Vector of body masses (length = number of species)}
-
-\item{\code{dB}}{Vector of local derivatives (length = number of species)}
-
-\item{\code{B0}}{Vector of half saturation densities (length = number of consumers)}
-
-\item{\code{fw}}{Adjacency matrix of the food-web (dim = number of species * number of species)}
-
-\item{\code{w}}{Matrix of relative consumption rates (dim = number of species * number of consumers)}
-
-\item{\code{F}}{Matrix of per-capita feeding rates (dim = number of species * number of consumers)}
-
-\item{\code{q}}{hill exponent for the type of functional response}
-
-\item{\code{K}}{Carrying capacity of basal species}
-
-\item{\code{alpha}}{Plant resource competition}
-
-\item{\code{ext}}{Extinction threshold for species}
 
 \item{\code{ODE}}{Calculate the derivatives for the scaled version of the ATN model \itemize{
 \item Parameter: bioms -  Local species biomasses
