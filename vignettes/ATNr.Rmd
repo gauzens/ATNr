@@ -160,8 +160,6 @@ plot_odeweb(sol, model_unscaled_nuts$nb_s)
 
 # The food web generative functions
 
-**Note: in all the different example scripts, generating the food webs is what is the most complicated. We could maybe simplify everything by adding all the checks directly in the generative function. I mean, it seems rather OK to not return a food web with disconnected components, no?**
-
 It is possible to create a model object using empirical food webs, however synthetic ones can be valuable tools to explore different theoretical questions. To allow this possibility, two different models are available in the package: the niche model (@williams2000simple) or the allometric scaling model (@schneider2016animal). Thereafter, we use the following function to visualise the adjacency matrices (where rows correspond to resources and columns to consumers) of the food webs:
 
 ```{r}
@@ -188,18 +186,7 @@ C <- 0.2 # connectance
 fw <- create_niche_model(S, C)
 ```
 
-The function checks for the presence of several connected components (i.e. if the food web is composed of disconnected sub networks). If that happens, the food web still returned, but a warning is raised. To handle this warning in order to obtain a food web that has not disconnected components, a `tryCatch` can be implemented:
-
-```{r, fig.width=4, fig.height=4, fig.align='center'}
-fw <- NULL
-while (is.null(fw)) { #keep creating a food web until there is no warning
-  fw <- tryCatch(
-    create_niche_model(S, C),
-    warning = function(w) NULL
-  )
-}
-show_fw(fw, title = "Niche model food web")
-```
+The function ensure that the food web returned are not composed of disconnected sub networks (i.i several connected components).
 
 
 The allometric scaling model assumes an optimal consumer/resource body mass ratio (_Ropt_, default = 100) for attack rates, i.e. the probability that when a consumer encounter a species it will predate on it. In particular, each attack rate is calculated using a Ricker function:
@@ -230,21 +217,6 @@ fw <- L > 0
 fw <- L
 fw[fw > 0] <- 1
 show_fw(fw, title = "L-matrix model food web")
-```
-
-It can happen that some body mass structures lead to food webs with disconnected species (consumers without preys, or isolated basal resources). The absence of such species can be guaranteed using a `tryCatch`:
-
-```{r}
-L <- NULL
-i <- 0 #counter to exit loop after 100 iterations
-while(is.null(L)) {
-  if (i >= 100) break #this exits the loop
-  L <- tryCatch(
-    create_Lmatrix(masses, n_basal, Ropt = 100, gamma = 2, th = 0.01),
-    warning = function(w) NULL
-  )
-  i <- i + 1
-}
 ```
 
 # Examples 
@@ -309,45 +281,20 @@ lines(temperatures, extinctions, col = 'blue')
 ## Effect of species richness on extinction probabilities
 
 ```{r}
+set.seed(12)
 # defines initial parameters
-C = 0.25 # connectance
-richness <-  seq(20, 60, by = 5)
+C = 0.1 # connectance
+richness <-  seq(30, 60, by = 5)
 times <- seq(0, 15000, 150)
 persistence <- rep(NA, length(richness))
 # run a loop over connectance values
 i <- 0
 for (S in richness){
   i <- i + 1
-  # 2) create the food web using the niche model
-  b <- TRUE
-  while(b){
-    # here we want to make sure that the niche model function returns a valid
-    # food web for instance, it is possible to obtain a food web that is
-    # composed of disconnected subparts in that case the create_niche_model
-    # function raise a warning here we want to make sure to not have this case.
-    # If it happens, we affect NA to fw and at the end of the while loop check
-    # if fw is equal to NA. If yes, we restart the process
-    fw <- tryCatch({
-      a.fw <- create_niche_model(S, C)
-      basals <- which(colSums(a.fw) == 0)
-      non.basals <- which(colSums(a.fw) != 0)
-      # order the food web to have basal species first
-      a.fw <- a.fw[c(basals, non.basals), c(basals, non.basals)]
-    },
-    error = function(e) NULL,
-    warning = function(w) NULL
-    )
-    # at that point, fw is either NULL or a valid food web
-    
-    # set body masses as a function of trophic level
-    TL <- tryCatch(
-      TroLev(fw),
-      error = function(e) return(NULL)
-    )
-    # here TL is either a vector of trophic levels ofr NULL
-    # if fw or TL were not correctly calculated, restart the food web generation
-    b <- is.null(fw) || is.null(TL)
-  }
+  
+  # create the food web using the niche model
+  fw <- create_niche_model(S, C)
+  TL <- TroLev(fw)
   # define body masses based on trophic levels
   masses <- 0.001 * 100 ^ (TL - 1 + rnorm(length(TL), 0, 0.01))
   
@@ -356,9 +303,11 @@ for (S in richness){
   model <- create_model_Scaled(S, n_basal, masses, fw)
   model <- initialise_default_Scaled(model)
   model$ext <- 1e-4 #NOTE: changed this to get some extinctions
-  # model$c = 0.1
+  
+  # update some parameters, why not. 
   model$K <- 10
   model$q <- 1.2
+  
   # define the initial conditions
   biomasses <- runif(S, 2,3)
   
@@ -383,31 +332,30 @@ Predator-prey body mass ratio and environment temperature have been shown to aff
 First, we create a food web with 30 species and initialize within a for loop the model with a given value of body mass ratio and temperature. Species persistence is calculate as the fraction of species that are not extinct at the end of the simulations.
 
 ```{r binzer example}
-set.seed(1142)
+# set.seed(142)
 
-S <- 30
+# number of species
+S <- 30 
+
+# vector containing the predator prey body mass ratios to test
 scaling <- 10 ^ seq(-1, 4, by = .5)
+
+# vectors to store the results
 persistence0 <- c()
 persistence40 <- c()
-fw <- NULL
-while (is.null(fw)) { #keep creating a food web until there is no warning
-  fw <- tryCatch(
-    create_niche_model(S = S, C = 0.1),
-    warning = function(w) NULL
-  )
-  TL <- tryCatch(
-    TroLev(fw),
-    error = function(e) NULL
-  )
-  if (is.null(TL)) fw <- NULL
-}
+
+# create the studied food web
+fw <- create_niche_model(S = S, C = 0.1)
+# calculating trophic levels
+TL = TroLev(fw)
 biomasses <- runif(S, 2, 3)
+
+# run a loop over the different pred-prey body mass ratios
 for (scal in scaling) {
+  # update species body masses following the specific body mass ratio
   masses <- 0.01 * scal ^ (TL - 1)
-  range(masses)
-  sorted <- sort_input(masses, fw)
-  masses <- sorted$body.mass
-  fw <- sorted$food.web
+  
+  # create the models with parameters corresponding to 0 and 40 degrees Celcius
   mod0 <- create_model_Unscaled(nb_s = S,
                               nb_b = sum(colSums(fw) == 0),
                               BM = masses,
@@ -416,6 +364,7 @@ for (scal in scaling) {
   mod0$c <- rep(0, mod0$nb_s - mod0$nb_b)
   mod0$alpha <- diag(mod0$nb_b)
   mod0$initialisations()
+  
   mod40 <- create_model_Unscaled(nb_s = S,
                                nb_b = sum(colSums(fw) == 0),
                                BM = masses,
@@ -427,14 +376,16 @@ for (scal in scaling) {
   
   times <- seq(1, 1e9, by = 1e7)
   
+  # run the model corresponding to the 0 degree conditions
   sol <- lsoda_wrapper(times, biomasses, mod0, verbose = FALSE)
   persistence0 <- append(persistence0, sum(sol[nrow(sol), -1] > mod0$ext) / S)
+  # run the model corresponding to the 40 degrees conditions
   sol <- lsoda_wrapper(times, biomasses, mod40, verbose = FALSE)
   persistence40 <- append(persistence40, sum(sol[nrow(sol), -1] > mod40$ext) / S)
 }
 ```
 
-Similarly to @binzer2016interactive, species persistence increases with increasing values of predator-prey body mass ratios and increasing temperature
+Similarly to @binzer2016interactive, species persistence increases with increasing values of predator-prey body mass ratios, but temperature effect differs depending n this ratio: when predator prey body mass ratio is low, high temperature lead to more persistence while increasing predator prey body mass ratio tend to reduce the effects of temperature.  
 
 ```{r binzer example plot, fig.width=6, fig.height=4, fig.align='center'}
 plot(log10(scaling), persistence40,
@@ -459,20 +410,11 @@ set.seed(1234)
 S <- 10
 fw <- NULL
 TL <- NULL
-while (is.null(fw) | is.null(TL)) {
-  fw <- tryCatch(
-    create_niche_model(S, C = .15),
-    warning = function(w) NULL
-  )
-  TL <- tryCatch(
-    TroLev(fw),
-    error = function(r) NULL
-  )
-}
+fw <- create_niche_model(S, C = .15)
+TL <- TroLev(fw)
+
 masses <- 0.01 * 100 ^ (TL - 1) #body mass of species
-sorted <- sort_input(masses, fw)
-masses <- sorted[["body.mass"]]
-fw <- sorted[["food.web"]]
+
 mod <- create_model_Scaled(nb_s = S, 
                            nb_b = sum(colSums(fw) == 0),
                            BM = masses,
@@ -523,8 +465,6 @@ model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 nb_s <- 30 #this does not change the model parameter
 model_unscaled_nuts$nb_s #this is the model parameter
 ```
-**I'm wondering whether that one is not too trivial?**
-
 
 ## Updating key parameters without creating a new model object
 
