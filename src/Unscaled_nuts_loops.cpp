@@ -10,7 +10,6 @@ using namespace Rcpp;
 //' @name Unscaled_nuts_loops
 //' @title Store parameters and functions associated to the unscaled version of ATN
 //' @description To not use. For testing purpose only. please use Rcpp_Unscaled_nuts instead. 
-//' }
 
 
 class Unscaled_nuts_loops{
