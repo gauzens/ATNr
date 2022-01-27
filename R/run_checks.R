@@ -5,6 +5,8 @@
 #'
 #' @param model a model object.
 #' @param verbose Boolean, whether a message should be printed when all checks were successful
+#' 
+#' @export
 run_checks <- function(model, verbose = TRUE) {
   if (class(model)[1] == "Rcpp_Scaled") {
     with(model, {

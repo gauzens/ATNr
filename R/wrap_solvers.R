@@ -9,6 +9,8 @@
 #' @param y vector of biomasses.
 #' @param model object of class \emph{ATN (Rcpp_parameters_prefs)}.
 #' @param verbose Boolean, whether a message should be printed when all checks were successful 
+#' 
+#' @export
 #'
 #' @return A matrix for the ODE solution with species as columns and
 #' times as rows.

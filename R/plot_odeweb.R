@@ -7,6 +7,8 @@
 #' @param nb_s numeric, number of species as in the model (e.g.,
 #'   \code{create_model_Unscaled_nuts}).
 #'
+#' @export
+#'
 #' @examples
 #' library(ATNr)
 #' library(deSolve)

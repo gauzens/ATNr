@@ -8,6 +8,8 @@
 #' @param T.K, Celsius to Kelvin conversion
 #' @param T0, Default temperature in Kelvin
 #' @param k, Boltzmann constant
+#' 
+#' @export
 #'
 #' @details Make a parameter matrix that depends on both predators
 #' and prey and that is used to define attack rates and handling
@@ -40,6 +42,8 @@ create_matrix_parameter <- function(
 #' @param L.mat numeric matrix, probability of a consumer to attack and capture an encountered resource. See \code{\link{create_Lmatrix}}.
 #' @param temperature numeric, ambient temperature of the ecosystem in Celsius.
 #'
+#' @export
+#' 
 #' @references Schneider, F. D., Brose, U., Rall, B. C., & Guill, C. (2016).
 #'   Animal diversity and ecosystem functioning in dynamic food webs. Nature
 #'   Communications, 7(1), 1-8.
@@ -119,6 +123,8 @@ initialise_default_Unscaled_nuts <- function(
 #'   the ATN model as in Delmas et al. (2016).
 #'
 #' @param model an object of class \emph{Rcpp_Scaled}.
+#' 
+#' @export
 #'
 #' @references Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.
 #'   (2017), Simulations of biomass dynamics in community food webs. Methods
@@ -186,6 +192,8 @@ initialise_default_Scaled <- function(model) {
 #'
 #' @param model an object of class \emph{ATN (Rcpp_Unscaled)}.
 #' @param temperature numeric, ambient temperature of the ecosystem in Celsius.
+#' 
+#' @export
 #' 
 #' @references Binzer, A., Guill, C., Rall, B. C. & Brose, U.
 #' Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.

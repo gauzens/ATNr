@@ -3,6 +3,7 @@
 #' @param bioms float vector, biomass of species.
 #' @param ODE function that computes the ODEs from one of the model available
 #' @param eps float, scale precision of the numerical approximation.
+#' @export
 #' @details The function provides a numerical estimation of the Jacobian matrix
 #' based on the 5 points stencil method. The precision of the method is in  \deqn{O(h^5)},
 #' where \deqn{h = eps*bioms}. The choice of eps should ensure that \deqn{h^5}

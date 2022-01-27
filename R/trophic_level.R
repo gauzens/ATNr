@@ -2,6 +2,8 @@
 #'
 #' @param fw numeric matrix, the matrix of the food web.
 #'
+#' @export
+#'
 #' @return A numeric vector of species' trophic level.
 #' @examples
 #' library(ATNr)

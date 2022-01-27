@@ -9,6 +9,7 @@
 #' @param S integer, number of species.
 #' @param C numeric, connectance i.e. the number of realized links over the all
 #'   possible links.
+#' @export
 #' @return A (square) matrix with zeros (no interaction) and ones (species j
 #'   consume species i).
 #' @references Williams, R. J., & Martinez, N. D. (2000). Simple rules yield
@@ -86,7 +87,7 @@ create_niche_model <- function(S, C) {
 #' @param Ropt numeric, consumer/resource optimal body mass ratio.
 #' @param gamma numeric, the ... of the Ricker function.
 #' @param th float, the threshold below which attack rates are considered = 0.
-#'
+#' @export
 #' @details The L matrix contains the probability for an attack event to be
 #'   successful based on allometric rules and a Ricker function defined by
 #'   \emph{Ropt} and \emph{gamma}. If at least one species has not resource or

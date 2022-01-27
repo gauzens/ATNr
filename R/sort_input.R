@@ -2,6 +2,8 @@
 #'
 #' @param BM numeric vector, body mass of species.
 #' @param fw adjacency matrix of the food web.
+#' 
+#' @export
 #'
 #' @details Body masses and food web matrix should be arranged with the first
 #'   elements/columns being for basal species. This is a requirement for the Cpp

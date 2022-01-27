@@ -5,6 +5,8 @@
 #' @param nb_n integer, number of nutrients.
 #' @param BM float vector, body mass of species.
 #' @param fw binary adjacency matrix of the food web.
+#' 
+#' @export
 #'
 #' @details A model is defined by the total number of species
 #' (\emph{nb_s}), the number of basal species (\emph{nb_b}),
@@ -61,6 +63,8 @@ create_model_Unscaled_nuts <- function(
 #' @param nb_b integer, number of basal species.
 #' @param BM float vector, body mass of species.
 #' @param fw binary adjacency matrix of the food web.
+#' 
+#' @export
 #'
 #' @details A model is defined by the total number of species
 #' (\emph{nb_s}), the number of basal species (\emph{nb_b}),
@@ -120,6 +124,8 @@ create_model_Scaled <- function(
 #' @param nb_b integer, number of basal species.
 #' @param BM float vector, body mass of species.
 #' @param fw binary adjacency matrix of the food web.
+#' 
+#' @export
 #'
 #' @details A model is defined by the total number of species
 #' (\emph{nb_s}), the number of basal species (\emph{nb_b}),

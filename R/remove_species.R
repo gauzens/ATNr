@@ -4,6 +4,7 @@
 #' @param model model object
 #' @param nuts integer vector, the indices of nutrients to remove. Parameter
 #'   specific to the Unscaled_nuts model.
+#' @export
 #' @return A model object where the data structure has bee updated to remove the
 #'   species in parameters.
 remove_species = function(species, model, nuts = NULL){
