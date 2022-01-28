@@ -59,7 +59,9 @@ create_niche_model <- function(S, C) {
   while((isolated | is.null(tro_lev)) & i < 100) {
     fw <- niche_model(S, C)
     isolated <- ifelse (any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
-    tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+    if (!isolated) {
+      tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+    }
     i <- i + 1
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
@@ -132,7 +134,9 @@ create_Lmatrix <- function(
     L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
     isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
     cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
-    tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+    if (!isolated) {
+      tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+    }
     i <- i + 1
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
