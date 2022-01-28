@@ -26,6 +26,7 @@ Package \code{deSolve} needs to be installed to run
 this wrapper.
 }
 \examples{
+\dontrun{
 library(ATNr)
 library(deSolve)
 set.seed(123)
@@ -38,4 +39,5 @@ biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
 biomasses <- append(runif(3, 20, 30), biomasses)
 times <- seq(0, 100, 1)
 sol <- lsoda_wrapper(times, biomasses, mod)
+}
 }

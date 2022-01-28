@@ -17,6 +17,7 @@ Plot solution of the ODE for the food web. Currently only
   species and not nutrients are plotted.
 }
 \examples{
+\dontrun{
 library(ATNr)
 library(deSolve)
 set.seed(123)
@@ -45,4 +46,5 @@ times <- seq(0, 500, 5)
 biomasses <- runif(n_species + n_nutrients, 2, 3)
 sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
 plot_odeweb(sol, model$nb_s)
+}
 }

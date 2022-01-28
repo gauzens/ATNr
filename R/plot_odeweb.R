@@ -10,6 +10,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(ATNr)
 #' library(deSolve)
 #' set.seed(123)
@@ -38,6 +39,7 @@
 #' biomasses <- runif(n_species + n_nutrients, 2, 3)
 #' sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
 #' plot_odeweb(sol, model$nb_s)
+#' }
 plot_odeweb <- function(x, nb_s) {
   pal <- grDevices::colorRampPalette(c("blue", "red"))(nb_s)
   pal <- grDevices::adjustcolor(pal, alpha.f = .5)

@@ -28,7 +28,9 @@ If at least one species has not resource or consumer (i.e. it is an
 }
 \examples{
 \dontrun{
-# set.seed(123)
+set.seed(123)
+web_niche <- create_niche_model(30, .1)
+image(t(web_niche))
 }
 }
 \references{

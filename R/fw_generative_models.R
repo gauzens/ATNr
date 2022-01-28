@@ -19,9 +19,9 @@
 #'   web structure. science, 320(5876), 658-661.
 #' @examples
 #' \dontrun{
-#' # set.seed(123)
-# web_niche <- create_niche_model(30, .001)
-# image(t(web_niche))
+#' set.seed(123)
+#' web_niche <- create_niche_model(30, .1)
+#' image(t(web_niche))
 #' }
 
 create_niche_model <- function(S, C) {

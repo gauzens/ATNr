@@ -16,6 +16,7 @@
 #' times as rows.
 #'
 #' @examples
+#' \dontrun{
 #' library(ATNr)
 #' library(deSolve)
 #' set.seed(123)
@@ -28,6 +29,7 @@
 #' biomasses <- append(runif(3, 20, 30), biomasses)
 #' times <- seq(0, 100, 1)
 #' sol <- lsoda_wrapper(times, biomasses, mod)
+#' }
 lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
   deSolve_installed <- ifelse(
     "deSolve" %in% rownames(utils::installed.packages()),
