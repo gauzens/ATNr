@@ -100,7 +100,7 @@ create_niche_model <- function(S, C) {
 #'
 #' @examples
 #' set.seed(123)
-#' mass <- sort(10 ^ rnorm(30, 1, 2))
+#' mass <- sort(10 ^ runif(30, 2, 6))
 #' L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
 #' image(L)
 create_Lmatrix <- function(

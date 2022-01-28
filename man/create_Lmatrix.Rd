@@ -33,7 +33,7 @@ The L matrix contains the probability for an attack event to be
 }
 \examples{
 set.seed(123)
-mass <- sort(10 ^ rnorm(50, 1, 2))
+mass <- sort(10 ^ runif(30, 2, 6))
 L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
 image(L)
 }

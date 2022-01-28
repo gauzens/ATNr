@@ -27,7 +27,8 @@ If at least one species has not resource or consumer (i.e. it is an
   iterations.
 }
 \examples{
-web_niche <- create_niche_model(50, .4)
+set.seed(123)
+web_niche <- create_niche_model(30, .1)
 image(web_niche)
 }
 \references{

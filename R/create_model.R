@@ -19,10 +19,11 @@
 #'
 #' @examples
 #' library(ATNr)
+#' set.seed(123)
 #' n_species <- 50
-#' n_basal <- 10
+#' n_basal <- 20
 #' n_nutrients <- 2
-#' masses <- runif(n_species, 10, 100) #body mass of species
+#' masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
 #' L <- create_Lmatrix(masses, n_basal)
 #' fw <- L
 #' fw[fw > 0] <- 1
@@ -81,9 +82,10 @@ create_model_Unscaled_nuts <- function(
 #'
 #' @examples
 #' library(ATNr)
+#' set.seed(123)
 #' n_species <- 50
-#' n_basal <- 10
-#' masses <- runif(n_species, 10, 100) #body mass of species
+#' n_basal <- 20
+#' masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
 #' L <- create_Lmatrix(masses, n_basal)
 #' fw <- L
 #' fw[fw > 0] <- 1
@@ -145,9 +147,10 @@ create_model_Scaled <- function(
 #'
 #' @examples
 #' library(ATNr)
+#' set.seed(123)
 #' n_species <- 50
-#' n_basal <- 10
-#' masses <- runif(n_species, 10, 100) #body mass of species
+#' n_basal <- 20
+#' masses <- sort(10^runif(n_species, 1, 6)) #body mass of species
 #' L <- create_Lmatrix(masses, n_basal)
 #' fw <- L
 #' fw[fw > 0] <- 1
