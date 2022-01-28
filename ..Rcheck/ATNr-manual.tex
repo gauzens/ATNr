@@ -1,0 +1,1011 @@
+\nonstopmode{}
+\documentclass[letterpaper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8,latin1]{inputenc}
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `ATNr'}}
+\par\bigskip{\large \today}
+\end{center}
+\ifthenelse{\boolean{Rd@use@hyper}}{\hypersetup{pdftitle = {ATNr: Allometric Trophic Networks in R}}}{}\begin{description}
+\raggedright{}
+\item[Type]\AsIs{Package}
+\item[Title]\AsIs{Allometric Trophic Networks in R}
+\item[Version]\AsIs{1.0}
+\item[Date]\AsIs{2022-01-25}
+\item[Author]\AsIs{Benoit Gauzens, Emilio Berti}
+\item[Maintainer]\AsIs{Benoit Gauzens }\email{benoit.gauzens@idiv.de}\AsIs{}
+\item[Description]\AsIs{The ATNr package implements different version of Allometric Trophic Models to estimate populations dynamics in food webs.}
+\item[License]\AsIs{GPL (>= 2)}
+\item[Imports]\AsIs{Rcpp (>= 1.0.7), methods, stats, utils}
+\item[LinkingTo]\AsIs{Rcpp, RcppArmadillo}
+\item[RoxygenNote]\AsIs{7.1.2}
+\item[LazyData]\AsIs{true}
+\item[Depends]\AsIs{R (>= 2.10)}
+\item[Suggests]\AsIs{rmarkdown, knitr, deSolve, testthat, igraph, R.rsp}
+\item[VignetteBuilder]\AsIs{knitr, R.rsp}
+\item[Config/testthat/edition]\AsIs{3}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{create\_Lmatrix}{Make L matrix}{create.Rul.Lmatrix}
+%
+\begin{Description}\relax
+Make L matrix
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_Lmatrix(BM, nb_b, Ropt = 100, gamma = 2, th = 0.01)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{BM}] float vector, body mass of species.
+
+\item[\code{nb\_b}] integer, number of basal species.
+
+\item[\code{Ropt}] numeric, consumer/resource optimal body mass ratio.
+
+\item[\code{gamma}] numeric, the ... of the Ricker function.
+
+\item[\code{th}] float, the threshold below which attack rates are considered = 0.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+The L matrix contains the probability for an attack event to be
+successful based on allometric rules and a Ricker function defined by
+\emph{Ropt} and \emph{gamma}. If at least one species has not resource or
+consumer (i.e. it is an isolated species), another food web is generated,
+until a maximum of 100 iterations.
+\end{Details}
+%
+\begin{Value}
+A numeric matrix with the probability for an attack event between two
+species to be successful.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+set.seed(123)
+mass <- sort(10 ^ runif(30, 2, 6))
+L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
+image(L)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{create\_matrix\_parameter}{Make parameter matrix}{create.Rul.matrix.Rul.parameter}
+%
+\begin{Description}\relax
+Make parameter matrix
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_matrix_parameter(BM, b0, bprey, bpred, E, T.K, T0, k)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{BM}] float vector, body mass of species.
+
+\item[\code{b0}] const
+
+\item[\code{bprey}] const
+
+\item[\code{bpred}] const
+
+\item[\code{E}] const
+
+\item[\code{T.K, }] Celsius to Kelvin conversion
+
+\item[\code{T0, }] Default temperature in Kelvin
+
+\item[\code{k, }] Boltzmann constant
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+Make a parameter matrix that depends on both predators
+and prey and that is used to define attack rates and handling
+times based on the general allometric equation:
+\deqn{p_{i,j} = b_0 * BM_i^{bprey} * BM_j^{bpred} * exp(-E * (T0-T.K) / (k * T.K * T0))}{}
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{create\_model\_Scaled}{Initialize an ATN model, following Delmas et al. 2017, Methods in Ecology and Evolution}{create.Rul.model.Rul.Scaled}
+%
+\begin{Description}\relax
+Initialize an ATN model, following Delmas et al. 2017, Methods in Ecology and Evolution
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_model_Scaled(nb_s, nb_b, BM, fw)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{nb\_s}] integer, number of total species.
+
+\item[\code{nb\_b}] integer, number of basal species.
+
+\item[\code{BM}] float vector, body mass of species.
+
+\item[\code{fw}] binary adjacency matrix of the food web.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+A model is defined by the total number of species
+(\emph{nb\_s}), the number of basal species (\emph{nb\_b}),
+the number of nutrients (\emph{nb\_n}), the body masses
+(\emph{BM}) of species, and the adjacency matrix (\emph{fw})
+representing species interactions.
+\end{Details}
+%
+\begin{Value}
+An object of class \emph{ATN (Rcpp\_parameters\_prefs)}.
+\end{Value}
+%
+\begin{References}\relax
+
+
+Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.
+(2017), Simulations of biomass dynamics in community food webs. Methods
+Ecol Evol, 8: 881-886. https://doi.org/10.1111/2041-210X.12713
+\end{References}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+set.seed(123)
+n_species <- 50
+n_basal <- 20
+masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+L <- create_Lmatrix(masses, n_basal)
+fw <- L
+fw[fw > 0] <- 1
+mod <- create_model_Scaled(n_species, n_basal, masses, fw)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{create\_model\_Unscaled}{Initialize an ATN model, following Binzer et al. 201, Global Change Biology}{create.Rul.model.Rul.Unscaled}
+%
+\begin{Description}\relax
+Initialize an ATN model, following Binzer et al. 201, Global Change Biology
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_model_Unscaled(nb_s, nb_b, BM, fw)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{nb\_s}] integer, number of total species.
+
+\item[\code{nb\_b}] integer, number of basal species.
+
+\item[\code{BM}] float vector, body mass of species.
+
+\item[\code{fw}] binary adjacency matrix of the food web.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+A model is defined by the total number of species
+(\emph{nb\_s}), the number of basal species (\emph{nb\_b}),
+the number of nutrients (\emph{nb\_n}), the body masses
+(\emph{BM}) of species, and the adjacency matrix (\emph{fw})
+representing species interactions.
+\end{Details}
+%
+\begin{Value}
+An object of class \emph{ATN (Rcpp\_parameters\_prefs)}.
+\end{Value}
+%
+\begin{References}\relax
+
+
+Binzer, A., Guill, C., Rall, B.C. and Brose, U. (2016),
+Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
+Glob Change Biol, 22: 220-227. https://doi.org/10.1111/gcb.13086
+Gauzens, B., Rall, B.C., Mendonca, V. et al.
+Biodiversity of intertidal food webs in response to warming across latitudes.
+Nat. Clim. Chang. 10, 264-269 (2020). https://doi.org/10.1038/s41558-020-0698-z
+\end{References}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+set.seed(123)
+n_species <- 50
+n_basal <- 20
+masses <- sort(10^runif(n_species, 1, 6)) #body mass of species
+L <- create_Lmatrix(masses, n_basal)
+fw <- L
+fw[fw > 0] <- 1
+mod <- create_model_Unscaled(n_species, n_basal, masses, fw)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{create\_model\_Unscaled\_nuts}{Initialize an ATN model, following Schneider et al. 2016, Nature Communication}{create.Rul.model.Rul.Unscaled.Rul.nuts}
+%
+\begin{Description}\relax
+Initialize an ATN model, following Schneider et al. 2016, Nature Communication
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_model_Unscaled_nuts(nb_s, nb_b, nb_n = 2, BM, fw)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{nb\_s}] integer, number of total species.
+
+\item[\code{nb\_b}] integer, number of basal species.
+
+\item[\code{nb\_n}] integer, number of nutrients.
+
+\item[\code{BM}] float vector, body mass of species.
+
+\item[\code{fw}] binary adjacency matrix of the food web.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+A model is defined by the total number of species
+(\emph{nb\_s}), the number of basal species (\emph{nb\_b}),
+the number of nutrients (\emph{nb\_n}), the body masses
+(\emph{BM}) of species, and the adjacency matrix (\emph{fw})
+representing species interactions.
+Nutrients are not counted as species.
+\end{Details}
+%
+\begin{Value}
+An object of class \emph{ATN (Rcpp\_parameters\_prefs)}.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+set.seed(123)
+n_species <- 50
+n_basal <- 20
+n_nutrients <- 2
+masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+L <- create_Lmatrix(masses, n_basal)
+fw <- L
+fw[fw > 0] <- 1
+mod <- create_model_Unscaled_nuts(n_species, n_basal, n_nutrients, masses, fw)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{create\_niche\_model}{Create a food web based on the niche model}{create.Rul.niche.Rul.model}
+%
+\begin{Description}\relax
+Function to generate a food web based on the niche model
+(Williams and Martinez, 2000) based on the number of species and
+connectance. Corrections from Allesina et al. (2008) are used.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+create_niche_model(S, C)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{S}] integer, number of species.
+
+\item[\code{C}] numeric, connectance i.e. the number of realized links over the all
+possible links.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+If at least one species has not resource or consumer (i.e. it is an
+isolated species), another food web is generated, until a maximum of 100
+iterations.
+\end{Details}
+%
+\begin{Value}
+A (square) matrix with zeros (no interaction) and ones (species j
+consume species i).
+\end{Value}
+%
+\begin{References}\relax
+Williams, R. J., \& Martinez, N. D. (2000). Simple rules yield
+complex food webs. Nature, 404(6774), 180-183.
+
+Allesina, S., Alonso, D., \& Pascual, M. (2008). A general model for food
+web structure. science, 320(5876), 658-661.
+\end{References}
+%
+\begin{Examples}
+\begin{ExampleCode}
+set.seed(123)
+web_niche <- create_niche_model(30, .1)
+image(web_niche)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{initialise\_default\_Scaled}{Default parameters for the scaled version of ATN as in Delmas et al. 2016}{initialise.Rul.default.Rul.Scaled}
+%
+\begin{Description}\relax
+Initialise the default parametrisation for the scaled version of
+the ATN model as in Delmas et al. (2016).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+initialise_default_Scaled(model)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{model}] an object of class \emph{Rcpp\_Scaled}.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+An object of class \emph{Rcpp\_Scaled} with default
+parameters as in Delmas et al. (2017).
+\end{Value}
+%
+\begin{References}\relax
+Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.
+(2017), Simulations of biomass dynamics in community food webs. Methods
+Ecol Evol, 8: 881-886. https://doi.org/10.1111/2041-210X.12713
+\end{References}
+\inputencoding{utf8}
+\HeaderA{initialise\_default\_Unscaled}{Default parameters for the scaled version of ATN as in Binzer et al. 2016, with updates from Gauzens et al. 2020}{initialise.Rul.default.Rul.Unscaled}
+%
+\begin{Description}\relax
+Initialise the default parametrisation for the scaled version of
+the ATN model as in Binzer et al. (2016), with updates from Gauzens et al. 2020
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+initialise_default_Unscaled(model, temperature = 20)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{model}] an object of class \emph{ATN (Rcpp\_Unscaled)}.
+
+\item[\code{temperature}] numeric, ambient temperature of the ecosystem in Celsius.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+An object of class \emph{ATN (Rcpp\_Unscaled)} with default
+parameters as in Delmas et al. (2017).
+\end{Value}
+%
+\begin{References}\relax
+Binzer, A., Guill, C., Rall, B. C. \& Brose, U.
+Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
+Glob. Change Biol. 22, 220-227 (2016).
+Gauzens, B., Rall, B.C., Mendonca, V. et al.
+Biodiversity of intertidal food webs in response to warming across latitudes.
+Nat. Clim. Chang. 10, 264-269 (2020). https://doi.org/10.1038/s41558-020-0698-z
+\end{References}
+\inputencoding{utf8}
+\HeaderA{initialise\_default\_Unscaled\_nuts}{Default model parameters as in Schneider et al. 2016}{initialise.Rul.default.Rul.Unscaled.Rul.nuts}
+%
+\begin{Description}\relax
+Initialise the default parametrisation for the model for
+Schneider et al. (2016).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+initialise_default_Unscaled_nuts(model, L.mat, temperature = 20)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{model}] an object of class \emph{ATN (Rcpp\_Unscaled\_nuts}.
+
+\item[\code{L.mat}] numeric matrix, probability of a consumer to attack and capture an encountered resource. See \code{\LinkA{create\_Lmatrix}{create.Rul.Lmatrix}}.
+
+\item[\code{temperature}] numeric, ambient temperature of the ecosystem in Celsius.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+An object of class \emph{ATN (Rcpp\_Unscaled\_nuts)} with default
+parameters as in Schneider et al. (2016).
+\end{Value}
+%
+\begin{References}\relax
+Schneider, F. D., Brose, U., Rall, B. C., \& Guill, C. (2016).
+Animal diversity and ecosystem functioning in dynamic food webs. Nature
+Communications, 7(1), 1-8.
+\end{References}
+\inputencoding{utf8}
+\HeaderA{Joacobian}{Estimate the Jacobian matrix of a ODE system}{Joacobian}
+%
+\begin{Description}\relax
+Estimate the Jacobian matrix of a ODE system
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+Joacobian(bioms, ODE, eps = 1e-08)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{bioms}] float vector, biomass of species.
+
+\item[\code{ODE}] function that computes the ODEs from one of the model available
+
+\item[\code{eps}] float, scale precision of the numerical approximation.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+The function provides a numerical estimation of the Jacobian matrix
+based on the 5 points stencil method. The precision of the method is in  \deqn{O(h^5)}{},
+where \deqn{h = eps*bioms}{}. The choice of eps should ensure that \deqn{h^5}{}
+is always lower to the extinction threshold.
+
+The dimension of the Jacobian matrix are not always matching the number of species in the system.
+This is because we considered that a perturbation can not correspond to the recolonisation of an extinct species.
+Therefore, extinct species are removed from the system to calculate the Jacobian matrix.
+\end{Details}
+%
+\begin{Value}
+A matrix corresponding to the Jacobian  of the system estimated at the parameter biomasses
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{lsoda\_wrapper}{Wrapper for lsoda}{lsoda.Rul.wrapper}
+%
+\begin{Description}\relax
+This is a wrapper to call \code{lsoda} from
+\emph{deSolve} and solve the ODE.
+Package \code{deSolve} needs to be installed to run
+this wrapper.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+lsoda_wrapper(t, y, model, verbose = FALSE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{t}] vector of times.
+
+\item[\code{y}] vector of biomasses.
+
+\item[\code{model}] object of class \emph{ATN (Rcpp\_parameters\_prefs)}.
+
+\item[\code{verbose}] Boolean, whether a message should be printed when all checks were successful
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A matrix for the ODE solution with species as columns and
+times as rows.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+library(deSolve)
+set.seed(123)
+masses <- runif(20, 10, 100) #body mass of species
+L <- create_Lmatrix(masses, 10, Ropt = 10)
+L[L > 0] <- 1
+mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+mod <- initialise_default_Unscaled_nuts(mod, L)
+biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
+biomasses <- append(runif(3, 20, 30), biomasses)
+times <- seq(0, 100, 1)
+sol <- lsoda_wrapper(times, biomasses, mod)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{plot\_odeweb}{Plot food web dynamics}{plot.Rul.odeweb}
+%
+\begin{Description}\relax
+Plot solution of the ODE for the food web. Currently only
+species and not nutrients are plotted.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plot_odeweb(x, nb_s)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] matrix with solutions. First row should be the time vector.
+
+\item[\code{nb\_s}] numeric, number of species as in the model (e.g.,
+\code{create\_model\_Unscaled\_nuts}).
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+library(deSolve)
+set.seed(123)
+# number of species, nutrients, and body masses
+n_species <- 20
+n_basal <- 5
+n_nutrients <- 3
+masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+# create food web matrix
+L <- create_Lmatrix(masses, n_basal)
+L[, 1:n_basal] <- 0
+fw <- L
+fw[fw > 0] <- 1
+model <- create_model_Unscaled_nuts(
+  n_species,
+  n_basal,
+  n_nutrients,
+  masses,
+  fw
+)
+# initialize model as default in Schneider et al. (2016)
+model <- initialise_default_Unscaled_nuts(model, L)
+model$initialisations()
+# defining integration time
+times <- seq(0, 500, 5)
+biomasses <- runif(n_species + n_nutrients, 2, 3)
+sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
+plot_odeweb(sol, model$nb_s)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{remove\_species}{Function to remove species from a model class}{remove.Rul.species}
+%
+\begin{Description}\relax
+Function to remove species from a model class
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+remove_species(species, model, nuts = NULL)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{species}] integer vector, the indices of species to remove.
+
+\item[\code{model}] model object
+
+\item[\code{nuts}] integer vector, the indices of nutrients to remove. Parameter
+specific to the Unscaled\_nuts model.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A model object where the data structure has bee updated to remove the
+species in parameters.
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{run\_checks}{Run checks on model parameters}{run.Rul.checks}
+%
+\begin{Description}\relax
+Check if the dimensions of vectors and matrices used in the model are correct.
+If any dimension is not correct, an error message is returned.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+run_checks(model, verbose = TRUE)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{model}] a model object.
+
+\item[\code{verbose}] Boolean, whether a message should be printed when all checks were successful
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{Scaled}{Store parameters and functions associated to the scaled version of ATN}{Scaled}
+%
+\begin{Description}\relax
+Type the name of the class to see its methods
+\end{Description}
+%
+\begin{Section}{Fields}
+
+\begin{description}
+
+\item[\code{nb\_s}] Total number of species
+
+\item[\code{nb\_b}] Number of basal species
+
+\item[\code{c}] double: inteference competition
+
+\item[\code{X}] Vector of metabolic rates (length = number of species)
+
+\item[\code{max\_feed}] Vector of maximum feeding rates (length = number of consumers)
+
+\item[\code{e}] Vector of assimilation efficiencies (length = number of species)
+
+\item[\code{r}] Vector of producers maximum growth rates (length = number of basal species)
+
+\item[\code{BM}] Vector of body masses (length = number of species)
+
+\item[\code{dB}] Vector of local derivatives (length = number of species)
+
+\item[\code{B0}] Vector of half saturation densities (length = number of consumers)
+
+\item[\code{fw}] Adjacency matrix of the food-web (dim = number of species * number of species)
+
+\item[\code{w}] Matrix of relative consumption rates (dim = number of species * number of consumers)
+
+\item[\code{F}] Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+
+\item[\code{q}] hill exponent for the type of functional response
+
+\item[\code{K}] Carrying capacity of basal species
+
+\item[\code{ext}] Extinction threshold for species
+
+\item[\code{alpha}] Plant resource competition
+
+\item[\code{ODE}] Calculate the derivatives for the scaled version of the ATN model \begin{itemize}
+
+\item{} Parameter: bioms -  Local species biomasses
+\item{} Parameter: t - Integration time point
+\item{} Returns a vector of growth rate for each species at time t
+
+\end{itemize}
+
+
+\end{description}
+\end{Section}
+\inputencoding{utf8}
+\HeaderA{Scaled\_loops}{Store parameters and functions associated to the scaled version of ATN}{Scaled.Rul.loops}
+%
+\begin{Description}\relax
+To not use. For testing purpose only. Please use Rcpp\_Scaled instead.
+\end{Description}
+\inputencoding{utf8}
+\HeaderA{schneider}{Default parameters as in Schneider et al. (2016)}{schneider}
+\keyword{datasets}{schneider}
+%
+\begin{Description}\relax
+A dataset containing the default parameters as in the Schneider et al. (2016)
+and used to parametrize the default models. See also
+\code{create\_model\_Unscaled\_nuts}, \code{create\_Lmatrix},
+\code{initialise\_default\_Unscaled\_nuts}.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+schneider
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+A list with the default parameters:
+\begin{description}
+ 
+\item[Temperature] ambient temperature in Celsius
+\item[T.K] default temperature, 20 degree Celsius in Kelvin
+\item[k] Boltzmann's constant
+\item[T0] 20 degree Celsius in Kelvin, used to estimate scaling law of metabolic rates
+\item[q] Hill's exponent of the functional response
+\item[Ropt] consumer/resource optimal body mass ratio
+\item[gamma] shape of the Ricker function
+\item[mu\_c] average predator interference
+\item[sd\_c] standard deviation of predator interference
+\item[E.c] Activation energy for interference
+\item[h0] scaling constant of the power-law of handling time with consumer and resource body mass
+\item[hpred] exponent associated to predator body mass for the allometric scaling of handling time
+\item[hprey] exponent associated to prey body mass for the allometric scaling of handling time
+\item[E.h] Activation energy for handling time
+\item[b0] normalisation constant for capture coefficient
+\item[bprey] exponent associated to prey body mass for the allometric scaling of capture coefficient
+\item[bpred] exponent associated to predator body mass for the allometric scaling of capture coefficient
+\item[E.b] Activation energy for capture coefficient
+\item[e\_P] Assimilation efficiency associated to the consumption of a plant species
+\item[e\_A] Assimilation efficiency associated to the consumption of an animal species
+\item[x\_P] scaling constant of the power-law of metabolic demand per unit of plant biomass
+\item[x\_A] scaling constant of the power-law of metabolic demand per unit of animal biomass
+\item[E.x] Activation energy for metabolic rates
+\item[expX] TBD
+\item[D] turnover rate of nutrients
+\item[nut\_up\_min] Minimum uptake efficiency of plants
+\item[nut\_up\_max] Maximum uptake efficiency of plants
+\item[mu\_nut] Average maximum nutrient concentration
+\item[sd\_nut] standard deviation of maximum nutrient concentration
+\item[v] relative content of nutrient 1 in plant biomass
+
+\end{description}
+
+\end{Format}
+%
+\begin{References}\relax
+Schneider, F. D., Brose, U., Rall, B. C., \& Guill, C. (2016).
+Animal diversity and ecosystem functioning in dynamic food webs. Nature
+Communications, 7(1), 1-8.
+\end{References}
+\inputencoding{utf8}
+\HeaderA{sort\_input}{Sort custom input}{sort.Rul.input}
+%
+\begin{Description}\relax
+Sort custom input
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+sort_input(BM, fw)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{BM}] numeric vector, body mass of species.
+
+\item[\code{fw}] adjacency matrix of the food web.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+Body masses and food web matrix should be arranged with the first
+elements/columns being for basal species. This is a requirement for the Cpp
+class and must be enforced before initializing the Rcpp\_Schneider and
+Rcpp\_Delmas objects.
+\end{Details}
+%
+\begin{Value}
+A list with sorted body masses (\emph{body.mass}) and food web
+matrix (\emph{food.web}).
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+bm <- runif(10, 10, 50)
+fw <- matrix(as.numeric(runif(100) > .9), 10, 10)
+sort_input(bm, fw)
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{TroLev}{Calculate trophic level of species}{TroLev}
+%
+\begin{Description}\relax
+Calculate trophic level of species
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+TroLev(fw)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{fw}] numeric matrix, the matrix of the food web.
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+A numeric vector of species' trophic level.
+\end{Value}
+%
+\begin{Examples}
+\begin{ExampleCode}
+library(ATNr)
+set.seed(123)
+# create a food web from the niche model with 35 species and connectance of 0.1
+fw <- create_niche_model(35, 0.1)
+TL = TroLev(fw)
+ 
+
+\end{ExampleCode}
+\end{Examples}
+\inputencoding{utf8}
+\HeaderA{Unscaled}{Store parameters and functions associated to the unscaled version of ATN}{Unscaled}
+%
+\begin{Description}\relax
+Type the name of the class to see its methods
+\end{Description}
+%
+\begin{Section}{Fields}
+
+\begin{description}
+
+\item[\code{nb\_s}] Total number of species
+
+\item[\code{nb\_b}] Number of basal species
+
+\item[\code{c}] double: inteference competition
+
+\item[\code{X}] Vector of metabolic rates (length = number of species)
+
+\item[\code{a}] Matrix of attack rates (dim = number of species * number of consumers)
+
+\item[\code{h}] Matrix of handling times (dim = number of species * number of consumers)
+
+\item[\code{e}] Vector of assimilation efficiencies (length = number of species)
+
+\item[\code{r}] Vector of producers maximum growth rates (length = number of basal species)
+
+\item[\code{BM}] Vector of body masses (length = number of species)
+
+\item[\code{dB}] Vector of local derivatives (length = number of species)
+
+\item[\code{fw}] Adjacency matrix of the food-web (dim = number of species * number of species)
+
+\item[\code{F}] Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+
+\item[\code{q}] hill exponent for the type of functional response
+
+\item[\code{K}] Carrying capacity of basal species
+
+\item[\code{alpha}] Plant resource competition
+
+\item[\code{ext}] Extinction threshold for species
+
+\item[\code{ODE}] Calculate the derivatives for the scaled version of the ATN model \begin{itemize}
+
+\item{} Parameter: bioms -  Local species biomasses
+\item{} Parameter: t - Integration time point
+\item{} Returns a vector of growth rate for each species at time t
+
+\end{itemize}
+
+
+\end{description}
+\end{Section}
+\inputencoding{utf8}
+\HeaderA{Unscaled\_loops}{Store parameters and functions associated to the unscaled version of ATN}{Unscaled.Rul.loops}
+%
+\begin{Description}\relax
+To not use. For testing purpose only. Please use Rcpp\_Unscaled instead.
+\end{Description}
+\inputencoding{utf8}
+\HeaderA{Unscaled\_nuts}{Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics}{Unscaled.Rul.nuts}
+%
+\begin{Description}\relax
+Type the name of the class to see its methods
+\end{Description}
+%
+\begin{Section}{Fields}
+
+\begin{description}
+
+\item[\code{nb\_s}] Total number of species
+
+\item[\code{nb\_b}] Number of basal species
+
+\item[\code{nb\_n}] Number of nutrient pool
+
+\item[\code{c}] double: inteference competition
+
+\item[\code{b}] Matrix of attack rates (dim = number of species * number of consumers)
+
+\item[\code{h}] Matrix of handling times (dim = number of species * number of consumers)
+
+\item[\code{X}] vector of metabolic rates (length = number of species)
+
+\item[\code{K}] matrix of plant nutrient efficiencies (dim = number of nutrients * number of plants)
+
+\item[\code{V}] matrix of plant relative nutrient content (dim = number of nutrients * number of plants)
+
+\item[\code{S}] Vector of maximum nutrient concentration (length = number of plants)
+
+\item[\code{r}] Vector of maximum growth rate of plant species (length = number of plant species)
+
+\item[\code{e}] Vector of assimilation efficiencies (length = number of species)
+
+\item[\code{BM}] Vector of body masses (length = number of species)
+
+\item[\code{dB}] Vector of local derivatives (length = number of species)
+
+\item[\code{fw}] Adjacency matrix of the food-web (dim = number of species * number of species)
+
+\item[\code{w}] Matrix of relative consumption rates (dim = number of species * number of consumers)
+
+\item[\code{F}] Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+
+\item[\code{q}] hill exponent for the type of functional response
+
+\item[\code{ext}] Extinction threshold for species
+
+\item[\code{ODE}] Calculate the derivatives for the scaled version of the ATN model \begin{itemize}
+
+\item{} Parameter: bioms -  Local species biomasses
+\item{} Parameter: t - Integration time point
+\item{} Returns a vector of growth rate for each species at time t
+
+\end{itemize}
+
+
+\end{description}
+\end{Section}
+\inputencoding{utf8}
+\HeaderA{Unscaled\_nuts\_loops}{Store parameters and functions associated to the unscaled version of ATN}{Unscaled.Rul.nuts.Rul.loops}
+%
+\begin{Description}\relax
+To not use. For testing purpose only. Please use Rcpp\_Unscaled\_nuts instead.
+\end{Description}
+\inputencoding{utf8}
+\HeaderA{Unscaled\_nuts\_prefs}{Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics}{Unscaled.Rul.nuts.Rul.prefs}
+%
+\begin{Description}\relax
+Type the name of the class to see its methods
+\end{Description}
+%
+\begin{Section}{Fields}
+
+\begin{description}
+
+\item[\code{nb\_s}] Total number of species
+
+\item[\code{nb\_b}] Number of basal species
+
+\item[\code{nb\_n}] Number of nutrient pool
+
+\item[\code{X}] Coltor of metabolic rates (length = number of species)
+
+\item[\code{K1}] Vector of maximum feeding rates (length = number of consumers)
+
+\item[\code{K2}] Vector of producers maximum growth rates (length = number of basal species)
+
+\item[\code{e}] Vector of assimilation efficiencies (length = number of species)
+
+\item[\code{BM}] Vector of body masses (length = number of species)
+
+\item[\code{dB}] Vector of local derivatives (length = number of species)
+
+\item[\code{B0}] Vector of half saturation densities (length = number of consumers)
+
+\item[\code{fw}] Adjacency matrix of the food-web (dim = number of species * number of species)
+
+\item[\code{w}] Matrix of relative consumption rates (dim = number of species * number of consumers)
+
+\item[\code{F}] Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+
+\item[\code{q}] parameter for the type of functional response (hill exponent = 1 + q)
+
+\item[\code{K}] Carrying capacity of basal species
+
+\item[\code{ext}] extinction threshold for species
+
+\item[\code{ODE}] Calculate the derivatives for the scaled version of the ATN model \begin{itemize}
+
+\item{} Parameter: bioms -  Local species biomasses
+\item{} Parameter: t - Integration time point
+\item{} Returns a Coltor of growth rate for each species at time t
+
+\end{itemize}
+
+
+\end{description}
+\end{Section}
+\printindex{}
+\end{document}

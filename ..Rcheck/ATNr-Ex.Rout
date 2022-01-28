@@ -1,0 +1,287 @@
+
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ATNr"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('ATNr')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("TroLev")
+> ### * TroLev
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: TroLev
+> ### Title: Calculate trophic level of species
+> ### Aliases: TroLev
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> set.seed(123)
+> # create a food web from the niche model with 35 species and connectance of 0.1
+> fw <- create_niche_model(35, 0.1)
+> TL = TroLev(fw)
+>  
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_Lmatrix")
+> ### * create_Lmatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_Lmatrix
+> ### Title: Make L matrix
+> ### Aliases: create_Lmatrix
+> 
+> ### ** Examples
+> 
+> set.seed(123)
+> mass <- sort(10 ^ runif(30, 2, 6))
+> L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
+> image(L)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_model_Scaled")
+> ### * create_model_Scaled
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_model_Scaled
+> ### Title: Initialize an ATN model, following Delmas et al. 2017, Methods
+> ###   in Ecology and Evolution
+> ### Aliases: create_model_Scaled
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> set.seed(123)
+> n_species <- 50
+> n_basal <- 20
+> masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+> L <- create_Lmatrix(masses, n_basal)
+> fw <- L
+> fw[fw > 0] <- 1
+> mod <- create_model_Scaled(n_species, n_basal, masses, fw)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_model_Unscaled")
+> ### * create_model_Unscaled
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_model_Unscaled
+> ### Title: Initialize an ATN model, following Binzer et al. 201, Global
+> ###   Change Biology
+> ### Aliases: create_model_Unscaled
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> set.seed(123)
+> n_species <- 50
+> n_basal <- 20
+> masses <- sort(10^runif(n_species, 1, 6)) #body mass of species
+> L <- create_Lmatrix(masses, n_basal)
+> fw <- L
+> fw[fw > 0] <- 1
+> mod <- create_model_Unscaled(n_species, n_basal, masses, fw)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_model_Unscaled_nuts")
+> ### * create_model_Unscaled_nuts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_model_Unscaled_nuts
+> ### Title: Initialize an ATN model, following Schneider et al. 2016, Nature
+> ###   Communication
+> ### Aliases: create_model_Unscaled_nuts
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> set.seed(123)
+> n_species <- 50
+> n_basal <- 20
+> n_nutrients <- 2
+> masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+> L <- create_Lmatrix(masses, n_basal)
+> fw <- L
+> fw[fw > 0] <- 1
+> mod <- create_model_Unscaled_nuts(n_species, n_basal, n_nutrients, masses, fw)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_niche_model")
+> ### * create_niche_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_niche_model
+> ### Title: Create a food web based on the niche model
+> ### Aliases: create_niche_model
+> 
+> ### ** Examples
+> 
+> set.seed(123)
+> web_niche <- create_niche_model(30, .1)
+> image(web_niche)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("lsoda_wrapper")
+> ### * lsoda_wrapper
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: lsoda_wrapper
+> ### Title: Wrapper for lsoda
+> ### Aliases: lsoda_wrapper
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> library(deSolve)
+> set.seed(123)
+> masses <- runif(20, 10, 100) #body mass of species
+> L <- create_Lmatrix(masses, 10, Ropt = 10)
+> L[L > 0] <- 1
+> mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+> mod <- initialise_default_Unscaled_nuts(mod, L)
+> biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
+> biomasses <- append(runif(3, 20, 30), biomasses)
+> times <- seq(0, 100, 1)
+> sol <- lsoda_wrapper(times, biomasses, mod)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:deSolve’
+
+> nameEx("plot_odeweb")
+> ### * plot_odeweb
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot_odeweb
+> ### Title: Plot food web dynamics
+> ### Aliases: plot_odeweb
+> 
+> ### ** Examples
+> 
+> library(ATNr)
+> library(deSolve)
+> set.seed(123)
+> # number of species, nutrients, and body masses
+> n_species <- 20
+> n_basal <- 5
+> n_nutrients <- 3
+> masses <- sort(10^runif(n_species, 2, 6)) #body mass of species
+> # create food web matrix
+> L <- create_Lmatrix(masses, n_basal)
+> L[, 1:n_basal] <- 0
+> fw <- L
+> fw[fw > 0] <- 1
+> model <- create_model_Unscaled_nuts(
++   n_species,
++   n_basal,
++   n_nutrients,
++   masses,
++   fw
++ )
+> # initialize model as default in Schneider et al. (2016)
+> model <- initialise_default_Unscaled_nuts(model, L)
+> model$initialisations()
+> # defining integration time
+> times <- seq(0, 500, 5)
+> biomasses <- runif(n_species + n_nutrients, 2, 3)
+> sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
+> plot_odeweb(sol, model$nb_s)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:deSolve’
+
+> nameEx("sort_input")
+> ### * sort_input
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sort_input
+> ### Title: Sort custom input
+> ### Aliases: sort_input
+> 
+> ### ** Examples
+> 
+> bm <- runif(10, 10, 50)
+> fw <- matrix(as.numeric(runif(100) > .9), 10, 10)
+> sort_input(bm, fw)
+$body.mass
+ [1] 32.91413 46.32831 18.06728 36.43191 35.16456 20.62035 24.88496 45.93559
+ [9] 47.78701 12.47145
+
+$food.web
+      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,]    0    0    0    0    0    0    0    0    0     0
+ [2,]    0    0    0    0    0    0    0    0    0     1
+ [3,]    0    0    0    0    0    0    0    0    0     0
+ [4,]    0    0    0    0    0    1    0    0    0     0
+ [5,]    0    0    0    0    0    0    0    0    0     1
+ [6,]    0    0    0    0    0    0    1    1    0     0
+ [7,]    0    0    0    0    0    0    0    0    0     0
+ [8,]    0    0    0    0    0    0    0    0    0     0
+ [9,]    0    0    0    0    0    0    0    0    0     0
+[10,]    0    0    0    0    0    0    0    0    1     0
+
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.941 0.024 0.967 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
