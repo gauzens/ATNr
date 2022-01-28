@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 //' @name Unscaled_loops
 //' @title Store parameters and functions associated to the unscaled version of ATN
-//' @description To not use. For testing purpose only. please use Rcpp_Unscaled instead. 
+//' @description To not use. For testing purpose only. Please use Rcpp_Unscaled instead. 
 
 class Unscaled_loops{
 public:
