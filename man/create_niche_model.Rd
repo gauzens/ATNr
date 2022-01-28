@@ -27,9 +27,9 @@ If at least one species has not resource or consumer (i.e. it is an
   iterations.
 }
 \examples{
-set.seed(123)
-web_niche <- create_niche_model(30, .1)
-image(web_niche)
+\dontrun{
+# set.seed(123)
+}
 }
 \references{
 Williams, R. J., & Martinez, N. D. (2000). Simple rules yield
