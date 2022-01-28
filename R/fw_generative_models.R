@@ -18,7 +18,8 @@
 #'   Allesina, S., Alonso, D., & Pascual, M. (2008). A general model for food
 #'   web structure. science, 320(5876), 658-661.
 #' @examples
-#' web_niche <- create_niche_model(50, .4)
+#' set.seed(123)
+#' web_niche <- create_niche_model(30, .1)
 #' image(web_niche)
 create_niche_model <- function(S, C) {
   niche_model <- function(S, C) {
@@ -99,7 +100,7 @@ create_niche_model <- function(S, C) {
 #'
 #' @examples
 #' set.seed(123)
-#' mass <- sort(10 ^ rnorm(50, 1, 2))
+#' mass <- sort(10 ^ rnorm(30, 1, 2))
 #' L <- create_Lmatrix(mass, nb_b = 10, Ropt = 100)
 #' image(L)
 create_Lmatrix <- function(

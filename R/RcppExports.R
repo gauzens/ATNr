@@ -30,7 +30,7 @@ NULL
 
 #' @name Scaled_loops
 #' @title Store parameters and functions associated to the scaled version of ATN
-#' @description To not use. For testing purpose only. please use Rcpp_Scaled instead. 
+#' @description To not use. For testing purpose only. Please use Rcpp_Scaled instead. 
 NULL
 
 #' @name Unscaled
@@ -61,7 +61,7 @@ NULL
 
 #' @name Unscaled_loops
 #' @title Store parameters and functions associated to the unscaled version of ATN
-#' @description To not use. For testing purpose only. please use Rcpp_Unscaled instead. 
+#' @description To not use. For testing purpose only. Please use Rcpp_Unscaled instead. 
 NULL
 
 #' @name Unscaled_nuts
@@ -95,7 +95,7 @@ NULL
 
 #' @name Unscaled_nuts_loops
 #' @title Store parameters and functions associated to the unscaled version of ATN
-#' @description To not use. For testing purpose only. please use Rcpp_Unscaled_nuts instead. 
+#' @description To not use. For testing purpose only. Please use Rcpp_Unscaled_nuts instead. 
 NULL
 
 #' @name Unscaled_nuts_prefs
