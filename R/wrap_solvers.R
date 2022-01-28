@@ -18,6 +18,7 @@
 #' @examples
 #' library(ATNr)
 #' library(deSolve)
+#' set.seed(123)
 #' masses <- runif(20, 10, 100) #body mass of species
 #' L <- create_Lmatrix(masses, 10, Ropt = 10)
 #' L[L > 0] <- 1

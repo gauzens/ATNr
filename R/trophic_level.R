@@ -7,6 +7,7 @@
 #' @return A numeric vector of species' trophic level.
 #' @examples
 #' library(ATNr)
+#' set.seed(123)
 #' # create a food web from the niche model with 35 species and connectance of 0.1
 #' fw <- create_niche_model(35, 0.1)
 #' TL = TroLev(fw)
