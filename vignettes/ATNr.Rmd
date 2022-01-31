@@ -127,7 +127,6 @@ Importantly, for the unscaled with nutrients model of @schneider2016animal, the 
 Once all the parameters are properly defined, the ODEs can be integrated by any solver. We present here a solution based on `lsoda` from library `deSolve` (@DeSolve), but other solutions exist (`sundialr` is also a possibility). The package propose a direct wrapper to `lsoda` with the function `lsoda_wrapper`: 
 
 ```{r wrappers}
-library(deSolve)
 biomasses <- masses ^ -0.75 * 1e1 # starting biomasses
 biomasses <- append(runif(3, 20, 30), biomasses) # nutrient concentration
 # defining the desired integration time
