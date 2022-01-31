@@ -58,27 +58,26 @@ create_niche_model <- function(S, C) {
   isolated <- ifelse(any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
   # check if trophic levels can be calculated
   tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+  # check is fw is connected
+  connected <- is_connected(fw)
   i <- 0
-  while((isolated | is.null(tro_lev)) & i < 100) {
+  while((isolated | is.null(tro_lev) | !connected) & i < 100) {
     fw <- niche_model(S, C)
+    # check first if isolated then TL calculation and then detection of connected components
+    # no need to make the 3 of them each time as one is enough to reject
     isolated <- ifelse (any(colSums(fw) + rowSums(fw) == 0), TRUE, FALSE)
     if (!isolated) {
       tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+    }
+    if (!isolated & !is.null(tro_lev)){
+      connected <- is_connected(fw)
     }
     i <- i + 1
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
   if (is.null(tro_lev)) warning("Trophic levels cannot be calcualted after 100 iterations.")
-  # TO DO connected component without igraph?
-  # Maybe omit here and clarify in the vignette.
-  if ("igraph" %in% utils::installed.packages()) {
-    g <- igraph::graph_from_adjacency_matrix(fw)
-    if (igraph::components(g)$no > 1) {
-      warning("Several connected components detected")
-    }
-  } else {
-    warning("igraph not installed - install it to check for disconnected components")
-  }
+  if (!is_connected(fw)) warning("Several connected components detected")
+
   # reorder matrix to put basal species first
   basals <- which(colSums(fw) == 0)
   consumers <- which(colSums(fw) > 0)
@@ -132,8 +131,10 @@ create_Lmatrix <- function(
   cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
   # check if trophic levels can be calculated
   tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+  # check for different connected components
+  connected = is_connected(fw)
   i <- 0
-  while((isolated | cons_no_prey | is.null(tro_lev)) & i < 100) {
+  while((isolated | cons_no_prey | is.null(tro_lev) | !connected) & i < 100) {
     L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
     isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
     cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
@@ -144,5 +145,6 @@ create_Lmatrix <- function(
   }
   if (isolated) warning("Presence of an isolated species after 100 iterations.")
   if (cons_no_prey) warning("Presence of consumer without prey after 100 iterations.")
+  if (!connected) warning("several conected component detected")
   return(L)
 }
