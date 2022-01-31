@@ -31,14 +31,6 @@
 #' sol <- lsoda_wrapper(times, biomasses, mod)
 #' }
 lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
-  deSolve_installed <- ifelse(
-    "deSolve" %in% rownames(utils::installed.packages()),
-    TRUE,
-    FALSE
-  )
-  if(!deSolve_installed) {
-    warning("Cannot find pacakge deSolve; is it installed?")
-  }
   run_checks(model, verbose)
   deSolve::lsoda(
     y,
