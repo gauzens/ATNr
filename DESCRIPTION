@@ -6,7 +6,7 @@ Date: 2022-01-25
 Authors@R: 
     c(person("Benoit", "Gauzens", role = c("cre", "aut"), email = "benoit.gauzens@gmail.com"), 
       person("Emilio", "Berti", role = "aut"))
-Description: Implements the differential equations associated to different versions of Allometric Trophic Models (ATN) to estimate the temporal biomass dynamics of species in food webs. It offers several features to generate synthetic food webs and to parametrise models as well as a wrapper to ODE solvers deSolve. 
+Description: Implements the differential equations associated to different versions of Allometric Trophic Models (ATN) to estimate the temporal biomass dynamics of species in food webs. It offers several features to generate synthetic food webs and to parametrise models as well as a wrapper to the ODE solver deSolve.
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7), methods, stats, utils, deSolve
 LinkingTo: Rcpp, RcppArmadillo
