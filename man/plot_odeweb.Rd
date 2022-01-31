@@ -12,6 +12,9 @@ plot_odeweb(x, nb_s)
 \item{nb_s}{numeric, number of species as in the model (e.g.,
 \code{create_model_Unscaled_nuts}).}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Plot solution of the ODE for the food web. Currently only
   species and not nutrients are plotted.
