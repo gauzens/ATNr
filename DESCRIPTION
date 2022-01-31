@@ -3,11 +3,12 @@ Type: Package
 Title: Allometric Trophic Networks in R
 Version: 1.0
 Date: 2022-01-25
-Author: Benoit Gauzens, Emilio Berti
-Maintainer: Benoit Gauzens <benoit.gauzens@idiv.de>
-Description: The ATNr package implements different version of Allometric Trophic Models to estimate populations dynamics in food webs. 
+Authors@R: 
+    c(person("Benoit", "Gauzens", role = c("cre", "aut"), email = "benoit.gauzens@gmail.com"), 
+      person("Emilio", "Berti", role = "aut"))
+Description: Implements the differential equations associated to different versions of Allometric Trophic Models (ATN) to estimate the temporal biomass dynamics of species in food webs. It offers several features to generate synthetic food webs and to parametrise models as well as a wrapper to ODE solvers deSolve. 
 License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.7), methods, stats, utils
+Imports: Rcpp (>= 1.0.7), methods, stats, utils, deSolve, igraph
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 7.1.2
 LazyData: true
@@ -16,9 +17,7 @@ Depends:
 Suggests: 
     rmarkdown,
     knitr,
-    deSolve,
     testthat,
-    igraph,
     R.rsp
 VignetteBuilder: 
     knitr,
