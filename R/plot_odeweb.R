@@ -6,6 +6,8 @@
 #' @param x matrix with solutions. First row should be the time vector.
 #' @param nb_s numeric, number of species as in the model (e.g.,
 #'   \code{create_model_Unscaled_nuts}).
+#'   
+#' @return No return value, called for side effects.
 #'
 #' @export
 #'
