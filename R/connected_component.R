@@ -1,4 +1,4 @@
-#' @title Detect whether a food web is composed of several disconected sub-networks
+#' @title Detect whether a food web is composed of several disconnected sub-networks
 #'
 #' @description Run a deep search first algorithm (DFS)
 #'
@@ -36,7 +36,7 @@ is_connected <- function(fw){
     return()
   }
   
-  # make the network undirected to simply use DSF algorithm
+  # make the network undirected (symetric matrix) to simply use a DSF algorithm
   fw.s <- fw
   fw.s[lower.tri(fw.s)] = t(fw.s)[lower.tri(fw.s)]
   # create the Boolean vector of visited nodes
