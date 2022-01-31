@@ -4,7 +4,7 @@
 \alias{lsoda_wrapper}
 \title{Wrapper for lsoda}
 \usage{
-lsoda_wrapper(t, y, model, verbose = FALSE)
+lsoda_wrapper(t, y, model, verbose = FALSE, ...)
 }
 \arguments{
 \item{t}{vector of times.}
@@ -14,6 +14,8 @@ lsoda_wrapper(t, y, model, verbose = FALSE)
 \item{model}{object of class \emph{ATN (Rcpp_parameters_prefs)}.}
 
 \item{verbose}{Boolean, whether a message should be printed when all checks were successful}
+
+\item{...}{additional arguments to pass to `lsoda`}
 }
 \value{
 A matrix for the ODE solution with species as columns and
@@ -26,7 +28,6 @@ Package \code{deSolve} needs to be installed to run
 this wrapper.
 }
 \examples{
-\dontrun{
 library(ATNr)
 library(deSolve)
 set.seed(123)
@@ -39,5 +40,4 @@ biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
 biomasses <- append(runif(3, 20, 30), biomasses)
 times <- seq(0, 100, 1)
 sol <- lsoda_wrapper(times, biomasses, mod)
-}
 }

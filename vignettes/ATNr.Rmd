@@ -139,7 +139,7 @@ To have more control of the integration, it is however possible to not use the w
 
 ```{r deSolve}
 # running simulations for the Schneider model
-sol <- lsoda(
+sol <- deSolve::lsoda(
   biomasses,
   times,
   function(t, y, params) {
