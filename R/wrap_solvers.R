@@ -9,16 +9,14 @@
 #' @param y vector of biomasses.
 #' @param model object of class \emph{ATN (Rcpp_parameters_prefs)}.
 #' @param verbose Boolean, whether a message should be printed when all checks were successful 
-#' 
+#' @param ... additional arguments to pass to `lsoda`
 #' @export
 #'
 #' @return A matrix for the ODE solution with species as columns and
 #' times as rows.
 #'
 #' @examples
-#' \dontrun{
 #' library(ATNr)
-#' library(deSolve)
 #' set.seed(123)
 #' masses <- runif(20, 10, 100) #body mass of species
 #' L <- create_Lmatrix(masses, 10, Ropt = 10)
@@ -29,14 +27,14 @@
 #' biomasses <- append(runif(3, 20, 30), biomasses)
 #' times <- seq(0, 100, 1)
 #' sol <- lsoda_wrapper(times, biomasses, mod)
-#' }
-lsoda_wrapper <- function(t, y, model, verbose = FALSE) {
+lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
   run_checks(model, verbose)
   deSolve::lsoda(
     y,
     t,
     func = function(t, y, pars) list(pars$ODE(y, t)),
-    model
+    model,
+    ...
   )
 }
 
