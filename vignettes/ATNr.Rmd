@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, include=FALSE, echo=FALSE}
+oldpar <- par()
+```
+
 The package *ATNr* defines the differential equations and parametrisation of different versions of the Allometric Trophic Network (ATN) model. It is structured around a model object that contains a function implementing the ordinary differential equations (ODEs) of the model and various attributes defining the different parameters to run the ODEs.
 
 
@@ -535,3 +539,7 @@ Therefore, to create a new model object based on another one, it is important to
 
 
 **Note: Should we let the possibility for users to update these key parameters (i.e. the ones in the create_model() functions)? Should we restrict them that they can only be read and not modified? For instance by not exporting them and creating a get_x() method that would return the value of x? This options is much better in terms of "security" but much less straightforward to use. **
+
+```{r restore par, include=FALSE, echo=FALSE}
+par(oldpar)
+```
