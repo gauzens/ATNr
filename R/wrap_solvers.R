@@ -64,7 +64,7 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
 # #' biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
 # #' biomasses <- append(runif(3, 20, 30), biomasses)
 # #' times <- seq(0, 100, 1)
-# #' #' sol <- sundial_wrapper(times, biomasses, mod)
+# #' sol <- sundial_wrapper(times, biomasses, mod)
 # #' t <- times
 # #' y <- biomasses
 # 
@@ -76,14 +76,6 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
 # #' )
 # 
 # sundial_wrapper <- function(t, y, model) {
-#   sundialr_installed <- ifelse(
-#     "sundialr" %in% rownames(installed.packages()),
-#     TRUE,
-#     FALSE
-#   )
-#   if (!sundialr_installed) {
-#     warning("Cannot find pacakge sundialr; is it installed?")
-#   }
 #   wrapper.ODE <- function(t, y, p) {
 #     return(model$ODE(y, t))
 #   }

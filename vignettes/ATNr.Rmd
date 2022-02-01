@@ -19,7 +19,6 @@ The package *ATNr* defines the differential equations and parametrisation of dif
 
 
 Two different versions of the model are implemented: 
-**Note: update that part once we found some proper names for the models**
 
 * Scaled version: @delmas2017simulations
 
@@ -152,8 +151,10 @@ sol <- deSolve::lsoda(
 The package also contains a simple function to plot the time series obtained: plot_odeweb.
 
 ```{r plot_odeweb, fig.width=4, fig.height=3, fig.align='center'}
-par(mar = c(4, 4, 1, 1))
+
+opar = par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
+par(opar)
 ```
 
 
@@ -164,7 +165,7 @@ It is possible to create a model object using empirical food webs, however synth
 ```{r}
 # function to plot the fw
 show_fw <- function(mat, title = NULL) {
-  par(mar = c(.5, .5, 2, .5))
+  opar = par(mar = c(.5, .5, 2, .5))
   S <- nrow(mat)
   mat <- mat[nrow(mat):1, ]
   mat <- t(mat)
@@ -172,6 +173,7 @@ show_fw <- function(mat, title = NULL) {
         frame = FALSE, axes = FALSE)
   title(title)
   grid(nx = S, ny = S, lty = 1, col = adjustcolor("grey20", alpha.f = .1))
+  par(opar)
 }
 ```
 
@@ -275,53 +277,6 @@ plot(temperatures, extinctions,
      pch = 20, cex = 0.5, ylim = c(0,50), frame = FALSE,
      ylab = "Number of Extinctions", xlab = "Temperature (°C)")
 lines(temperatures, extinctions, col = 'blue')
-```
-
-## Effect of species richness on extinction probabilities
-
-```{r}
-set.seed(12)
-# defines initial parameters
-C = 0.1 # connectance
-richness <-  seq(30, 60, by = 5)
-times <- seq(0, 15000, 150)
-persistence <- rep(NA, length(richness))
-# run a loop over connectance values
-i <- 0
-for (S in richness){
-  i <- i + 1
-  
-  # create the food web using the niche model
-  fw <- create_niche_model(S, C)
-  TL <- TroLev(fw)
-  # define body masses based on trophic levels
-  masses <- 0.001 * 100 ^ (TL - 1 + rnorm(length(TL), 0, 0.01))
-  
-  # create the model object. 
-  n_basal = sum(colSums(fw) == 0)
-  model <- create_model_Scaled(S, n_basal, masses, fw)
-  model <- initialise_default_Scaled(model)
-  model$ext <- 1e-4 #NOTE: changed this to get some extinctions
-  
-  # update some parameters, why not. 
-  model$K <- 10
-  model$q <- 1.2
-  
-  # define the initial conditions
-  biomasses <- runif(S, 2,3)
-  
-  # run the dynamics
-  model$initialisations()
-  sol <- lsoda_wrapper(times, biomasses, model)
-  persistence[i] <- sum(sol[nrow(sol), -1] < model$ext) / S
-}
-```
-
-```{r, fig.width=4, fig.height=3, fig.align='center'}
-plot(richness, persistence,
-     pch = 20, cex = 0.5, ylim = c(0, max(persistence)), frame = FALSE,
-     ylab = "Proportion of Extinctions", xlab = "Species Richness")
-lines(richness, persistence, col = 'blue')
 ```
 
 ## Effect of predator-prey body mass ratio and temperature on species persistence
@@ -436,11 +391,12 @@ sol10 <- lsoda_wrapper(times, biomasses, mod, verbose = FALSE)
 As shown in the plot below, for _K = 2_ the system reaches a stable equilibrium, whereas when we increase the carrying capacity (_K = 20_) the system departs from this stable equilibrium and periodic oscillations appear.
 
 ```{r delmas 3, fig.width=6, fig.height=6, fig.align='center'}
-par(mfrow = c(2, 1))
+opar = par(mfrow = c(2, 1))
 plot_odeweb(sol1, S)
 title("Carrying capacity = 1")
 plot_odeweb(sol10, S)
 title("Carrying capacity = 10")
+par(opar)
 ```
 
 # Common mistakes, things to not do
@@ -496,8 +452,9 @@ model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 model_unscaled_nuts$BM <- sqrt(model_unscaled_nuts$BM) # we change body masses within the model
 model_unscaled_nuts$initialisations()
 sol <- lsoda_wrapper(seq(1, 5000, 50), biomasses, model_unscaled_nuts)
-par(mar = c(4, 4, 1, 1))
+opar = par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
+par(opar)
 ```
 
 

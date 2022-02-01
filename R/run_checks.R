@@ -5,6 +5,8 @@
 #'
 #' @param model a model object.
 #' @param verbose Boolean, whether a message should be printed when all checks were successful
+#'
+#' @return No return value, only throw an error if parameters are inconsistent. 
 #' 
 #' @export
 run_checks <- function(model, verbose = TRUE) {

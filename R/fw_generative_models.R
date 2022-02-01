@@ -128,16 +128,16 @@ create_Lmatrix <- function(
   # check for isolated consumers
   cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
   # check if trophic levels can be calculated
-  tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+  tro_lev <- tryCatch(ATNr::TroLev(L), error = function(e) NULL)
   # check for different connected components
-  connected = is_connected(fw)
+  connected = is_connected(L)
   i <- 0
   while((isolated | cons_no_prey | is.null(tro_lev) | !connected) & i < 100) {
     L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
     isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
     cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
     if (!isolated) {
-      tro_lev <- tryCatch(ATNr::TroLev(fw), error = function(e) NULL)
+      tro_lev <- tryCatch(ATNr::TroLev(L), error = function(e) NULL)
     }
     i <- i + 1
   }

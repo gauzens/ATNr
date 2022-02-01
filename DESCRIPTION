@@ -1,6 +1,6 @@
 Package: ATNr
 Type: Package
-Title: Allometric Trophic Networks in R
+Title: Run Allometric Trophic Networks Models
 Version: 1.0
 Date: 2022-01-25
 Authors@R: 

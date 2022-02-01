@@ -8,7 +8,10 @@
 #' @param T.K, Celsius to Kelvin conversion
 #' @param T0, Default temperature in Kelvin
 #' @param k, Boltzmann constant
-#' 
+#'
+#' @return A matrix filled with estimated values 
+#' for a model parameter that depends on prey and predator body masses (see details)
+#'  
 #' @export
 #'
 #' @details Make a parameter matrix that depends on both predators
