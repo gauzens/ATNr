@@ -155,10 +155,8 @@ sol <- deSolve::lsoda(
 The package also contains a simple function to plot the time series obtained: plot_odeweb.
 
 ```{r plot_odeweb, fig.width=4, fig.height=3, fig.align='center'}
-
-opar = par(mar = c(4, 4, 1, 1))
+par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
-par(opar)
 ```
 
 
@@ -169,7 +167,7 @@ It is possible to create a model object using empirical food webs, however synth
 ```{r}
 # function to plot the fw
 show_fw <- function(mat, title = NULL) {
-  opar = par(mar = c(.5, .5, 2, .5))
+  par(mar = c(.5, .5, 2, .5))
   S <- nrow(mat)
   mat <- mat[nrow(mat):1, ]
   mat <- t(mat)
@@ -177,7 +175,6 @@ show_fw <- function(mat, title = NULL) {
         frame = FALSE, axes = FALSE)
   title(title)
   grid(nx = S, ny = S, lty = 1, col = adjustcolor("grey20", alpha.f = .1))
-  par(opar)
 }
 ```
 
@@ -395,12 +392,11 @@ sol10 <- lsoda_wrapper(times, biomasses, mod, verbose = FALSE)
 As shown in the plot below, for _K = 2_ the system reaches a stable equilibrium, whereas when we increase the carrying capacity (_K = 20_) the system departs from this stable equilibrium and periodic oscillations appear.
 
 ```{r delmas 3, fig.width=6, fig.height=6, fig.align='center'}
-opar = par(mfrow = c(2, 1))
+par(mfrow = c(2, 1))
 plot_odeweb(sol1, S)
 title("Carrying capacity = 1")
 plot_odeweb(sol10, S)
 title("Carrying capacity = 10")
-par(opar)
 ```
 
 # Common mistakes, things to not do
@@ -456,9 +452,8 @@ model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 model_unscaled_nuts$BM <- sqrt(model_unscaled_nuts$BM) # we change body masses within the model
 model_unscaled_nuts$initialisations()
 sol <- lsoda_wrapper(seq(1, 5000, 50), biomasses, model_unscaled_nuts)
-opar = par(mar = c(4, 4, 1, 1))
+par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
-par(opar)
 ```
 
 
