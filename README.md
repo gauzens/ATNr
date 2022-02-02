@@ -2,6 +2,7 @@ Beta version of the ATNr package that propose solutions to estimate populations 
 
 # To do
 
+**issue with the latex vignette not built**
 
 There might be some opportunities to optimise execution time of the armadillo models, especially regarding bracketing of expressions based on matrix algebra. Not important to investigate, but could be nice to have a look at some point. Need a good knowledge of the approach though
 
