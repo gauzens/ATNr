@@ -3,7 +3,7 @@ title: "ATNr"
 output: rmarkdown::html_vignette
 bibliography: vignette.bib
 vignette: >
-  %\VignetteIndexEntry{ATN}
+  %\VignetteIndexEntry{ATNr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
