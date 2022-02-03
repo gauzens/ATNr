@@ -11,6 +11,9 @@ run_checks(model, verbose = TRUE)
 
 \item{verbose}{Boolean, whether a message should be printed when all checks were successful}
 }
+\value{
+No return value, only throw an error if parameters are inconsistent.
+}
 \description{
 Check if the dimensions of vectors and matrices used in the model are correct.
 If any dimension is not correct, an error message is returned.

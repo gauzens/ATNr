@@ -16,82 +16,150 @@ class Unscaled_nuts_loops{
 public:
   int nb_s; // number of species
   int nb_b; // number of basal species
-  int nb_n = 2; // number of nutrients
-  int n_tot = nb_s + nb_n; // bool prefs MORE PRECISE?
-  double temperature = 20;
+  int nb_n; // number of nutrients
+  int n_tot; // bool prefs MORE PRECISE?
   // global nutrient turn over rate (rate of replenishment)
   // used in calculating change in nutrient concentration
-  double D = 0.25;
+  double D;
 
   // half saturation density of nutrient, or nutrient uptake efficiency
   double q;
-  double test_double;
   double ext;
+  double out;
+  int i;
 
 
-  NumericVector X = NumericVector(nb_s); // metabolic rates
-  NumericVector e = NumericVector(nb_s); // assimilation efficiencies
-  NumericVector r = NumericVector(nb_b); // growth rates of plants
-  NumericVector S = NumericVector(nb_n); // maximal nutrient level
+  NumericVector X; // metabolic rates
+  NumericVector e; // assimilation efficiencies
+  NumericVector r; // growth rates of plants
+  NumericVector S; // maximal nutrient level
   // interference competition
-  NumericVector c = NumericVector(nb_s - nb_b); 
+  NumericVector c; 
   
   // body masses
-  NumericVector BM = NumericVector(nb_s);
-  NumericVector log_BM = NumericVector(nb_s);
+  NumericVector BM;
+  NumericVector log_BM;
   
   // biomasses
-  NumericVector bioms = NumericVector(nb_s + nb_n);
+  NumericVector bioms;
   // r*G for plants, as there is no need to compute it at each ODE call
   
-  NumericVector test;
-  NumericVector p = NumericVector(2);
+  // NumericVector test;
+  // NumericVector p;
   // vector of derivatives
-  NumericVector dB = NumericVector(nb_n + nb_s);
+  NumericVector dB;
   // 
   
-  LogicalMatrix fw = LogicalMatrix(); 
+  LogicalMatrix fw; 
   
-  NumericMatrix b = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix b;
   // handling times
-  NumericMatrix h = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix h;
   // functional response
-  NumericMatrix F = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix F;
   // consumption rates
-  NumericMatrix w = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix w;
 
   // relative content in the plant species' biomass
-  NumericMatrix V = NumericMatrix(nb_n, nb_b); 
+  NumericMatrix V; 
   // plants nutrient uptake efficiency (K(i,j): plant i on nutrient j)
-  NumericMatrix K = NumericMatrix(nb_n, nb_b); 
+  NumericMatrix K; 
 
   // internal variables for optimisation
   // index of plants (optimisation purpose)
 
-  IntegerVector plants = Range(0, nb_b - 1);
-  IntegerVector animals = Range(nb_b, nb_s - 1);
-  IntegerVector plants_bioms = Range(nb_n, nb_b - 1 + nb_n);
-  IntegerVector animals_bioms = Range( nb_b + nb_n, nb_s - 1 + nb_n);
-  IntegerVector non_nut = Range(0, nb_s - 1);
-  IntegerVector nuts = Range(0, nb_n - 1);
-  NumericVector G = NumericVector(nb_b);
-  NumericVector g_temp = NumericVector(nb_b);
-  NumericVector zeros = NumericVector(nb_s); // accordingly to documentation that should work
-  NumericVector pow_bioms = NumericVector(nb_s);
-  NumericVector temp_nut = NumericVector(nb_n);
-  NumericVector temp_b = NumericVector(nb_n);
+  IntegerVector plants;
+  IntegerVector animals;
+  IntegerVector plants_bioms;
+  IntegerVector animals_bioms;
+  IntegerVector non_nut;
+  IntegerVector nuts;
+  NumericVector G;
+  NumericVector g_temp;
+  NumericVector zeros; // accordingly to documentation that should work
+  NumericVector pow_bioms;
+  NumericVector temp_nut;
+  NumericVector temp_b;
   
   // LogicalVector prey = fw[_,1] = 1;
   IntegerVector::iterator cons;
   IntegerVector::iterator cons2;
   IntegerVector::iterator res;
   IntegerVector::iterator nut; //not properly needed, but more readable
-  NumericVector uptake = NumericVector(nb_b);
-  double out = 0;
-  int i = 0;
+  NumericVector uptake;
+
+
+
+  // global nutrient turn over rate (rate of replenishment)
+  // used in calculating change in nutrient concentration
+
   
   Unscaled_nuts_loops(int ns, int nb, int nn):
-    nb_s(ns), nb_b(nb), nb_n(nn) {}
+    nb_s(ns), nb_b(nb), nb_n(nn) {
+
+  n_tot = nb_s + nb_n;
+  X = NumericVector(nb_s); // metabolic rates
+  e = NumericVector(nb_s); // assimilation efficiencies
+  r = NumericVector(nb_b); // growth rates of plants
+  S = NumericVector(nb_n); // maximal nutrient level
+  // interference competition
+  c = NumericVector(nb_s - nb_b); 
+  
+  // body masses
+  BM = NumericVector(nb_s);
+  log_BM = NumericVector(nb_s);
+  
+  // biomasses
+  bioms = NumericVector(nb_s + nb_n);
+  // r*G for plants, as there is no need to compute it at each ODE call
+  
+  // NumericVector test;
+  // p = NumericVector(2);
+  // vector of derivatives
+  dB = NumericVector(nb_n + nb_s);
+  // 
+  
+  fw = LogicalMatrix(); 
+  
+  b = NumericMatrix(nb_s,nb_s - nb_b);
+  // handling times
+  h = NumericMatrix(nb_s,nb_s - nb_b);
+  // functional response
+  F = NumericMatrix(nb_s,nb_s - nb_b);
+  // consumption rates
+  w = NumericMatrix(nb_s,nb_s - nb_b);
+
+  // relative content in the plant species' biomass
+  V = NumericMatrix(nb_n, nb_b); 
+  // plants nutrient uptake efficiency (K(i,j): plant i on nutrient j)
+  K = NumericMatrix(nb_n, nb_b); 
+
+  // internal variables for optimisation
+  // index of plants (optimisation purpose)
+
+  plants = Range(0, nb_b - 1);
+  animals = Range(nb_b, nb_s - 1);
+  plants_bioms = Range(nb_n, nb_b - 1 + nb_n);
+  animals_bioms = Range( nb_b + nb_n, nb_s - 1 + nb_n);
+  non_nut = Range(0, nb_s - 1);
+  nuts = Range(0, nb_n - 1);
+  G = NumericVector(nb_b);
+  g_temp = NumericVector(nb_b);
+  zeros = NumericVector(nb_s); // accordingly to documentation that should work
+  pow_bioms = NumericVector(nb_s);
+  temp_nut = NumericVector(nb_n);
+  temp_b = NumericVector(nb_n);
+  
+
+  uptake = NumericVector(nb_b);
+
+  D = 0.25;
+  out = 0;
+  i = 0;
+  q = 0.0;
+  ext = 0.0;
+
+    }
   
   // Rcpp::XPtr<parameters_prefs> make_model(int s, int b, int n){
   //   parameters_prefs* m = new parameters_prefs(s, b, n);
@@ -110,9 +178,7 @@ public:
     Rcout << "dbplant " << dB[plants] << std::endl;
     Rcout << "r[plants]" << r[plants] << std::endl;
     // Rcout << " prey" << prey << std::endl;
-    test_double = pow(0,1.5);
-    test = F(_, 0);
-    Rcout << "test " << test << std::endl;
+    // Rcout << "test " << test << std::endl;
   }
   
   
@@ -220,9 +286,7 @@ RCPP_MODULE(Unscaled_nuts_loopsModule){
     .field("h", &Unscaled_nuts_loops::h)
     .field("q", &Unscaled_nuts_loops::q)
     .field("V", &Unscaled_nuts_loops::V)
-    // .field("bioms", &Unscaled_nuts_loops::bioms)
     .field("dB", &Unscaled_nuts_loops::dB)
-    .field("D", &Unscaled_nuts_loops::D)
     .field("F", &Unscaled_nuts_loops::F)
     .field("uptake", &Unscaled_nuts_loops::uptake)
     .field("fw", &Unscaled_nuts_loops::fw)

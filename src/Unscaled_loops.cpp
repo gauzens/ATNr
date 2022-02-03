@@ -21,51 +21,96 @@ public:
   double s;
 
 
-  NumericVector X = NumericVector(nb_s); // metabolic rates
-  NumericVector e = NumericVector(nb_s); // assimilation efficiencies
-  NumericVector r = NumericVector(nb_b); // growth rates of plants
-  NumericVector c = NumericVector(nb_s - nb_b);  // interference competition
-  
+  NumericVector X; // metabolic rates
+  NumericVector e; // assimilation efficiencies
+  NumericVector r; // growth rates of plants
+  NumericVector c;  // interference competitio  
   // body masses
-  NumericVector BM = NumericVector(nb_s);
-  NumericVector log_BM = NumericVector(nb_s);
+  NumericVector BM;
+  // NumericVector log_BM;
   
-  NumericVector test;
-  NumericVector p = NumericVector(2);
-  // vector of derivatives
-  NumericVector dB = NumericVector(nb_s);
+  // NumericVector test;
+  // NumericVector p;
+  NumericVector dB;
   
-  LogicalMatrix fw = LogicalMatrix(); 
+  LogicalMatrix fw; 
   
-  NumericMatrix a = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix a;
   // handling times
-  NumericMatrix h = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix h;
   // functional response
-  NumericMatrix F = NumericMatrix(nb_s,nb_s - nb_b);
+  NumericMatrix F;
   // plants carying capacity
-  NumericVector K = NumericVector(nb_b); 
-
-  NumericMatrix alpha = NumericMatrix(nb_b, nb_b);
+  NumericVector K;
+  NumericMatrix alpha;
   // internal variables for optimisation
   // index of plants (optimisation purpose)
 
-  IntegerVector plants = Range(0, nb_b - 1);
-  IntegerVector animals = Range(nb_b, nb_s - 1);
-  IntegerVector all = Range(0, nb_s - 1);
+  IntegerVector plants;
+  IntegerVector animals;
+  IntegerVector all;
 
-  NumericVector pow_bioms = NumericVector(nb_s);
+  NumericVector pow_bioms;
   
   // LogicalVector prey = fw[_,1] = 1;
   IntegerVector::iterator cons;
   IntegerVector::iterator cons2;
   IntegerVector::iterator res;
   IntegerVector::iterator nut; //not properly needed, but more readable
-  NumericVector uptake = NumericVector(nb_b);
-  double out = 0;
-  int i = 0;
+  NumericVector uptake;
+  double out;
+  int i;
   
   Unscaled_loops(int ns, int nb):
-    nb_s(ns), nb_b(nb) {}
+    nb_s(ns), nb_b(nb) {
+
+
+    X = NumericVector(nb_s); // metabolic rates
+    e = NumericVector(nb_s); // assimilation efficiencies
+    r = NumericVector(nb_b); // growth rates of plants
+    c = NumericVector(nb_s - nb_b);  // interference competition
+    
+    // body masses
+    BM = NumericVector(nb_s);
+    // log_BM = NumericVector(nb_s);
+    
+    // p = NumericVector(2);
+    // vector of derivatives
+    dB = NumericVector(nb_s);
+    
+    fw = LogicalMatrix(nb_s, nb_s); 
+    
+    a = NumericMatrix(nb_s,nb_s - nb_b);
+    // handling times
+    h = NumericMatrix(nb_s,nb_s - nb_b);
+    // functional response
+    F = NumericMatrix(nb_s,nb_s - nb_b);
+    // plants carying capacity
+    K = NumericVector(nb_b); 
+
+    alpha = NumericMatrix(nb_b, nb_b);
+    // internal variables for optimisation
+    // index of plants (optimisation purpose)
+
+    plants = Range(0, nb_b - 1);
+    animals = Range(nb_b, nb_s - 1);
+    all = Range(0, nb_s - 1);
+
+    pow_bioms = NumericVector(nb_s);
+    
+    // LogicalVector prey = fw[_,1] = 1;
+    IntegerVector::iterator cons;
+    IntegerVector::iterator cons2;
+    IntegerVector::iterator res;
+    IntegerVector::iterator nut; //not properly needed, but more readable
+    uptake = NumericVector(nb_b);
+    out = 0;
+    i = 0;
+    q = 0.0;
+    ext = 0.0;
+    // s = 0.0;
+
+    }
   
   
   void print(){
@@ -75,9 +120,6 @@ public:
     Rcout << "dbplant " << dB[plants] << std::endl;
     Rcout << "r[plants]" << r[plants] << std::endl;
     // Rcout << " prey" << prey << std::endl;
-    test_double = pow(0,1.5);
-    test = F(_, 0);
-    Rcout << "test " << test << std::endl;
   }
   
   
@@ -162,7 +204,7 @@ RCPP_MODULE(Unscaled_loopsModule){
     .field("nb_s", &Unscaled_loops::nb_s)
     .field("nb_b", &Unscaled_loops::nb_b)
     .field("BM", &Unscaled_loops::BM)
-    .field("log_BM", &Unscaled_loops::log_BM)
+    // .field("log_BM", &Unscaled_loops::log_BM)
     .field("K", &Unscaled_loops::K)
     .field("r", &Unscaled_loops::r)
     .field("X", &Unscaled_loops::X)

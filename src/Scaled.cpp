@@ -72,7 +72,7 @@ public:
 
   // body masses:
   vec BM;
-  vec log_BM;
+  // vec log_BM;
     
   // vector of derivatives
   vec dB;
@@ -208,7 +208,7 @@ using namespace Rcpp;
   .field("nb_s", &Scaled::nb_s)
   .field("nb_b", &Scaled::nb_b)
   .field("BM", &Scaled::BM)
-  .field("log_BM", &Scaled::log_BM)
+  // .field("log_BM", &Scaled::log_BM)
   .field("r", &Scaled::r)
   .field("X", &Scaled::X)
   .field("e", &Scaled::e)

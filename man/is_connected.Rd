@@ -29,5 +29,5 @@ L <- create_Lmatrix(masses, n_basal)
 L[, 1:n_basal] <- 0
 fw <- L
 fw[fw > 0] <- 1
-connected = is_connected(fw)
+connected <- is_connected(fw)
 }

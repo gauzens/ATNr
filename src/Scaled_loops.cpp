@@ -29,46 +29,46 @@ public:
   double s;
   
   // metabolic rates
-  NumericVector X = NumericVector(nb_s);
+  NumericVector X;
   // maximum feeding rate. Could be a vetor of length = nb of animals (maybe more intuitive for users?)
-  NumericVector max_feed = NumericVector(nb_s-nb_b);
+  NumericVector max_feed;
 
   // assimilation efficiencies
-  NumericVector e = NumericVector(nb_s);
+  NumericVector e;
 
   // mass specific growth rates of plants
-  NumericVector r = NumericVector(nb_b);
+  NumericVector r;
 
   // interference competition
-  NumericVector c = NumericVector(nb_s - nb_b);  
+  NumericVector c;  
   // body masses:
-  NumericVector BM = NumericVector(nb_s);
-  NumericVector log_BM = NumericVector(nb_s);
+  NumericVector BM;
+  // NumericVector log_BM;
     
   // vector of derivatives
-  NumericVector dB = NumericVector(nb_s);
+  NumericVector dB;
   // 
     
-  LogicalMatrix fw = LogicalMatrix(nb_s,nb_s); 
+  LogicalMatrix fw;
   
-  NumericVector B0 = NumericVector(nb_s-nb_b);
+  NumericVector B0;
 
   // plant competition
-  NumericMatrix alpha = NumericMatrix(nb_b, nb_b);
+  NumericMatrix alpha;
 
   // functional response
-  NumericMatrix F = NumericMatrix(nb_s,nb_s-nb_b);
+  NumericMatrix F;
   // consumption rates
-  NumericMatrix w = NumericMatrix(nb_s,nb_s-nb_b);
+  NumericMatrix w;
   
   // internal variables for optimisation
   // index of plants (optimisation purpose). Is it truly needed?
-  IntegerVector plants = Range(0, nb_b - 1);
-  IntegerVector animals = Range(nb_b, nb_s - 1);
-  IntegerVector all_sp = Range(0, nb_s - 1);
+  IntegerVector plants;
+  IntegerVector animals;
+  IntegerVector all_sp;
 
-  NumericVector pow_bioms = NumericVector(nb_s);
-  NumericVector pow_B0 = pow(B0, 1+q);
+  NumericVector pow_bioms;
+  NumericVector pow_B0;
   
   // NumericVector zeros = NumericVector(nb_s); // accordingly to documentation that should work
   
@@ -77,16 +77,77 @@ public:
   IntegerVector::iterator cons2;
   IntegerVector::iterator res;
 
-  double out = 0.0;
-  int i = 0;
+  double out;
+  int i;
 
   // temporary:
-  NumericVector low = NumericVector(nb_s-nb_b);
-  NumericVector tot2 = NumericVector(nb_s-nb_b);
-  NumericVector cs = NumericVector(nb_s-nb_b);
+  NumericVector low;
+  NumericVector tot2;
+  NumericVector cs;
   
   Scaled_loops(int s, int b):
-    nb_s(s), nb_b(b) {}
+    nb_s(s), nb_b(b) {
+
+       // metabolic rates
+  X = NumericVector(nb_s);
+  // maximum feeding rate. Could be a vetor of length = nb of animals (maybe more intuitive for users?)
+  max_feed = NumericVector(nb_s-nb_b);
+
+  // assimilation efficiencies
+  e = NumericVector(nb_s);
+
+  // mass specific growth rates of plants
+  r = NumericVector(nb_b);
+
+  // interference competition
+  c = NumericVector(nb_s - nb_b);  
+  // body masses:
+  BM = NumericVector(nb_s);
+  // log_BM = NumericVector(nb_s);
+    
+  // vector of derivatives
+  dB = NumericVector(nb_s);
+  // 
+    
+  fw = LogicalMatrix(nb_s,nb_s); 
+  
+  B0 = NumericVector(nb_s-nb_b);
+
+  // plant competition
+  alpha = NumericMatrix(nb_b, nb_b);
+
+  // functional response
+  F = NumericMatrix(nb_s,nb_s-nb_b);
+  // consumption rates
+  w = NumericMatrix(nb_s,nb_s-nb_b);
+  
+  // internal variables for optimisation
+  // index of plants (optimisation purpose). Is it truly needed?
+  plants = Range(0, nb_b - 1);
+  animals = Range(nb_b, nb_s - 1);
+  all_sp = Range(0, nb_s - 1);
+
+  pow_bioms = NumericVector(nb_s);
+  
+
+  low = NumericVector(nb_s-nb_b);
+  tot2 = NumericVector(nb_s-nb_b);
+  cs = NumericVector(nb_s-nb_b);
+
+  K = 0.0;
+  out = 0.0;
+  i = 0;
+  ext = 0.0;
+  q = 0.0;
+  s = 0.0;
+  
+  // NumericVector zeros = NumericVector(nb_s); // accordingly to documentation that should work
+  
+  // LogicalVector prey = fw[_,1] = 1;
+  // IntegerVector::iterator cons;
+  // IntegerVector::iterator cons2;
+  // IntegerVector::iterator res;
+    }
   
   // Rcpp::XPtr<parameters_prefs> make_model(int s, int b, int n){
   //   parameters_prefs* m = new parameters_prefs(s, b, n);
@@ -203,7 +264,7 @@ using namespace Rcpp;
   .field("nb_s", &Scaled_loops::nb_s)
   .field("nb_b", &Scaled_loops::nb_b)
   .field("BM", &Scaled_loops::BM)
-  .field("log_BM", &Scaled_loops::log_BM)
+  // .field("log_BM", &Scaled_loops::log_BM)
   .field("r", &Scaled_loops::r)
   .field("X", &Scaled_loops::X)
   .field("e", &Scaled_loops::e)

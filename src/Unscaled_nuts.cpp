@@ -39,11 +39,12 @@ class Unscaled_nuts{
 public:
   int nb_s; // number of species
   int nb_b; // number of basal species
-  int nb_n = 2; // number of nutrients
-  int n_tot = nb_s + nb_n; // bool prefs MORE PRECISE?
+  int nb_n; // number of nutrients
+  int n_tot; // bool prefs MORE PRECISE?
+  int n_cons;
   // global nutrient turn over rate (rate of replenishment)
   // used in calculating change in nutrient concentration
-  double D = 0.25;
+  double D;
   double q;
 
   double ext;
@@ -57,7 +58,6 @@ public:
   vec out_fluxes; // out fluxes for all species
   // body masses
   vec BM ;
-  vec log_BM;
   
   // biomasses
   vec bioms;
@@ -107,8 +107,8 @@ public:
   
   Unscaled_nuts(int ns, int nb, int nn):
     nb_s(ns), nb_b(nb), nb_n(nn) {
-      int n_tot = nb_s + nb_n;
-      int n_cons = nb_s - nb_b;
+      n_tot = nb_s + nb_n;
+      n_cons = nb_s - nb_b;
       // initialise vectors to 0
       X.zeros(nb_s);
       e.zeros(nb_s);
@@ -134,6 +134,10 @@ public:
       V.zeros(nb_n, nb_b);
       wb_mat.zeros(nb_s, n_cons);
       wbh_mat.zeros(n_cons, nb_s);
+
+      // scalars
+      D = 0.0;
+      q = 0.0;
 
       // iterator
       res_end = G.end();
@@ -180,8 +184,9 @@ public:
     // (would it not be faster to use square matrices everywhere?)
     
     // Rcpp::Rcout << "aaa " << bioms.n_elem << std::endl;
+
     extinct = find(bioms < ext);
-    bioms.elem(extinct).fill(0.0);
+    bioms.elem(extinct).zeros();
     // Rcpp::Rcout << bioms.t()  << std::endl;
     bioms_non_nut = bioms.elem(non_nut);
     pow_bioms = pow(bioms_non_nut, q);
@@ -224,7 +229,7 @@ public:
      
     // note: e may be preintegrated as constant ober time
 
-    dB.elem(extinct).fill(0.0);
+    dB.elem(extinct).zeros();
 
     // derivate for nutrients
     dB(nut) = D * (S - bioms(nut)) - V*uptake;
@@ -247,7 +252,6 @@ RCPP_MODULE(Unscaled_nutsModule){
     .field("nb_b", &Unscaled_nuts::nb_b)
     .field("nb_n", &Unscaled_nuts::nb_n)
     .field("BM", &Unscaled_nuts::BM)
-    .field("log_BM", &Unscaled_nuts::log_BM)
     .field("K", &Unscaled_nuts::K)
     .field("D", &Unscaled_nuts::D)
     .field("S", &Unscaled_nuts::S)
@@ -257,11 +261,9 @@ RCPP_MODULE(Unscaled_nutsModule){
     .field("w", &Unscaled_nuts::w)
     .field("b", &Unscaled_nuts::b)
     .field("c", &Unscaled_nuts::c)
-    .field("h", &Unscaled_nuts::h)
     .field("q", &Unscaled_nuts::q)
     .field("V", &Unscaled_nuts::V)
     .field("dB", &Unscaled_nuts::dB)
-    .field("D", &Unscaled_nuts::D)
     .field("F", &Unscaled_nuts::F)
     .field("h", &Unscaled_nuts::h)
     .field("fw", &Unscaled_nuts::fw)

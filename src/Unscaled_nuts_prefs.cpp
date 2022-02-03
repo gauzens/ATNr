@@ -327,10 +327,8 @@ RCPP_MODULE(Unscaled_nuts_prefsModule){
     .field("V", &Unscaled_nuts_prefs::V)
     .field("temperature", &Unscaled_nuts_prefs::temperature)
     .field("dB", &Unscaled_nuts_prefs::dB)
-    .field("D", &Unscaled_nuts_prefs::D)
     .field("F", &Unscaled_nuts_prefs::F)
     .field("uptake", &Unscaled_nuts_prefs::uptake)
-    .field("h", &Unscaled_nuts_prefs::h)
     .field("fw", &Unscaled_nuts_prefs::fw)
     .field("ext", &Unscaled_nuts_prefs::ext)
     ;  

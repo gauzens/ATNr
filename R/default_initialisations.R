@@ -68,8 +68,8 @@ initialise_default_Unscaled_nuts <- function(
   # species. by default a predator split its foraging time equally between all
   # the prey sum of w values should be equal to 1 for a given predator.
   model$ext <- 1e-6
-  model$w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
-  model$w <- model$w[, (model$nb_b + 1):model$nb_s]
+  w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
+  model$w <- w[, (model$nb_b + 1):model$nb_s]
 
   # Plant nutrient uptake efficiency
   model$K <- with(schneider,
@@ -151,8 +151,8 @@ initialise_default_Scaled <- function(model) {
   # w parameter: how a predator splits its foraging time on the different
   # species. by default a predator split its foraging time equally between all
   # the prey sum of w values should be equal to 1 for a given predator.
-  model$w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
-  model$w <- model$w[, (model$nb_b + 1):model$nb_s]
+  w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
+  model$w <- w[, (model$nb_b + 1):model$nb_s]
 
   # per gram metabolic rate
   model$X <- with(schneider, 0.314 * BM^-0.25 / BM[1]^-0.25)

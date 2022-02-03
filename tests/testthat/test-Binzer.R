@@ -1,3 +1,5 @@
+# library(ATNr)
+# library(testthat)
 test_that("The two versions of Unscaled converge", {
   set.seed(123)
   n_species <- 50
@@ -12,13 +14,13 @@ test_that("The two versions of Unscaled converge", {
   # create the 0/1 version of the food web
   fw <- L
   fw[fw > 0] <- 1
-  
+
   # 3) create the models:
   model <- create_model_Unscaled(n_species, n_basal, masses, fw)
   # model2 uses same parameters as model
-  model2 <- new(Unscaled_loops, n_species, n_basal)
+  model2 <- new(ATNr:::Unscaled_loops, n_species, n_basal)
   model2[["BM"]] <- masses
-  model2[["log_BM"]] <- log10(masses)
+  # model2[["log_BM"]] <- log10(masses)
   model2[["fw"]] <- fw
   
   biomasses <- runif(n_species, 30, 35)

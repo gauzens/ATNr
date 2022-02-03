@@ -23,6 +23,10 @@ create_matrix_parameter(BM, b0, bprey, bpred, E, T.K, T0, k)
 
 \item{k, }{Boltzmann constant}
 }
+\value{
+A matrix filled with estimated values 
+for a model parameter that depends on prey and predator body masses (see details)
+}
 \description{
 Make parameter matrix
 }

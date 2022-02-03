@@ -39,7 +39,6 @@ public:
   int nb_b; // number of basal species
 
   double q;
-  double test_double;
   double ext;
 
 
@@ -50,10 +49,6 @@ public:
   // net growth rate of plant
   vec G;
   vec c; // interference competition
-  
-  // body masses
-  vec BM;
-  vec log_BM;
 
   // NumericVector p = NumericVector(2);
   // vector of derivatives
@@ -83,6 +78,9 @@ public:
   // plant competition
   vec s;
 
+  // body masses
+  vec BM;
+
   // slicers 
   uvec animals;
   uvec plants;
@@ -90,12 +88,11 @@ public:
 
   double out = 0;
   int i = 0;
+  int n_cons;
   
   Unscaled(int ns, int nb):
     nb_s(ns), nb_b(nb) {
-    int n_cons = nb_s - nb_b;
-    ext = 1e-6;
-
+    n_cons = nb_s - nb_b;
     X.zeros(nb_s);
     e.zeros(nb_s);
     r.zeros(nb_b);
@@ -105,8 +102,8 @@ public:
     low.zeros(n_cons);
     dB.zeros(nb_s);
     out_fluxes.zeros(nb_s);
-    BM.ones(nb_s);
     total_X.zeros(n_cons);
+    BM.zeros(nb_s);
 
     // matrices
     a.zeros(nb_s, n_cons);
@@ -117,6 +114,10 @@ public:
 
     animals = linspace<uvec>(nb_b, nb_s-1, n_cons);
     plants = linspace<uvec>(0, nb_b-1, nb_b);
+
+    q = 0;
+
+    ext = 0;
 
     }
 
@@ -180,8 +181,6 @@ RCPP_MODULE(UnscaledModule){
     .method("initialisations", &Unscaled::initialisations)
     .field("nb_s", &Unscaled::nb_s)
     .field("nb_b", &Unscaled::nb_b)
-    .field("BM", &Unscaled::BM)
-    .field("log_BM", &Unscaled::log_BM)
     .field("K", &Unscaled::K)
     .field("r", &Unscaled::r)
     .field("X", &Unscaled::X)
@@ -191,6 +190,7 @@ RCPP_MODULE(UnscaledModule){
     .field("h", &Unscaled::h)
     .field("q", &Unscaled::q)
     .field("dB", &Unscaled::dB)
+    .field("BM", &Unscaled::BM)
     .field("F", &Unscaled::F)
     .field("fw", &Unscaled::fw)
     .field("ext", &Unscaled::ext)
