@@ -39,7 +39,6 @@ remove_species = function(species, model, nuts = NULL){
   model2$BM <- model$BM[-species]
   model2$X <- model$X[-species]
   model2$e <- model$e[-species]
-  model2$log_BM <- model$log_BM[-species]
   model2$c <- model$c
   model2$q <- model2$q
 
@@ -72,7 +71,7 @@ remove_species = function(species, model, nuts = NULL){
 #' Internal function to remove species from a Unscaled_nuts model
 #'
 #'@keywords internal
-.remove_Unscaled_nuts <- function(species, model, nuts) {
+.remove_Unscaled_nuts <- function(species, model, nuts = NULL) {
   # consumers: indices of consumer species in data that does not have basal species
   consumers <- species[species > model$nb_b] - model$nb_b
   # index of basal species
@@ -92,12 +91,13 @@ remove_species = function(species, model, nuts = NULL){
   model2$BM <- model$BM[-species]
   model2$X <- model$X[-species]
   model2$e <- model$e[-species]
-  model2$log_BM <- model$log_BM[-species]
   model2$c <- model$c
   model2$q <- model2$q
 
   model2$dB <- model$dB[-(species + model$nb_n)]
-  model2$dB <- model$dB[-nuts]
+  if (!is.null(nuts)){
+    model2$dB <- model$dB[-nuts]
+  }
 
   # mat[-x,-y] or vec[-x] return void objects when x or y are numeric(0).
   # then I guess I have no other choice than checking consumers and basals?
@@ -118,12 +118,10 @@ remove_species = function(species, model, nuts = NULL){
     model2$r <- model$r[, -basals]
     model2$K <- model$K[, -basals]
     model2$V <- model$V[, -basals]
-    model2$uptake <- model$uptake[, -basals]
   }else{
     model2$r <- model$r
     model2$K <- model$K
     model2$V <- model$V
-    model2$uptake <- model$uptake
   }
   # now nutrients, no need to check for plants, as already done before
 
@@ -155,7 +153,6 @@ remove_species = function(species, model, nuts = NULL){
   model2$BM <- model$BM[-species]
   model2$X <- model$X[-species]
   model2$e <- model$e[-species]
-  model2$log_BM <- model$log_BM[-species]
   model2$c <- model$c
   model2$q <- model2$q
 
