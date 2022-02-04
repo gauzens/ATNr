@@ -53,7 +53,6 @@ create_model_Unscaled_nuts <- function(
 
   # THIS WE CAN EVEN PUT IN THE CONSTRUCTOR, PERHAPS?
   model[["BM"]] <- BM
-  model[["log_BM"]] <- log10(BM)
   model[["fw"]] <- fw
   return(model)
 }
