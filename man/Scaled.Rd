@@ -13,7 +13,7 @@ Type the name of the class to see its methods
 
 \item{\code{nb_b}}{Number of basal species}
 
-\item{\code{c}}{double: inteference competition}
+\item{\code{c}}{double: interference competition}
 
 \item{\code{X}}{Vector of metabolic rates (length = number of species)}
 
