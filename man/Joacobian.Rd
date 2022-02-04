@@ -4,7 +4,7 @@
 \alias{Joacobian}
 \title{Estimate the Jacobian matrix of a ODE system}
 \usage{
-Joacobian(bioms, ODE, eps = 1e-08)
+Joacobian(bioms, ODE, eps = 1e-06)
 }
 \arguments{
 \item{bioms}{float vector, biomass of species.}
@@ -28,4 +28,22 @@ is always lower to the extinction threshold.
 The dimension of the Jacobian matrix are not always matching the number of species in the system.
 This is because we considered that a perturbation can not correspond to the recolonisation of an extinct species.
 Therefore, extinct species are removed from the system to calculate the Jacobian matrix.
+}
+\examples{
+library(ATNr)
+set.seed(123)
+# first run a model to reach equilibrium
+masses <- runif(20, 10, 100) #body mass of species
+L <- create_Lmatrix(masses, 10, Ropt = 10)
+L[L > 0] <- 1
+mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+mod <- initialise_default_Unscaled_nuts(mod, L)
+biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
+biomasses <- append(runif(3, 20, 30), biomasses)
+times <- seq(0, 100, 1)
+sol <- lsoda_wrapper(times, biomasses, mod)
+# get the final biomasses
+final.bioms = sol[nrow(sol), -1]
+# estimate jacobian
+Joacobian(final.bioms, mod$ODE)
 }
