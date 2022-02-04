@@ -13,8 +13,26 @@
 #' This is because we considered that a perturbation can not correspond to the recolonisation of an extinct species.
 #' Therefore, extinct species are removed from the system to calculate the Jacobian matrix.
 #' @return A matrix corresponding to the Jacobian  of the system estimated at the parameter biomasses
-
-Joacobian <- function(bioms, ODE, eps = 1e-8){
+#' 
+#' 
+#' @examples
+#' library(ATNr)
+#' set.seed(123)
+#' # first run a model to reach equilibrium
+#' masses <- runif(20, 10, 100) #body mass of species
+#' L <- create_Lmatrix(masses, 10, Ropt = 10)
+#' L[L > 0] <- 1
+#' mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+#' mod <- initialise_default_Unscaled_nuts(mod, L)
+#' biomasses <- masses ^ -0.75 * 10 ^ 4 #biomasses of species
+#' biomasses <- append(runif(3, 20, 30), biomasses)
+#' times <- seq(0, 100, 1)
+#' sol <- lsoda_wrapper(times, biomasses, mod)
+#' # get the final biomasses
+#' final.bioms = sol[nrow(sol), -1]
+#' # estimate jacobian
+#' Joacobian(final.bioms, mod$ODE)
+Joacobian <- function(bioms, ODE, eps = 1e-6){
   nb_s <-  length(bioms)
   Jacob <- matrix(NA, nrow = nb_s, ncol = nb_s)
   for (cons in 1:nb_s){
