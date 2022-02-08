@@ -56,7 +56,6 @@ public:
   IntegerVector::iterator cons;
   IntegerVector::iterator cons2;
   IntegerVector::iterator res;
-  IntegerVector::iterator nut; //not properly needed, but more readable
   NumericVector uptake;
   double out;
   int i;
@@ -102,7 +101,6 @@ public:
     IntegerVector::iterator cons;
     IntegerVector::iterator cons2;
     IntegerVector::iterator res;
-    IntegerVector::iterator nut; //not properly needed, but more readable
     uptake = NumericVector(nb_b);
     out = 0;
     i = 0;
