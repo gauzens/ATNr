@@ -111,17 +111,12 @@ To run the population dynamics, all the parameters must be defined. It is possib
 ```{r}
 # for a model created by create_model_Unscaled_nuts():
 model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
-model_unscaled_nuts$initialisations()
 # for a model created by create_model_Scaled():
 model_scaled <- initialise_default_Scaled(model_scaled)
-model_scaled$initialisations()
 # for a model created by create_model_Unscaled():
 model_unscaled <- initialise_default_Unscaled(model_unscaled)
-model_unscaled$initialisations()
 ```
 
-Here the call to the `initialisations()` function is used to pre-generate internal variables to optimise computation time. It is strongly advised to run this function before each call to a solver. 
-**Note: I can imagine that this could lead to some usage errors. Is t a good think to keep it? Should we sacrifice some efficiency to (maybe?) reduce usage errors? Maybe memoisation is a good compromise here?**
 
 Importantly, for the unscaled with nutrients model of @schneider2016animal, the calculation of consumption rates rely on the L matrix created above or, in case of empirical networks, by a matrix that defines the probability of a consumer to successfully attack and consume an encountered prey. The default initialisation of the `Unsacled_nuts` and `Unscaled` models can also include temperature effects (20° C by default).
 
@@ -142,6 +137,7 @@ To have more control of the integration, it is however possible to not use the w
 
 ```{r deSolve}
 # running simulations for the Schneider model
+model_unscaled_nuts$initialisation()
 sol <- deSolve::lsoda(
   biomasses,
   times,
@@ -151,6 +147,8 @@ sol <- deSolve::lsoda(
   model_unscaled_nuts
 )
 ```
+
+Not that the call of `model_unscaled_nuts$initialisation()` is important here as it pre-computes some variables to optimise code execution. This function is normally internally called by `lsoda_wrapper`. In case of an integration that does not rely on this wrapper function, the call to `$initialisation()` is needed for ALL the model types. 
 
 The package also contains a simple function to plot the time series obtained: plot_odeweb.
 
@@ -262,7 +260,6 @@ for (t in temperatures){
   model <- initialise_default_Unscaled_nuts(model, L, temperature = t)
   model$q <- 1.2
   model$S <- rep(10, n_nut)
-  model$initialisations()
   # running simulations for the Schneider model:
   sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
   # retrieve the number of species that went extinct before the end of the
@@ -318,7 +315,6 @@ for (scal in scaling) {
   mod0 <- initialise_default_Unscaled(mod0, temperature = 0)
   mod0$c <- rep(0, mod0$nb_s - mod0$nb_b)
   mod0$alpha <- diag(mod0$nb_b)
-  mod0$initialisations()
   
   mod40 <- create_model_Unscaled(nb_s = S,
                                nb_b = sum(colSums(fw) == 0),
@@ -327,7 +323,6 @@ for (scal in scaling) {
   mod40 <- initialise_default_Unscaled(mod40, temperature = 40)
   mod40$c <- rep(0, mod40$nb_s - mod40$nb_b)
   mod40$alpha <- diag(mod40$nb_b)
-  mod40$initialisations()
   
   times <- seq(1, 1e9, by = 1e7)
   
@@ -375,7 +370,6 @@ mod <- create_model_Scaled(nb_s = S,
                            BM = masses,
                            fw = fw)
 mod <- initialise_default_Scaled(mod)
-mod$initialisations()
 times <- seq(0, 500, by = 2)
 biomasses <- runif(S, 2, 3) # starting biomasses
 ```
@@ -428,7 +422,6 @@ Changing parameters that are used in the `create_model` functions without creati
 ```{r}
 times <- seq(0, 15000, 150)
 model_unscaled_nuts$nb_s = 40
-model_unscaled_nuts$initialisations()
 # this will return an error :
 # sol <- lsoda_wrapper(times, biomasses, model_schneider)
 ```
@@ -450,7 +443,6 @@ fw[fw > 0] <- 1
 model_unscaled_nuts <- create_model_Unscaled_nuts(nb_s, nb_b, nb_n, masses, fw)
 model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 model_unscaled_nuts$BM <- sqrt(model_unscaled_nuts$BM) # we change body masses within the model
-model_unscaled_nuts$initialisations()
 sol <- lsoda_wrapper(seq(1, 5000, 50), biomasses, model_unscaled_nuts)
 par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
@@ -472,7 +464,6 @@ fw[fw > 0] <- 1
 model_unscaled_nuts <- create_model_Unscaled_nuts(nb_s, nb_b, nb_n, masses, fw)
 model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 # safely run the integration:
-model_unscaled_nuts$initialisations()
 sol <- lsoda_wrapper(times, biomasses, model_unscaled_nuts)
 ```
 
@@ -482,24 +473,6 @@ Specifically to the Schneider model, changing the 'Lmatrix' requires to update t
 ## Changing the dimensions of vectors and matrix fields in a model object without doing it consistently.
 
 Changing the dimensions of a vector or matrix object somehow implies a change in the number of species (see section above). For instance, decreasing the length of the assimilation efficiencies vector `$e` should imply a consistent update of all the other parameters (handling times, attack rates, body masses, etc depending on the model). The function `remove_species` is made to properly remove species from model objects without having to manually regenerate all parameters. 
-
-## forget the call to the initialisation function before starting the simulations: 
-
-A call to the `initialisation` function of the models is mandatory before running the simulations:
-
-```{r mistake 3}
-nb_s <- 30
-masses <- sort(10 ^ runif(nb_s, 2, 6)) #body mass of species
-L <- create_Lmatrix(masses, nb_b, Ropt = 50)
-L[, 1:nb_b] <- 0
-fw <- L
-fw[fw > 0] <- 1
-# create a new object:
-model_unscaled_nuts <- create_model_Unscaled_nuts(nb_s, nb_b, nb_n, masses, fw)
-model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
-model_unscaled_nuts$initialisations() # commenting this line will lead to wrong results.
-sol <- lsoda_wrapper(times, biomasses, model_unscaled_nuts)
-```
 
 
 ## copying model to another model variable
