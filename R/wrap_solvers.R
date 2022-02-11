@@ -28,7 +28,7 @@
 #' times <- seq(0, 100, 1)
 #' sol <- lsoda_wrapper(times, biomasses, mod)
 lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
-  model$initialisation()
+  model$initialisations()
   run_checks(model, verbose)
   deSolve::lsoda(
     y,

@@ -49,7 +49,10 @@ test_that("The two versions of Unscaled_nuts converge", {
   model$initialisations()
   times <- seq(0, 150000, 1500)
   sol <- lsoda_wrapper(times, biomasses, model)
-  sol2 <- lsoda_wrapper(times, biomasses, model2)
+  sol2 <-   deSolve::lsoda( biomasses, times,
+                            func = function(t, y, pars) list(pars$ODE(y, t)),
+                            model2,
+  )
   
   extinct <- tail(sol, 1) < model$ext
   

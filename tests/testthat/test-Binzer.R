@@ -47,7 +47,10 @@ test_that("The two versions of Unscaled converge", {
   times <- seq(0, 355000000, 1000000)
 
   sol <- lsoda_wrapper(times, biomasses, model)
-  sol2 <- lsoda_wrapper(times, biomasses, model2)
+  sol2 <-   deSolve::lsoda( biomasses, times,
+            func = function(t, y, pars) list(pars$ODE(y, t)),
+            model2,
+            )
   
   extinct = tail(sol,1) < model$ext
   
