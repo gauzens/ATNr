@@ -389,7 +389,7 @@ mod$K <- 10
 sol10 <- lsoda_wrapper(times, biomasses, mod, verbose = FALSE)
 ```
 
-As shown in the plot below, for _K = 2_ the system reaches a stable equilibrium, whereas when we increase the carrying capacity (_K = 20_) the system departs from this stable equilibrium and periodic oscillations appear.
+As shown in the plot below, for _K = 1_ the system reaches a stable equilibrium, whereas when we increase the carrying capacity (_K = 10_) the system departs from this stable equilibrium and periodic oscillations appear.
 
 ```{r delmas 3, fig.width=6, fig.height=6, fig.align='center'}
 par(mfrow = c(2, 1))
