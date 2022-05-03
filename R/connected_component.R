@@ -21,8 +21,7 @@
 #' fw <- L
 #' fw[fw > 0] <- 1
 #' connected <- is_connected(fw)
-
-is_connected <- function(fw){
+is_connected <- function(fw){ #BUG: this has conflicts with igraph::is_connected
   # m is the undirected foodweb.
   # i is the first index, default = 1.
   # visited is the TRUE/FALSE vector to check if nodes were visited.

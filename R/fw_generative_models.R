@@ -130,19 +130,10 @@ create_Lmatrix <- function(
   # check if trophic levels can be calculated
   tro_lev <- tryCatch(ATNr::TroLev(L), error = function(e) NULL)
   # check for different connected components
-  connected = is_connected(L)
-  i <- 0
-  while((isolated | cons_no_prey | is.null(tro_lev) | !connected) & i < 100) {
-    L <- Lmatrix(BM, nb_b, Ropt, gamma, th)
-    isolated <- ifelse (any(colSums(L) + rowSums(L) == 0), TRUE, FALSE)
-    cons_no_prey <- ifelse(any(colSums(L[, (nb_b + 1) : s]) == 0), TRUE, FALSE)
-    if (!isolated) {
-      tro_lev <- tryCatch(ATNr::TroLev(L), error = function(e) NULL)
-    }
-    i <- i + 1
-  }
-  if (isolated) warning("Presence of an isolated species after 100 iterations.")
-  if (cons_no_prey) warning("Presence of consumer without prey after 100 iterations.")
-  if (!connected) warning("several conected component detected")
+  connected <- ATNr::is_connected(L) #BUG - add namespace to avoid conflicts with igraph::is_connected()
+  if (is.null(tro_lev)) warning("Cannot compute trophic levels.")
+  if (isolated) warning("Presence of an isolated species.")
+  if (cons_no_prey) warning("Presence of consumer without prey.")
+  if (!connected) warning("Several conected component detected")
   return(L)
 }
