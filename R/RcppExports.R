@@ -6,7 +6,7 @@
 #' @description Type the name of the class to see its methods
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field max_feed Vector of maximum feeding rates (length = number of consumers)
 #' @field e Vector of assimilation efficiencies (length = number of species)
@@ -96,31 +96,5 @@ NULL
 #' @name Unscaled_nuts_loops
 #' @title Store parameters and functions associated to the unscaled version of ATN
 #' @description To not use. For testing purpose only. Please use Rcpp_Unscaled_nuts instead. 
-NULL
-
-#' @name Unscaled_nuts_prefs
-#' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
-#' @description Type the name of the class to see its methods
-#' @field nb_s Total number of species
-#' @field nb_b Number of basal species
-#' @field nb_n Number of nutrient pool
-#' @field X Coltor of metabolic rates (length = number of species)
-#' @field K1 Vector of maximum feeding rates (length = number of consumers)
-#' @field K2 Vector of producers maximum growth rates (length = number of basal species)
-#' @field e Vector of assimilation efficiencies (length = number of species)
-#' @field BM Vector of body masses (length = number of species)
-#' @field dB Vector of local derivatives (length = number of species)
-#' @field B0 Vector of half saturation densities (length = number of consumers)
-#' @field fw Adjacency matrix of the food-web (dim = number of species * number of species)
-#' @field w Matrix of relative consumption rates (dim = number of species * number of consumers)
-#' @field F Matrix of per-capita feeding rates (dim = number of species * number of consumers)
-#' @field q parameter for the type of functional response (hill exponent = 1 + q)
-#' @field K Carrying capacity of basal species
-#' @field ext extinction threshold for species
-#' @field ODE Calculate the derivatives for the scaled version of the ATN model \itemize{
-#' \item Parameter: bioms -  Local species biomasses
-#' \item Parameter: t - Integration time point
-#' \item Returns a Coltor of growth rate for each species at time t
-#' }
 NULL
 

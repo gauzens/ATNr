@@ -12,7 +12,7 @@ using namespace arma;
 //' @description Type the name of the class to see its methods
 //' @field nb_s Total number of species
 //' @field nb_b Number of basal species
-//' @field c double: inteference competition
+//' @field c double: interference competition
 //' @field X Vector of metabolic rates (length = number of species)
 //' @field max_feed Vector of maximum feeding rates (length = number of consumers)
 //' @field e Vector of assimilation efficiencies (length = number of species)
@@ -166,15 +166,12 @@ public:
     F = w.each_col() % pow_bioms;
     // Rcpp::Rcout << "bb " << std::endl;
     // at this point: Fij = wij * Bi
+    // now compute the lower part of the ratio:
     low = w.t()*pow_bioms + c%bioms(animals) + pow_B0;
-    // Rcpp::Rcout << "cc " << std::endl;
-    // Rcpp::Rcout << "low: " << low.t() << std::endl;
-    // Rcpp::Rcout << "tot2: " << (w.t()*pow_bioms).t() << std::endl;
-    // Rcpp::Rcout << "c: " << (c*bioms(animals)).t() << std::endl;
-    // Rcpp::Rcout << "B0: " << pow_B0.t() << std::endl;
 
+    // and make the division
     F.each_row() /=low.t();
-    // Rcpp::Rcout << "dd " << std::endl;
+
     // out_fluxes: sum of out flux for each resource species, col vector
     out_fluxes = F*(bioms(animals)%xy);
 

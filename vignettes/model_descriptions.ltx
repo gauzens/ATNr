@@ -34,7 +34,7 @@
 This document presents the mathematical definitions of the different models available in \textit{ATNr}. ATN stands for Allometric Trophic Models. 
 %This name refers to the fact that these models describe the dynamic of populations depending on how they trophically interact and because the strength of these trophic interactions is determined by biological rates (like attack rate, handling time,...) that derives from allometric relationships (i.e. body mass relationships).
 This name refers to the fact that these models describe the dynamic of populations that interact trophically with interaction strength determined by biological rates (like attack rate, handling time,...) derived from allometric relationships (i.e. body mass relationships).
-Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis&Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of species by estimating their growth rates at different point in time using a similar set of hypotheses:
+Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of species by estimating their growth rates at different point in time using a similar set of hypotheses:
 \begin{itemize}
 \item Growth rates of species are positively affected by what they consume (i.e. the models are based on energetic transfers between a resource and its consumer)
 \item Growth rates of species are negatively affected by consumers that feed upon them and by metabolic expenses. 
@@ -61,7 +61,7 @@ Here we present the formulation of feeding rate and net growth rate used by the 
 \section{Unscaled version}
 \label{section:binzer}
 
-This version implements the model as in \cite{binzer2016interactive}. It does not scale the time of the biological rate according to the growth rate of the smallest basal species explaining its denomination (see section \ref{section:delmas} for the scald version). This model also does not include nutrients dynamics (see section \ref{section:schneider}).
+This version implements the model as in \cite{binzer2016interactive}. It does not scale the time of the biological rate according to the growth rate of the smallest basal species, explaining its denomination (see section \ref{section:delmas} for the scald version). This model also does not include nutrients dynamics (see section \ref{section:schneider}).
 
 \subsection{functional response}
 In this version, the functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is written as:
@@ -70,7 +70,7 @@ In this version, the functional response $F_{ij}$ describing the feeding rate of
 F_{ij} = \frac{a_{ij}B_i^q}{1 + c_jB_j + \sum_kh_{kj}a_{kj}B_k^q}.
 \end{equation}
 
-Here, $B_i$ is the (biomass?), $a_{ij}$ is the attack rate of $j$ on $i$, $q$ is the hill exponent determining the shape of the functional response (for type II, $q = 1$; for type III, $q \in \left]1,2\right]$), $c$ sets the interference competition (the proportion of time that a consumer spends encountering con-specifics) and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. 
+Here, $B_i$ is the biomass of species $i$, $a_{ij}$ is the attack rate of $j$ on $i$, $q$ is the hill exponent determining the shape of the functional response (for type II, $q = 1$; for type III, $q \in \left]1,2\right]$), $c$ sets the interference competition (the proportion of time that a consumer spends encountering con-specifics) and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. 
 
 \subsection{growth rate}
 
@@ -219,7 +219,7 @@ x_{i} = \frac{x_0M_i^{-0.25}}{r_0M_1^{-0.25}} = \frac{x_0}{r_0} \left(\frac{M_i}
 $y_i$ is the maximum consumption rate of population $i$ relative to its metabolic rate:
 
 \begin{equation}
-y_{i} = \frac{y_i}{x_i} = \frac{\frac{y_0M_i^{-0.25}}{r_0M_1^{-0.25}}}{\frac{x_0M_i^{-0.25}}{r_0M_1^{-0.25}}} = \frac{a_y}{a_x}.
+y_{i} = \frac{y_i}{x_i} = \frac{\frac{y_0M_i^{-0.25}}{r_0M_1^{-0.25}}}{\frac{x_0M_i^{-0.25}}{r_0M_1^{-0.25}}} = \frac{y_0}{x_0}.
 \end{equation}
 
 
@@ -257,10 +257,10 @@ For this model, described in \cite{schneider2016animal}, the definition of the f
 The functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is written as: 
 
 \begin{equation}
-F_{ij} = \frac{w_ijb_{ij}B_i^q}{1 + c_jB_j + \sum_kw_{kj}Th_{kj}a_{kj}B_k^q}\frac{1}{m_i}.
+F_{ij} = \frac{w_{ij}b_{ij}B_i^q}{1 + c_jB_j + \sum_kw_{kj}h_{kj}a_{kj}B_k^q}\frac{1}{m_i}.
 \end{equation}
 
-As before, $q$ is the hill exponent determining the shape of the functional response (type II while $q = 1$, type III when $q > 1$ and $q\leq2$), $c$ sets the interference competition and $Th_{ij}$ is the handling time of consumer $j$ on resource $i$. Here, the attack rate $a_{ij}$ has been substituted by a resource specific capture coefficient $b_{ij}$ (see section \ref{subsection:schneider_params} on parameters for more details). $w_{ij}$ is $j$'s relative consumption rate when consuming $i$, such as $\sum_iw_{ij} = 1$
+As before, $q$ is the hill exponent determining the shape of the functional response (type II while $q = 1$, type III when $q > 1$ and $q\leq2$), $c$ sets the interference competition and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. Here, the attack rate $a_{ij}$ has been substituted by a resource specific capture coefficient $b_{ij}$ (see section \ref{subsection:schneider_params} on parameters for more details). $w_{ij}$ is $j$'s relative consumption rate when consuming $i$, such as $\sum_iw_{ij} = 1$. $m_i$ corresponds to the body mass of species $i$. 
 
 \subsection{growth rate}
 
@@ -290,7 +290,7 @@ Here, $D$ is the global turnover rate that determines the rate by which the nutr
            & Variable & Mathematical expression  & \begin{tabular}{@{}c@{}}Name in  \\ the package \end{tabular} & Definitions \\
         \midrule
         & $L_{ij}$  & $L_{ij} = \left( \frac{m_j}{m_iR_{opt}}e^{1-\frac{m_j}{m_iR_{opt}}}\right) $ & \texttt{\$L} & Attack rate \\
-        & $b_{ij}$  & $b_{ij} = b_0m_i^{a_1}m_j^{a_2}e^{E_b \frac{T_0 - T}{kTT_0}}L_{ij}$ & \texttt{\$b} & Attack rate \\
+        & $b_{ij}$  & $b_{ij} = b_0m_i^{b_1}m_j^{b_2}e^{E_b \frac{T_0 - T}{kTT_0}}L_{ij}$ & \texttt{\$b} & Attack rate \\
         & $h_{ij}$  & $h_{ij} = h_0m_i^{h_1}m_j^{h_2}e^{E_h \frac{T_0 - T}{kTT_0}}$ & \texttt{\$h} & Handling time \\
         & $r_i$     & $r_i = m_i^{r_1}e^{E_r \frac{T_0 - T}{kTT_0}}$ & \texttt{\$r} & Maximum growth rate\\
         & $X_i$     & $X_{i} = x_0m_i^{x_1}e^{E_x \frac{T_0 - T}{kTT_0}}$   & \texttt{\$X} & Metabolic rate \\
@@ -349,7 +349,7 @@ Here, $D$ is the global turnover rate that determines the rate by which the nutr
 \end{table}
 
 \bibliographystyle{apalike}
-\bibliography{vignette.bib}
+\bibliography{vignette}
 
 \end{document}
 

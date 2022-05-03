@@ -4,7 +4,7 @@
 \alias{.remove_Unscaled_nuts}
 \title{Internal function to remove species from a Unscaled_nuts model}
 \usage{
-.remove_Unscaled_nuts(species, model, nuts)
+.remove_Unscaled_nuts(species, model, nuts = NULL)
 }
 \description{
 Internal function to remove species from a Unscaled_nuts model

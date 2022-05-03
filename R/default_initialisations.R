@@ -53,6 +53,16 @@ create_matrix_parameter <- function(
 #'
 #' @return An object of class \emph{ATN (Rcpp_Unscaled_nuts)} with default
 #'   parameters as in Schneider et al. (2016).
+#'   
+#' @examples
+#' library(ATNr)
+#' set.seed(123)
+#' masses <- runif(20, 10, 100) #body mass of species
+#' L <- create_Lmatrix(masses, 10, Ropt = 10)
+#' L[L > 0] <- 1
+#' mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+#' mod <- initialise_default_Unscaled_nuts(mod, L)
+#' 
 initialise_default_Unscaled_nuts <- function(
   model,
   L.mat,
@@ -136,6 +146,15 @@ initialise_default_Unscaled_nuts <- function(
 #' @return An object of class \emph{Rcpp_Scaled} with default
 #'   parameters as in Delmas et al. (2017).
 #'
+#' @examples
+#  library(ATNr)
+#  set.seed(123)
+#  masses <- runif(20, 10, 100) #body mass of species
+#  L <- create_Lmatrix(masses, 10, Ropt = 10)
+#  L[L > 0] <- 1
+#  mod <- create_model_Scaled(20, 10, 3, masses, L)
+#  mod <- initialise_default_Scaled(mod)
+#'
 initialise_default_Scaled <- function(model) {
 
   utils::data("schneider", envir = environment())
@@ -207,6 +226,15 @@ initialise_default_Scaled <- function(model) {
 #'
 #' @return An object of class \emph{ATN (Rcpp_Unscaled)} with default
 #'   parameters as in Delmas et al. (2017).
+#'   
+#' @examples
+#  library(ATNr)
+#  set.seed(123)
+#  masses <- runif(20, 10, 100) #body mass of species
+#  L <- create_Lmatrix(masses, 10, Ropt = 10)
+#  L[L > 0] <- 1
+#  mod <- create_model_Unscaled(20, 10, 3, masses, L)
+#  mod <- initialise_default_Unscaled(mod)
 
 initialise_default_Unscaled <- function(model, temperature = 20){
   k <- 8.6173324e-5

@@ -214,7 +214,8 @@ public:
     for (res = 0; res != nb_b; ++res){
       G(res) = min(bioms(nut) / (K.col(res) + bioms(nut)));
     }
-    // G could be calculated like that, not sure there is uch to win here though
+    // G could be calculated using matrix inversion, 
+    // not sure there is much to win here though
     // Cholesky algs are in general in O(n^3)
     // KandBioms = k.each_col() + bioms(nut);
     // G = min(inv(KandBioms.each_col() / bioms(nut)), DIMENSION)

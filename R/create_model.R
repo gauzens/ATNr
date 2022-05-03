@@ -53,7 +53,6 @@ create_model_Unscaled_nuts <- function(
 
   # THIS WE CAN EVEN PUT IN THE CONSTRUCTOR, PERHAPS?
   model[["BM"]] <- BM
-  model[["log_BM"]] <- log10(BM)
   model[["fw"]] <- fw
   return(model)
 }
@@ -120,7 +119,7 @@ create_model_Scaled <- function(
 }
 
 
-#' @title Initialize an ATN model, following Binzer et al. 201, Global Change Biology
+#' @title Initialize an ATN model, following Binzer et al. 2016, Global Change Biology
 #'
 #' @param nb_s integer, number of total species.
 #' @param nb_b integer, number of basal species.
