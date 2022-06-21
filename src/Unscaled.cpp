@@ -144,7 +144,7 @@ public:
     // calculate the upper part of the feeding rate function
     F = a.each_col() % pow_bioms;
     // and the lower part
-  	low = t_ah*pow_bioms + c%bioms(animals)%bioms(animals) + 1;
+  	low = t_ah*pow_bioms + c%bioms(animals) + 1;
 
     // divide both to obtained the matrix of feeding rates
    	F.each_row() /=low.t();
