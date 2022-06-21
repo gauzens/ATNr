@@ -32,7 +32,6 @@
 \maketitle
 
 This document presents the mathematical definitions of the different models available in \textit{ATNr}. ATN stands for Allometric Trophic Models. 
-%This name refers to the fact that these models describe the dynamic of populations depending on how they trophically interact and because the strength of these trophic interactions is determined by biological rates (like attack rate, handling time,...) that derives from allometric relationships (i.e. body mass relationships).
 This name refers to the fact that these models describe the dynamic of populations that interact trophically with interaction strength determined by biological rates (like attack rate, handling time,...) derived from allometric relationships (i.e. body mass relationships).
 Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of species by estimating their growth rates at different point in time using a similar set of hypotheses:
 \begin{itemize}
@@ -54,14 +53,14 @@ The growth rate of basal species is defined as:
 where $r_i$ is the mass-specific growth rate of species $i$, $G_i$ its net growth rate. \\
 
 The three different versions of ATN models proposed in the package all derive from this set of equations, and only differ by how the feeding rate (i.e. species functional response) $F_{ij}$ of non basal species and net growth rate of basal species $G_i$ are calculated. For instance, a major difference in the calculation of $G_i$ among models is whether or not the dynamic of the nutrient pool is considered.\\
-Here we present the formulation of feeding rate and net growth rate used by the different models and depict how the different variables are usually defined  by proposing a default parametrisation based on what is used in the literature. As a convention, for all parameters that depend on both resources and consumers, like $F_{ij}$, the first index refers to the resource and the second to the consumer. In other words, double subscripts read as ``\textit{from a resource to a consumer}''. This matches the data structure used in the package, where all matrices are defined such as rows represent resources and columns represent consumers.  
+Here we present the formulation of feeding rate and net growth rate used by the different models and depict how the different variables are usually defined by proposing a default parametrisation based on what is used in the literature. As a convention, for all parameters that depend on both resources and consumers, like $F_{ij}$, the first index refers to the resource and the second to the consumer. In other words, double subscripts read as ``\textit{from a resource to a consumer}''. This matches the data structure used in the package, where all matrices are defined such as rows represent resources and columns represent consumers.  
 \\
 
 
 \section{Unscaled version}
 \label{section:binzer}
 
-This version implements the model as in \cite{binzer2016interactive}. It does not scale the time of the biological rate according to the growth rate of the smallest basal species, explaining its denomination (see section \ref{section:delmas} for the scald version). This model also does not include nutrients dynamics (see section \ref{section:schneider}).
+This version implements the model as in \cite{binzer2016interactive}. It does not scale the time of the biological rate according to the growth rate of the smallest basal species, explaining its denomination (see section \ref{section:delmas} for the scaled version). This model also does not include nutrient dynamics (see section \ref{section:schneider}).
 
 \subsection{functional response}
 In this version, the functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is written as:
@@ -86,7 +85,7 @@ where $K_i$ is the carrying capacity of species $i$. $s_i$ depends on the ratio 
 s_i = \sum_j \alpha_{i,j}*B_j
 \end{equation}
 
-The diagonal elements $\alpha_{ii}$ define intraspecific competition and the off-diagonal elements interspecific competition. The identity matrix ($\alpha_{ii} = 1, \alpha_{ij} = 0$ for all $(i,j)$) correspond to the model for which each basal species has its own resource (therefore, adding new basal species increases the total amount of resources available in the system). The matrix of ones ($\alpha_{ij} = 1$ for all $(i,j)$) correspond to a scenario where all basal species shared the same resource pool. 
+The diagonal elements $\alpha_{ii}$ define intraspecific competition and the off-diagonal elements interspecific competition. The identity matrix ($\alpha_{ii} = 1, \alpha_{ij} = 0$ for all $(i,j)$) corresponds to the model for which each basal species has its own resource (therefore, adding new basal species increases the total amount of resources available in the system). The matrix of ones ($\alpha_{ij} = 1$ for all $(i,j)$) correspond to a scenario where all basal species share the same resource pool. 
 
 Overall, this equation defines a saturating response: when the species biomass is low, net growth rate approaches 1. When the biomass is approaching the carrying capacity, the net growth rate tend to 0.
 
@@ -196,7 +195,7 @@ As in the previous models, the biological rates are based on allometric relation
 R_{i} = r_0M_i^{-0.25}
 \end{equation}
 
-and the same definitions hold for mass-specific $x_i$ metabolic rate and maximum feeding rate $y_i$:
+and the same definitions hold for mass-specific $X_i$ metabolic rate and maximum feeding rate $Y_i$:
 
 \begin{equation}
 X_i = x_0M_i^{-0.25},
@@ -250,7 +249,7 @@ The values associated to these parameters are presented in table \ref{tab:delmas
 \section{Unscaled version with nutrient dynamic}
 \label{section:schneider}
 
-For this model, described in \cite{schneider2016animal}, the definition of the feeding rate is based on the unscaled version (i.e. like in \cite{binzer2016interactive}, described in section \ref{section:binzer}), with a slight difference in the way the attack rate is defined. It strongly departs from the models presented before in the way the net growth rate of plants is calculated: instead of considering a maximum carrying capacity for basal species, the growth rate of plants is determined by their interactions with a nutrient pool for which the dynamic of nutrient concentrations is explicitly modeled (using differential equations, such as for species biomass dynamics). 
+For this model, described in \cite{schneider2016animal}, the definition of the feeding rate is based on the unscaled version (i.e. like in \cite{binzer2016interactive}, described in section \ref{section:binzer}), with a slight difference in the way the attack rate is defined. It strongly departs from the models presented before in the way the net growth rate of plants is calculated: instead of considering a maximum carrying capacity for basal species, the growth rate of plants is determined by their interactions with a nutrient pool for which the dynamics of nutrient concentrations are explicitly modeled (using differential equations, such as for species biomass dynamics). 
 
 \subsection{functional response}
 
@@ -264,13 +263,13 @@ As before, $q$ is the hill exponent determining the shape of the functional resp
 
 \subsection{growth rate}
 
-The net growth rate of plant species $G_i$ is not define from a parameter corresponding to a carrying capacity but from concentrations of a set of nutrients for which the dynamic over time is explicitly modeled. when plants acquire nutrients from $n$ different nutrient pools, $G_i$ is defined as:
+The net growth rate of plant species $G_i$ is not defined from a parameter corresponding to a carrying capacity but from concentrations of a set of nutrients for which the dynamic over time is explicitly modeled. when plants acquire nutrients from $n$ different nutrient pools, $G_i$ is defined as:
 
 \begin{equation}
 G_i = min\left(\frac{N_1}{K_{1i} + N_1}, ..., \frac{N_n}{K_{ni} + N_n}\right)
 \end{equation}
 
-where $k_{ni}$ determine the nutrient uptake efficiency of plant $i$ on nutrient $n$. The smaller $k_{ni}$ is, the more efficient plant $i$ is to uptake nutrient $n$. $N_n$ is the concentration of nutrient $n$, which dynamically change over time and is describe by another set of differential equations:
+where $k_{ni}$ determines the nutrient uptake efficiency of plant $i$ on nutrient $n$. The smaller $k_{ni}$ is, the more efficient plant $i$ is to uptake nutrient $n$. $N_n$ is the concentration of nutrient $n$, which dynamically changes over time and is described by another set of differential equations:
 
 \begin{equation}
 \frac{dN_n}{dt} = D(S_n - N_n) - v_{ni}\sum_ir_iG_iB_i.
@@ -324,15 +323,15 @@ Here, $D$ is the global turnover rate that determines the rate by which the nutr
         &                         & $h_2$ & $\mathcal{N}(-0.48,0.03)$ \\
         &                         & $E_h$ &  0.26 \\
         \\
-        &    $c_i$  (s)           & $c$   & $\mathcal{N}(0.8,0.2)$ \\
+        &    $c_i$  ($s$)           & $c$   & $\mathcal{N}(0.8,0.2)$ \\
         \\
-        &    $K_{np}$  (units!)   & $k$  & $\mathcal{U}(0.1,0.2)$ \\
+        &    $K_{np}$  ($g.m^{-2}$)   & $k$  & $\mathcal{U}(0.1,0.2)$ \\
         \\
-        &    $v_{np}$  (units!)   & $v$  & $\mathcal{U}(1,2), \mid \sum_n(v_{np} = 1)$ \\
+        &    $v_{np}$  ($unitless$)   & $v$  & $\mathcal{U}(1,2), \mid \sum_n(v_{np} = 1)$ \\
         \\
-        &    $S_{n}$  (units!)   & $s$  & $\mathcal{N}(10,2)$ \\
+        &    $S_{n}$  ($g.m^{-2$)   & $s$  & $\mathcal{N}(10,2)$ \\
         \\
-        &    $r_p$  (units!)      & $r_1$  & -0.25 \\
+        &    $r_p$  ($s^{-1})      & $r_1$  & -0.25 \\
         &                         & $E_r$  & -0.84 \\
         \\
         &                         & $x_0$             & 0.138 ($i$ is a plant)\\
