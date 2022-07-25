@@ -79,13 +79,13 @@ The net growth rate $G_i$ of basal species $i$ is defined as:
 G_i = 1 - \frac{s_i}{K_i},
 \end{equation}
 
-where $K_i$ is the carrying capacity of species $i$. $s_i$ depends on the ratio between plants inter- and intra-specific competition for resources $\alpha_{ij}$:
+where $K_i$ is the carrying capacity of species $i$ and $s_i$ depends on the ratio between plants inter- and intra-specific competition for resources $\alpha_{ij}$:
 
 \begin{equation}
-s_i = \sum_j \alpha_{i,j}*B_j
+s_i = \sum_j \alpha_{ij}B_j
 \end{equation}
 
-The diagonal elements $\alpha_{ii}$ define intraspecific competition and the off-diagonal elements interspecific competition. The identity matrix ($\alpha_{ii} = 1, \alpha_{ij} = 0$ for all $(i,j)$) corresponds to the model for which each basal species has its own resource (therefore, adding new basal species increases the total amount of resources available in the system). The matrix of ones ($\alpha_{ij} = 1$ for all $(i,j)$) correspond to a scenario where all basal species share the same resource pool. 
+The diagonal elements $\alpha_{ii}$ define intraspecific competition and the off-diagonal elements interspecific competition. The identity matrix ($\alpha_{ii} = 1, \alpha_{ij} = 0 \; \forall i \neq j$) corresponds to the model for which each basal species has its own resource (therefore, adding new basal species increases the total amount of resources available in the system). The matrix of ones ($\alpha_{ij} = 1 \; \forall i,\,j$) corresponds to a scenario where all basal species share the same resource pool. 
 
 Overall, this equation defines a saturating response: when the species biomass is low, net growth rate approaches 1. When the biomass is approaching the carrying capacity, the net growth rate tend to 0.
 
@@ -329,9 +329,9 @@ Here, $D$ is the global turnover rate that determines the rate by which the nutr
         \\
         &    $v_{np}$  ($unitless$)   & $v$  & $\mathcal{U}(1,2), \mid \sum_n(v_{np} = 1)$ \\
         \\
-        &    $S_{n}$  ($g.m^{-2$)   & $s$  & $\mathcal{N}(10,2)$ \\
+        &    $S_{n}$  ($g.m^{-2}$)   & $s$  & $\mathcal{N}(10,2)$ \\
         \\
-        &    $r_p$  ($s^{-1})      & $r_1$  & -0.25 \\
+        &    $r_p$  ($s^{-1}$     & $r_1$  & -0.25 \\
         &                         & $E_r$  & -0.84 \\
         \\
         &                         & $x_0$             & 0.138 ($i$ is a plant)\\
