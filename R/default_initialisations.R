@@ -174,8 +174,9 @@ initialise_default_Scaled <- function(model) {
   model$w <- w[, (model$nb_b + 1):model$nb_s]
 
   # per gram metabolic rate
-  model$X <- with(schneider, 0.314 * BM^-0.25 / BM[1]^-0.25)
-  model$X[1:schneider$nb_b] <- 0.0
+  min.BM = min(BM[1:nb_b])
+  model$X <- with(schneider, 0.314 * BM^-0.25 / min.BM^-0.25)
+  # model$X[1:schneider$nb_b] <- 0.0
   # species efficiencies
   model$e <- with(schneider, c(rep(e_P, nb_b), rep(e_A, nb_s - nb_b)))
   # interference competition
