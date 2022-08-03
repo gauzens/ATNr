@@ -147,13 +147,13 @@ initialise_default_Unscaled_nuts <- function(
 #'   parameters as in Delmas et al. (2017).
 #'
 #' @examples
-#  library(ATNr)
-#  set.seed(123)
-#  masses <- runif(20, 10, 100) #body mass of species
-#  L <- create_Lmatrix(masses, 10, Ropt = 10)
-#  L[L > 0] <- 1
-#  mod <- create_model_Scaled(20, 10, 3, masses, L)
-#  mod <- initialise_default_Scaled(mod)
+#' library(ATNr)
+#' set.seed(123)
+#' masses <- runif(20, 10, 100) #body mass of species
+#' L <- create_Lmatrix(masses, 10, Ropt = 10)
+#' L[L > 0] <- 1
+#' mod <- create_model_Scaled(20, 10, BM = masses, fw = L)
+#' mod <- initialise_default_Scaled(mod)
 #'
 initialise_default_Scaled <- function(model) {
 
