@@ -155,14 +155,19 @@ A summary of the above parameters and their derivation can be found in Tables \r
 \section{Scaled version}
 \label{section:delmas}
 
-This model, which corresponds to the one implemented in the julia package \texttt{BioEnergeticFoodWebs} (\cite{delmas2017simulations}) refers to the \textit{scaled} version of the ATN model. It means that the time unit of the different biological rates used (like metabolic rate, maximum feeding rate,...) are scaled to the growth rate of the smallest basal species (more details in \ref{subsection:Delmas_param_section}).   
+This model, which corresponds to the one implemented in the julia package \texttt{BioEnergeticFoodWebs} (\cite{delmas2017simulations}) refers to the \textit{scaled} version of the ATN model. It means that the time unit of the different biological rates used (like metabolic rate, maximum feeding rate,...) are scaled to the growth rate of the smallest basal species (more details in \ref{subsection:Delmas_param_section}). This redefinition of the variables implies a redefinition of the equations describing the dynamics of species, which introduce the scaled metabolic rate $x_i$ and the maximum feeding rate of species relative to their metabolic rate $y_i$: 
+\begin{eqnarray}
+\frac{dB_i}{dt} &=& B_ir_iG_i  - x_iB_i - \sum_{j}x_jy_jB_jF_{ij}\\
+\frac{dB_i}{dt} &=& x_iy_iB_i\sum_{j}F_{ji}e_{j} - x_iB_i - \sum_{j}x_jy_jB_jF_{ij},
+\end{eqnarray}
+   
 
 \subsection{functional response}
 
 In this model, the functional response can be expressed as: 
 
 \begin{equation}
-F_{ij} = \frac{x_jy_jw_{ij}B_i^q}{B_0^q + c_jB_j + \sum_kw_{kj}B_k^q}.
+F_{ij} = \frac{w_{ij}B_i^q}{B_0^q + c_jB_j + \sum_kw_{kj}B_k^q}.
 \end{equation}
 
 where $y_i$ is the maximum feeding rate of species $i$ relative to its mass-specific metabolic rate $x_i$. $w_{ij}$ is $j$'s relative consumption rate when consuming $i$, such as $\sum_iw_{ij} = 1$. $c_j$ is the interference competition factor. $q$ is the hill exponent determining the shape of the functional response (type II while $q = 1$, type III when $q > 1$ and $q\leq2$)
