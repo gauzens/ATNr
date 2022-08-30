@@ -188,7 +188,7 @@ initialise_default_Scaled <- function(model) {
   # Hill exponent
   model$q <- stats::rnorm(1, 1.2, 0.2)
   # max growth rate of plant species
-  model$r <- with(schneider, (ar * BM[1:nb_b]^-0.25) / (ar * BM[1]^-0.25))
+  model$r <- with(schneider, (ar * BM[1:nb_b]^-0.25) / (ar * min.BM^-0.25))
   # max carrying capacity of all plant species
   model$K <- 10
   # initialisation of the matrix of feeding rates.
