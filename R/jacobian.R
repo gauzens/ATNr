@@ -31,8 +31,8 @@
 #' # get the final biomasses
 #' final.bioms = sol[nrow(sol), -1]
 #' # estimate jacobian
-#' Joacobian(final.bioms, mod$ODE)
-Joacobian <- function(bioms, ODE, eps = 1e-6){
+#' jacobian(final.bioms, mod$ODE)
+jacobian <- function(bioms, ODE, eps = 1e-6){
   nb_s <-  length(bioms)
   Jacob <- matrix(NA, nrow = nb_s, ncol = nb_s)
   for (cons in 1:nb_s){

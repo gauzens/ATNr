@@ -18,6 +18,16 @@ An object of class \emph{Rcpp_Scaled} with default
 Initialise the default parametrisation for the scaled version of
   the ATN model as in Delmas et al. (2016).
 }
+\examples{
+library(ATNr)
+set.seed(123)
+masses <- runif(20, 10, 100) #body mass of species
+L <- create_Lmatrix(masses, 10, Ropt = 10)
+L[L > 0] <- 1
+mod <- create_model_Scaled(20, 10, BM = masses, fw = L)
+mod <- initialise_default_Scaled(mod)
+
+}
 \references{
 Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.
   (2017), Simulations of biomass dynamics in community food webs. Methods

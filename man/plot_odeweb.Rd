@@ -43,7 +43,6 @@ model <- create_model_Unscaled_nuts(
 )
 # initialize model as default in Schneider et al. (2016)
 model <- initialise_default_Unscaled_nuts(model, L)
-model$initialisations()
 # defining integration time
 times <- seq(0, 500, 5)
 biomasses <- runif(n_species + n_nutrients, 2, 3)

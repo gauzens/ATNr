@@ -21,6 +21,16 @@ An object of class \emph{ATN (Rcpp_Unscaled_nuts)} with default
 Initialise the default parametrisation for the model for
   Schneider et al. (2016).
 }
+\examples{
+library(ATNr)
+set.seed(123)
+masses <- runif(20, 10, 100) #body mass of species
+L <- create_Lmatrix(masses, 10, Ropt = 10)
+L[L > 0] <- 1
+mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
+mod <- initialise_default_Unscaled_nuts(mod, L)
+
+}
 \references{
 Schneider, F. D., Brose, U., Rall, B. C., & Guill, C. (2016).
   Animal diversity and ecosystem functioning in dynamic food webs. Nature
