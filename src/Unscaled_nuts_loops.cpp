@@ -203,7 +203,7 @@ public:
     
     for (res = non_nut.begin(); res != non_nut.end(); res++){
       for (cons = animals.begin(); cons != animals.end(); cons++){
-        if ((b(*res, *cons-nb_b) > 0) & (bioms(*res + nb_n) > 0.0) & (bioms(*cons + nb_n)>0.0)){
+        if ((b(*res, *cons-nb_b) > 0) && (bioms(*res + nb_n) > 0.0) && (bioms(*cons + nb_n)>0.0)){
           F(*res, *cons - nb_b) = F_rate(*res, *cons-nb_b, bioms);
         }
         else{
