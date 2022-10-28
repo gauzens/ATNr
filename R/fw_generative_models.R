@@ -88,7 +88,7 @@ create_niche_model <- function(S, C) {
 #' @param BM float vector, body mass of species.
 #' @param nb_b integer, number of basal species.
 #' @param Ropt numeric, consumer/resource optimal body mass ratio.
-#' @param gamma numeric, the ... of the Ricker function.
+#' @param gamma numeric, code for the width of the Ricker function.
 #' @param th float, the threshold below which attack rates are considered = 0.
 #' @export
 #' @details The L matrix contains the probability for an attack event to be
