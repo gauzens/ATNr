@@ -1,5 +1,7 @@
 Changes in version 1.0.3:
-  The initialisation() for the scaled model was assuming that smallest basal species comes first. This is not the case anymore (body masses of plant do not have to be sorted anymore). 
+  The initialisation() for the scaled model was assuming that smallest basal species comes first. This is not the case anymore (body masses of plant do not have to be sorted anymore).
+  initialisation() is now initialisations()
+  Jacobian() is now jacobian()
   correction of Boolean comparisons in the C files (use logical instead of bitwise)
 
 Changes in version 1.0.2:

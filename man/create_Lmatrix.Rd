@@ -13,7 +13,7 @@ create_Lmatrix(BM, nb_b, Ropt = 100, gamma = 2, th = 0.01)
 
 \item{Ropt}{numeric, consumer/resource optimal body mass ratio.}
 
-\item{gamma}{numeric, the ... of the Ricker function.}
+\item{gamma}{numeric, code for the width of the Ricker function.}
 
 \item{th}{float, the threshold below which attack rates are considered = 0.}
 }

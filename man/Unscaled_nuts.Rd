@@ -15,7 +15,7 @@ Type the name of the class to see its methods
 
 \item{\code{nb_n}}{Number of nutrient pool}
 
-\item{\code{c}}{double: inteference competition}
+\item{\code{c}}{double: interference competition}
 
 \item{\code{b}}{Matrix of attack rates (dim = number of species * number of consumers)}
 
