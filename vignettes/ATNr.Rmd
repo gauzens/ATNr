@@ -137,7 +137,7 @@ To have more control of the integration, it is however possible to not use the w
 
 ```{r deSolve}
 # running simulations for the Schneider model
-model_unscaled_nuts$initialisation()
+model_unscaled_nuts$initialisations()
 sol <- deSolve::lsoda(
   biomasses,
   times,
