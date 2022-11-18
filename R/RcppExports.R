@@ -38,7 +38,7 @@ NULL
 #' @description Type the name of the class to see its methods
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field X Vector of metabolic rates (length = number of species)
 #' @field a Matrix of attack rates (dim = number of species * number of consumers)
 #' @field h Matrix of handling times (dim = number of species * number of consumers)
@@ -70,7 +70,7 @@ NULL
 #' @field nb_s Total number of species
 #' @field nb_b Number of basal species
 #' @field nb_n Number of nutrient pool
-#' @field c double: inteference competition
+#' @field c double: interference competition
 #' @field b Matrix of attack rates (dim = number of species * number of consumers)
 #' @field h Matrix of handling times (dim = number of species * number of consumers)
 #' @field X vector of metabolic rates (length = number of species)

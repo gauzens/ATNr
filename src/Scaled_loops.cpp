@@ -200,7 +200,7 @@ public:
     for (res = all_sp.begin(); res != all_sp.end(); res++){
       for (cons = animals.begin(); cons != animals.end(); cons++){
         // Rcout << "res: " << *res << "  cons: " << *cons << std::endl ;
-        if ((fw(*res, *cons) > 0) & (bioms(*res) > 0.0) & (bioms(*cons)>0.0)){
+        if ((fw(*res, *cons) > 0) && (bioms(*res) > 0.0) && (bioms(*cons)>0.0)){
             F(*res, *cons-nb_b) = F_rate(*res, *cons-nb_b , bioms);
         }
         else{

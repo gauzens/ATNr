@@ -13,7 +13,7 @@ using namespace arma;
 //' @field nb_s Total number of species
 //' @field nb_b Number of basal species
 //' @field nb_n Number of nutrient pool
-//' @field c double: inteference competition
+//' @field c double: interference competition
 //' @field b Matrix of attack rates (dim = number of species * number of consumers)
 //' @field h Matrix of handling times (dim = number of species * number of consumers)
 //' @field X vector of metabolic rates (length = number of species)
@@ -186,6 +186,8 @@ public:
     // Rcpp::Rcout << "aaa " << bioms.n_elem << std::endl;
 
     extinct = find(bioms < ext);
+    uvec not_nut_extinct = find(extinct >= nb_n);
+    extinct = extinct(not_nut_extinct);
     bioms.elem(extinct).zeros();
     // Rcpp::Rcout << bioms.t()  << std::endl;
     bioms_non_nut = bioms.elem(non_nut);

@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_model.R
 \name{create_model_Unscaled}
 \alias{create_model_Unscaled}
-\title{Initialize an ATN model, following Binzer et al. 201, Global Change Biology}
+\title{Initialize an ATN model, following Binzer et al. 2016, Global Change Biology}
 \usage{
 create_model_Unscaled(nb_s, nb_b, BM, fw)
 }
@@ -19,7 +19,7 @@ create_model_Unscaled(nb_s, nb_b, BM, fw)
 An object of class \emph{ATN (Rcpp_parameters_prefs)}.
 }
 \description{
-Initialize an ATN model, following Binzer et al. 201, Global Change Biology
+Initialize an ATN model, following Binzer et al. 2016, Global Change Biology
 }
 \details{
 A model is defined by the total number of species
@@ -40,8 +40,6 @@ fw[fw > 0] <- 1
 mod <- create_model_Unscaled(n_species, n_basal, masses, fw)
 }
 \references{
-
-
 Binzer, A., Guill, C., Rall, B.C. and Brose, U. (2016),
 Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 Glob Change Biol, 22: 220-227. https://doi.org/10.1111/gcb.13086
