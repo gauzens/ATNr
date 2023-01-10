@@ -27,16 +27,21 @@
 #' biomasses <- append(runif(3, 20, 30), biomasses)
 #' times <- seq(0, 100, 1)
 #' sol <- lsoda_wrapper(times, biomasses, mod)
+#' range(sol[, -1])
+#' mod$ext <- 1e-3
+#' sol <- lsoda_wrapper(times, biomasses, mod)
 lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
   model$initialisations()
   run_checks(model, verbose)
-  deSolve::lsoda(
+  ans <- deSolve::lsoda(
     y,
     t,
     func = function(t, y, pars) list(pars$ODE(y, t)),
     model,
     ...
   )
+  ans <- .filter_extinct(ans, model)
+  return (ans)
 }
 
 # #' @title Wrapper for sundial

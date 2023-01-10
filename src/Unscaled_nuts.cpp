@@ -186,6 +186,8 @@ public:
     // Rcpp::Rcout << "aaa " << bioms.n_elem << std::endl;
 
     extinct = find(bioms < ext);
+    uvec not_nut_extinct = find(extinct >= nb_n);
+    extinct = extinct(not_nut_extinct);
     bioms.elem(extinct).zeros();
     // Rcpp::Rcout << bioms.t()  << std::endl;
     bioms_non_nut = bioms.elem(non_nut);

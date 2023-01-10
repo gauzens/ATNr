@@ -10,7 +10,7 @@ Description: Implements the differential equations associated to different versi
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.7), methods, stats, utils, deSolve
 LinkingTo: Rcpp, RcppArmadillo
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 LazyData: true
 Depends: 
     R (>= 2.10)

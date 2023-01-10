@@ -74,7 +74,6 @@ create_model_Unscaled_nuts <- function(
 #'
 #' @return An object of class \emph{ATN (Rcpp_parameters_prefs)}.
 #'
-#' @references
 #' @references Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.
 #'   (2017), Simulations of biomass dynamics in community food webs. Methods
 #'   Ecol Evol, 8: 881-886. https://doi.org/10.1111/2041-210X.12713
@@ -136,7 +135,6 @@ create_model_Scaled <- function(
 #'
 #' @return An object of class \emph{ATN (Rcpp_parameters_prefs)}.
 #'
-#' @references
 #' @references Binzer, A., Guill, C., Rall, B.C. and Brose, U. (2016),
 #' Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 #' Glob Change Biol, 22: 220-227. https://doi.org/10.1111/gcb.13086

@@ -40,8 +40,6 @@ fw[fw > 0] <- 1
 mod <- create_model_Unscaled(n_species, n_basal, masses, fw)
 }
 \references{
-
-
 Binzer, A., Guill, C., Rall, B.C. and Brose, U. (2016),
 Interactive effects of warming, eutrophication and size structure: impacts on biodiversity and food-web structure.
 Glob Change Biol, 22: 220-227. https://doi.org/10.1111/gcb.13086
