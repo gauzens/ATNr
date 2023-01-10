@@ -506,8 +506,6 @@ model_2$q
 Therefore, to create a new model object based on another one, it is important to formally create one (either with one of the `create_model_` function, or using `new`). More information on copying variables using pointers here: https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
 
 
-**Note: Should we let the possibility for users to update these key parameters (i.e. the ones in the create_model() functions)? Should we restrict them that they can only be read and not modified? For instance by not exporting them and creating a get_x() method that would return the value of x? This options is much better in terms of "security" but much less straightforward to use. **
-
 ```{r restore par, include=FALSE, echo=FALSE}
 par(oldpar)
 ```
