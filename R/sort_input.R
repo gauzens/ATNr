@@ -18,6 +18,8 @@
 #' fw <- matrix(as.numeric(runif(100) > .9), 10, 10)
 #' sort_input(bm, fw)
 sort_input <- function(BM, fw) {
+  stopifnot(nrow(fw) == ncol(fw))
+  stopifnot(length(BM) == nrow(fw))
   basals <- which(colSums(fw) == 0)
   consumers <- which(colSums(fw) > 0)
   adj <- fw[c(basals, consumers), c(basals, consumers)]

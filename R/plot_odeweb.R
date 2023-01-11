@@ -42,6 +42,7 @@
 #' plot_odeweb(sol, model$nb_s)
 #' }
 plot_odeweb <- function(x, nb_s) {
+  stopifnot((ncol(x) - 1) >= nb_s)
   pal <- grDevices::colorRampPalette(c("blue", "red"))(nb_s)
   pal <- grDevices::adjustcolor(pal, alpha.f = .5)
   plot(c(0, max(x[, 1])), #xlim

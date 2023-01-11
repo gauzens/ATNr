@@ -62,12 +62,12 @@ create_matrix_parameter <- function(
 #' L[L > 0] <- 1
 #' mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
 #' mod <- initialise_default_Unscaled_nuts(mod, L)
-#' 
 initialise_default_Unscaled_nuts <- function(
     model,
     L.mat,
     temperature = 20
 ) {
+  stopifnot(is(model, "Rcpp_Unscaled_nuts"))
   utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
@@ -154,9 +154,8 @@ initialise_default_Unscaled_nuts <- function(
 #' L[L > 0] <- 1
 #' mod <- create_model_Scaled(20, 10, BM = masses, fw = L)
 #' mod <- initialise_default_Scaled(mod)
-#'
 initialise_default_Scaled <- function(model) {
-  
+  stopifnot(is(model, "Rcpp_Scaled"))
   utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
@@ -236,8 +235,8 @@ initialise_default_Scaled <- function(model) {
 #'  L[L > 0] <- 1
 #'  mod <- create_model_Unscaled(20, 10, masses, L)
 #'  mod <- initialise_default_Unscaled(mod)
-
 initialise_default_Unscaled <- function(model, temperature = 20){
+  stopifnot(is(model, "Rcpp_Unscaled"))
   k <- 8.6173324e-5
   T0 <- 293.15
   T.K <- temperature + 273.15

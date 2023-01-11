@@ -26,7 +26,6 @@ L <- create_Lmatrix(masses, 10, Ropt = 10)
 L[L > 0] <- 1
 mod <- create_model_Scaled(20, 10, BM = masses, fw = L)
 mod <- initialise_default_Scaled(mod)
-
 }
 \references{
 Delmas, E., Brose, U., Gravel, D., Stouffer, D.B. and Poisot, T.

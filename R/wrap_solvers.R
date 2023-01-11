@@ -31,6 +31,13 @@
 #' mod$ext <- 1e-3
 #' sol <- lsoda_wrapper(times, biomasses, mod)
 lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
+  if (is(model, "Rcpp_Unscaled") || is(model, "Rcpp_Scaled")) {
+    stopifnot(model$nb_s == length(y))
+  } else if (is(model, "Rcpp_Unscaled_nuts")) {
+    stopifnot(model$nb_s + model$nb_n == length(y))
+  } else {
+    stop("The model does not seem to be an ATNr model.")
+  }
   model$initialisations()
   run_checks(model, verbose)
   ans <- deSolve::lsoda(
