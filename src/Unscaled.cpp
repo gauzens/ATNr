@@ -158,7 +158,7 @@ public:
   	// realised growth rate for plants:
     s = alpha * bioms(plants);
     // s = bioms(plants);
-  	G = 1 - bioms(plants) / K;
+  	G = 1 - s / K;
 
     // Rcpp::Rcout << G.t();
 

@@ -160,14 +160,14 @@ public:
         out += bioms[*cons] * F(*res, *cons - nb_b);
       }
       // plant resource competition 
-      // s = 0;
-      // for (i=0; i<nb_b; i++){
-      //   s += alpha(*res, i)*bioms[i];
-      // }
+      s = 0;
+      for (i=0; i<nb_b; i++){
+        s += alpha(*res, i)*bioms[i];
+      }
 
       // Rcout << 1-s/K[*res] << "  ";
       // s = bioms[*res];
-      dB[*res] = r[*res]*bioms[*res]*(1-bioms[*res]/K[*res]) - out - X[*res]*bioms[*res];
+      dB[*res] = r[*res]*bioms[*res]*(1-s/K[*res]) - out - X[*res]*bioms[*res];
     }
     // Rcout << " plants done " << std::endl;
 
