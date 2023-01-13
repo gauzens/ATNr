@@ -1,0 +1,26 @@
+test_that("LSODA works properly", {
+  set.seed(1234)
+  nb_s <- sample(seq(2, 1e1, by = 2), 1)
+  fw <- create_niche_model(nb_s, .3)
+  nb_n <- sample(seq(2, 1e1), 1)
+  times <- seq_len(1e2)
+  biomasses <- abs(rnorm(nb_s + nb_n))
+  # scaled
+  m <- create_model_Scaled(nb_s, nb_s / 2, 1:nb_s, fw)
+  m <- initialise_default_Scaled(m)
+  sol <- lsoda_wrapper(times, biomasses[seq_len(nb_s)], m)
+  expect_s3_class(sol, "deSolve")
+  expect_equal(dim(sol), c(length(times), nb_s + 1))
+  # unscaled
+  m <- create_model_Unscaled(nb_s, nb_s / 2, 1:nb_s, fw)
+  m <- initialise_default_Unscaled(m)
+  sol <- lsoda_wrapper(times, biomasses[seq_len(nb_s)], m)
+  expect_s3_class(sol, "deSolve")
+  expect_equal(dim(sol), c(length(times), nb_s + 1))
+  # scaled
+  m <- create_model_Unscaled_nuts(nb_s, nb_s / 2, nb_n, 1:nb_s, fw)
+  m <- initialise_default_Unscaled_nuts(m, fw)
+  sol <- lsoda_wrapper(times, biomasses, m)
+  expect_s3_class(sol, "deSolve")
+  expect_equal(dim(sol), c(length(times), nb_s + nb_n + 1))
+})

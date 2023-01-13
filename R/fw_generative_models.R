@@ -21,8 +21,8 @@
 #' set.seed(123)
 #' web_niche <- create_niche_model(30, .1)
 #' image(t(web_niche))
-
 create_niche_model <- function(S, C) {
+  stopifnot(S > 0 && C > 0)
   niche_model <- function(S, C) {
     # niches of species
     niche <- sort(stats::runif(S))
@@ -112,6 +112,7 @@ create_Lmatrix <- function(
   gamma = 2,
   th = 0.01
 ) {
+  stopifnot(all(BM) > 0 && nb_b >= 0 && Ropt > 0 && gamma > 0 && th >= 0)
   Lmatrix <- function(BM, nb_b, Ropt, gamma, th) {
     s <- length(BM)
     L <- matrix(rep(BM, s), s, s, byrow = TRUE) /
