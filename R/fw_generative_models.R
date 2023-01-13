@@ -112,7 +112,7 @@ create_Lmatrix <- function(
   gamma = 2,
   th = 0.01
 ) {
-  stopifnot(all(BM) > 0 && nb_b >= 0 && Ropt > 0 && gamma > 0 && th >= 0)
+  stopifnot(all(BM > 0) && nb_b >= 0 && Ropt > 0 && gamma > 0 && th >= 0)
   Lmatrix <- function(BM, nb_b, Ropt, gamma, th) {
     s <- length(BM)
     L <- matrix(rep(BM, s), s, s, byrow = TRUE) /
