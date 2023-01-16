@@ -39,7 +39,8 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
     stop("The model does not seem to be an ATNr model.")
   }
   
-  if (length(model$q) ==1){
+  if (length(model$q) == 1){
+    model$q = rep(model$q, model$nb_s - model$nb_b)
     warning('q is expected to be a vector of length = number of consumers, not a scalar.
 Same value was used for all consumers')
   }
