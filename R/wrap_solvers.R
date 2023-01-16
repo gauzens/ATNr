@@ -38,6 +38,11 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
   } else {
     stop("The model does not seem to be an ATNr model.")
   }
+  
+  if (length(model$q) ==1){
+    warning('q is expected to be a vector of length = number of consumers, not a scalar.
+Same value was used for all consumers')
+  }
   model$initialisations()
   run_checks(model, verbose)
   ans <- deSolve::lsoda(
