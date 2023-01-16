@@ -197,7 +197,12 @@ public:
   // NumericVector ODE(double t, NumericVector bioms, NumericVector p){  // for sundials
   NumericVector ODE(NumericVector bioms, double t){ // for odeintr
     
-    bioms[bioms < ext] = 0.0;
+    for (res = non_nut.begin(); res != non_nut.end(); res++){
+      if (bioms[*res] < ext){
+        bioms[*res] = 0.0;
+      }
+    }
+
     // pow_bioms = pow(bioms, q);
     
     for (res = non_nut.begin(); res != non_nut.end(); res++){

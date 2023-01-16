@@ -55,8 +55,7 @@ test_that("The two versions of Unscaled_nuts converge", {
   
   extinct <- tail(sol, 1) < model$ext
   
-  # expect_equal(sol[nrow(sol), !extinct], sol2[nrow(sol), !extinct], tolerance = 0.0001)
-  expect_equal(1, 1)
+  expect_equal(sol[nrow(sol), !extinct], sol2[nrow(sol), !extinct], tolerance = 0.0001)
 })
 
 # comparing the execution time of the two versions: 
