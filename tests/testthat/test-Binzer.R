@@ -27,7 +27,7 @@ test_that("The two versions of Unscaled converge", {
   # 5) define the desired integration time.
   model$ext = 1e-6
   model <- initialise_default_Unscaled(model)
-  model$q <- 0.2
+  # model$q <- 0.2
   
   
   # initialise properly model2

@@ -19,14 +19,14 @@
 #' times based on the general allometric equation:
 #' \deqn{p_{i,j} = b_0 * BM_i^{bprey} * BM_j^{bpred} * exp(-E * (T0-T.K) / (k * T.K * T0))}
 create_matrix_parameter <- function(
-    BM,
-    b0,
-    bprey,
-    bpred,
-    E,
-    T.K,
-    T0,
-    k
+  BM,
+  b0,
+  bprey,
+  bpred,
+  E,
+  T.K,
+  T0,
+  k
 ) {
   # create a matrix of link specific parameters (i.e that depend on both prey and predators).
   # Classically, this is needed to define attack rates or handling times.
@@ -35,7 +35,7 @@ create_matrix_parameter <- function(
   nb_s <- length(BM)
   M <- matrix(1, nrow = nb_s, ncol = nb_s)
   return(b0 * ((M * BM[, 1])^bprey * t(M * BM[, 1])^bpred) *
-           exp(-E * (T0 - T.K) / (k * T.K * T0)))
+               exp(-E * (T0 - T.K) / (k * T.K * T0)))
 }
 #' @title Default model parameters as in Schneider et al. 2016
 #'
@@ -62,12 +62,12 @@ create_matrix_parameter <- function(
 #' L[L > 0] <- 1
 #' mod <- create_model_Unscaled_nuts(20, 10, 3, masses, L)
 #' mod <- initialise_default_Unscaled_nuts(mod, L)
+#' 
 initialise_default_Unscaled_nuts <- function(
-    model,
-    L.mat,
-    temperature = 20
+  model,
+  L.mat,
+  temperature = 20
 ) {
-  stopifnot(is(model, "Rcpp_Unscaled_nuts"))
   utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
@@ -80,15 +80,15 @@ initialise_default_Unscaled_nuts <- function(
   model$ext <- 1e-6
   w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
   model$w <- w[, (model$nb_b + 1):model$nb_s]
-  
+
   # Plant nutrient uptake efficiency
   model$K <- with(schneider,
                   matrix(stats::runif(nb_b * nb_n, nut_up_min, nut_up_max),
                          nrow = nb_n, ncol = nb_b))
-  
+
   # turnover rate of the nutrients
   model$D <- schneider$D
-  
+
   # maximal nutrient level
   model$S <- with(schneider, stats::rnorm(nb_n, mu_nut, sd_nut))
   # growth rate of the basal species
@@ -97,7 +97,7 @@ initialise_default_Unscaled_nuts <- function(
   model$X <- with(schneider,
                   c(rep(x_P, nb_b), rep(x_A, nb_s - nb_b)) *
                     BM^-0.25 * exp(-0.69 * (T0 - T.K) / (k * T.K * T0)))
-  
+
   # species efficiencies
   model$e <- with(schneider, c(rep(e_P, nb_b), rep(e_A, nb_s - nb_b)))
   # species specific capture rate (encounter rate * predaion success)
@@ -105,10 +105,10 @@ initialise_default_Unscaled_nuts <- function(
   model$b <- model$b[, (model$nb_b + 1):model$nb_s]
   # specific values for plants: BM^beta = 20
   model$b[1:model$nb_b, ] <-  with(schneider,
-                                   t(replicate(model$nb_b, 20 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred)) *
-                                     L.mat[1:model$nb_b, (model$nb_b + 1):model$nb_s]
+    t(replicate(model$nb_b, 20 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred)) *
+      L.mat[1:model$nb_b, (model$nb_b + 1):model$nb_s]
   )
-  
+
   # interference competition
   model$c <- with(schneider, stats::rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-0.65 * (T0 - T.K) / (k * T.K * T0)))
   # handling time
@@ -125,7 +125,7 @@ initialise_default_Unscaled_nuts <- function(
   # initialisation of the matrix of feeding rates.
   # all values are 0 for now. Updated at each call of the ODEs estimations.
   model$F <- with(schneider, matrix(0.0, nrow = nb_s, ncol = nb_s - nb_b))
-  
+
   return(model)
 }
 
@@ -154,24 +154,25 @@ initialise_default_Unscaled_nuts <- function(
 #' L[L > 0] <- 1
 #' mod <- create_model_Scaled(20, 10, BM = masses, fw = L)
 #' mod <- initialise_default_Scaled(mod)
+#'
 initialise_default_Scaled <- function(model) {
-  stopifnot(is(model, "Rcpp_Scaled"))
+
   utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
   schneider[["nb_b"]] <- model$nb_b
   schneider[["BM"]] <- model$BM
-  
+
   # allometric constant for growth rate:
   ar <- 1
   # Carrying capacity for basal species i.e. nutrient pool accessible to ALL species simultaneously
   K <- 10
-  
+
   # w parameter: how a predator splits its foraging time on the different
   # species. by default a predator split its foraging time equally between all
   # the prey sum of w values should be equal to 1 for a given predator.
   w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
   model$w <- w[, (model$nb_b + 1):model$nb_s]
-  
+
   # per gram metabolic rate
   min.BM =  with(schneider, min(BM[1:nb_b]))
   model$X <- with(schneider, 0.314 * BM^-0.25 / min.BM^-0.25)
@@ -197,7 +198,7 @@ initialise_default_Scaled <- function(model) {
   # plant resource competition, matrix should be symetric by default
   # model$alpha = matrix(runif(model$nb_b*model$nb_b, 0.5, 1), nrow = model$nb_b, ncol = model$nb_b)
   # model$alpha[lower.tri(model$alpha)] = t(model$alpha)[lower.tri(model$alpha)]
-  
+
   model$alpha <- matrix(0, nrow = model$nb_b, ncol = model$nb_b)
   diag(model$alpha) = 1
   
@@ -228,15 +229,15 @@ initialise_default_Scaled <- function(model) {
 #'   parameters as in Delmas et al. (2017).
 #'   
 #' @examples
-#'  library(ATNr)
-#'  set.seed(123)
-#'  masses <- runif(20, 10, 100) #body mass of species
-#'  L <- create_Lmatrix(masses, 10, Ropt = 10)
-#'  L[L > 0] <- 1
-#'  mod <- create_model_Unscaled(20, 10, masses, L)
-#'  mod <- initialise_default_Unscaled(mod)
+#  library(ATNr)
+#  set.seed(123)
+#  masses <- runif(20, 10, 100) #body mass of species
+#  L <- create_Lmatrix(masses, 10, Ropt = 10)
+#  L[L > 0] <- 1
+#  mod <- create_model_Unscaled(20, 10, 3, masses, L)
+#  mod <- initialise_default_Unscaled(mod)
+
 initialise_default_Unscaled <- function(model, temperature = 20){
-  stopifnot(is(model, "Rcpp_Unscaled"))
   k <- 8.6173324e-5
   T0 <- 293.15
   T.K <- temperature + 273.15
@@ -252,11 +253,11 @@ initialise_default_Unscaled <- function(model, temperature = 20){
   model$a <- create_matrix_parameter(model$BM, exp(-13.1), 0.25, -0.8, -0.38, T.K, T0, k)
   model$a <- model$a * model$fw
   model$a <- model$a[, (model$nb_b + 1):model$nb_s]
-  
+
   model$h <- create_matrix_parameter(model$BM, exp(9.66), -0.45, 0.47, -0.26, T.K, T0, k)
   model$h <- model$h * model$fw
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
-  model$q <- 1.2
+  model$q <- rep(1.2, model$nb_s - model$nb_b)
   
   # plant resource competition, matrix should be symetric by default
   # model$alpha = matrix(runif(model$nb_b*model$nb_b, 0.5, 1), nrow = model$nb_b, ncol = model$nb_b)
@@ -264,6 +265,6 @@ initialise_default_Unscaled <- function(model, temperature = 20){
   
   model$alpha <- matrix(0, nrow = model$nb_b, ncol = model$nb_b)
   diag(model$alpha) = 1
-  
+
   return(model)
 }

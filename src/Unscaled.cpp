@@ -38,10 +38,10 @@ public:
   int nb_s; // number of species
   int nb_b; // number of basal species
 
-  double q;
   double ext;
 
 
+  vec q;
   vec X; // metabolic rates
   vec total_X; // population metabolism
   vec e; // assimilation efficiencies
@@ -69,7 +69,7 @@ public:
   // internal variables for optimisation
   // index of plants (optimisation purpose)
   mat t_ah;
-  vec pow_bioms;
+  mat pow_bioms;
     // contains lower part of the feeding rate ratio
   vec low;
 
@@ -98,24 +98,26 @@ public:
     r.zeros(nb_b);
     G.zeros(nb_b);
     c.zeros(n_cons);
-    pow_bioms.zeros(nb_s);
     low.zeros(n_cons);
     dB.zeros(nb_s);
     out_fluxes.zeros(nb_s);
     total_X.zeros(n_cons);
     BM.zeros(nb_s);
+    q.zeros(n_cons);
 
     // matrices
+    pow_bioms.zeros(nb_s, n_cons);
     a.zeros(nb_s, n_cons);
     h.zeros(nb_s, n_cons);
     F.zeros(nb_s, n_cons);
     alpha.zeros(nb_b, nb_b);
-	  t_ah.zeros(n_cons, nb_s);
+	  // t_ah.zeros(n_cons, nb_s);
+    t_ah.zeros(nb_s, n_cons);
 
     animals = linspace<uvec>(nb_b, nb_s-1, n_cons);
     plants = linspace<uvec>(0, nb_b-1, nb_b);
 
-    q = 0;
+    // q = 0;
 
     ext = 0;
 
@@ -130,7 +132,8 @@ public:
   void initialisations(){
     // intermediate matrices for the functional response:
 
-    t_ah = (a%h).t();
+    // t_ah = (a%h).t();
+    t_ah = (a%h);
   }
 
   
@@ -138,14 +141,12 @@ public:
     
     extinct = find(bioms < ext);
     bioms.elem(extinct).fill(0.0);
-
-    pow_bioms = pow(bioms, q);
-
+    pow_bioms.each_col() = bioms;
+    pow_bioms = pow(pow_bioms.each_row(), q.t());
     // calculate the upper part of the feeding rate function
-    F = a.each_col() % pow_bioms;
+    F = a % pow_bioms;
     // and the lower part
-  	low = t_ah*pow_bioms + c%bioms(animals) + 1;
-
+  	low = sum(t_ah%pow_bioms,0).t() + c%bioms(animals) + 1;
     // divide both to obtained the matrix of feeding rates
    	F.each_row() /=low.t();
 

@@ -15,12 +15,12 @@ public:
   int nb_s; // number of species
   int nb_b; // number of basal species
 
-  double q;
   double test_double;
   double ext;
   double s;
 
 
+  NumericVector q;
   NumericVector X; // metabolic rates
   NumericVector e; // assimilation efficiencies
   NumericVector r; // growth rates of plants
@@ -63,7 +63,7 @@ public:
   Unscaled_loops(int ns, int nb):
     nb_s(ns), nb_b(nb) {
 
-
+    q = NumericVector(nb_s - nb_b);
     X = NumericVector(nb_s); // metabolic rates
     e = NumericVector(nb_s); // assimilation efficiencies
     r = NumericVector(nb_b); // growth rates of plants
@@ -104,7 +104,7 @@ public:
     uptake = NumericVector(nb_b);
     out = 0;
     i = 0;
-    q = 0.0;
+    // q = 0.0;
     ext = 0.0;
     // s = 0.0;
 
@@ -128,9 +128,9 @@ public:
     int i;
 
     for (i=0; i<nb_s; i++){
-      tot += h(i,pred)*a(i,pred) * pow_bioms[i];
+      tot += h(i,pred)*a(i,pred) * pow(bioms[i], q[pred]);
     }
-    return ((a(prey,pred)*pow_bioms(prey)) / 
+    return ((a(prey,pred)*pow(bioms[prey], q[pred])) / 
             (1 + c(pred)*bioms(pred + nb_b) + tot));
   }
   
@@ -138,7 +138,7 @@ public:
   NumericVector ODE(NumericVector bioms, double t){ // for odeintr
     
     bioms[bioms < ext] = 0.0;
-    pow_bioms = pow(bioms, q);
+    // pow_bioms = pow(bioms, q);
     
     for (res = all.begin(); res != all.end(); res++){
       for (cons = animals.begin(); cons != animals.end(); cons++){
