@@ -50,7 +50,17 @@ set.seed(123)
 n_species <- 20 # number of species
 conn <- 0.3 # connectance
 fw <- create_niche_model(n_species, conn)
+# The number of basal species can be calculated:
+n_basal <- sum(colSums(fw) == 0)
 ```
+
+As the niche model does not rely on allometry, it is possible to estimate species body masses from their trophic levels, which can be calculated form the ```TroLev``` function of the package. For instance: 
+
+```{r}
+TL = TroLev(fw) #trophic levels
+masses <- 1e-2 * 10 ^ (TL - 1)
+```
+
 
 The allometric scaling model generate links based on species body masses. Therefore, it requires as an input a vector containing the body mass of species, as well as a parameter informing on the number of basal species desired. It produces a so-called L matrix which formally quantifies the probability for a consumer to successfully attack and consumer an encountered resource: 
 
@@ -90,8 +100,8 @@ model_unscaled <- create_model_Unscaled(n_species, n_basal, masses, fw)
 Once created, it is possible to access to the methods and attributes of the object to initialise or update them: 
 
 ```{r}
-# updating the hill coefficient in the Unscaled_nuts model:
-model_unscaled_nuts$q <- 1.4
+# updating the hill coefficient of consumers in the Unscaled_nuts model:
+model_unscaled_nuts$q <- rep(1.4, model_unscaled_nuts$nb_s - model_unscaled_nuts$nb_s)
 # Changing the assimilation efficiencies of all species to 0.5 in the Scaled model:
 model_scaled$e = rep(0.5, model_scaled$nb_s)
 # print the different fields that can be updated and their values:
@@ -125,7 +135,7 @@ Importantly, for the unscaled with nutrients model of @schneider2016animal, the 
 Once all the parameters are properly defined, the ODEs can be integrated by any solver. We present here a solution based on `lsoda` from library `deSolve` (@DeSolve), but other solutions exist (`sundialr` is also a possibility). The package propose a direct wrapper to `lsoda` with the function `lsoda_wrapper`: 
 
 ```{r wrappers}
-biomasses <- masses ^ -0.75 * 1e1 # starting biomasses
+biomasses <-runif(n_species, 2, 3) # starting biomasses
 biomasses <- append(runif(3, 20, 30), biomasses) # nutrient concentration
 # defining the desired integration time
 times <- seq(0, 1500, 5)
@@ -258,7 +268,8 @@ for (t in temperatures){
   # Therefore, it is not needed to create a new model object
   # TO reinitialise the different parameters is enough
   model <- initialise_default_Unscaled_nuts(model, L, temperature = t)
-  model$q <- 1.2
+  # updating the value of q, same for all consumers
+  model$q = rep(1.4, n_species - n_basal)
   model$S <- rep(10, n_nut)
   # running simulations for the Schneider model:
   sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
@@ -351,9 +362,9 @@ legend(0.1, 0.9, legend = c("40 \u00B0C", "0 \u00B0C"), fill = c("red", "blue"))
 
 ## Paradox of enrichment
 
-The paradox of enrichment states that by increasing the carrying capacity of basal species may destabilize the population dynamics @Rosenzweig. Here, we show how this can be studied with the _ATNr_; we used the model from @delmas2017simulations, but similar results can be obtained using the other two models in the package.
+The paradox of enrichment states that by increasing the carrying capacity of basal species may destabilize the population dynamics (@Rosenzweig). Here, we show how this can be studied with the _ATNr_; we used the model from @delmas2017simulations, but similar results can be obtained using the other two models in the package.
 
-First, we create a food web with 20 species and initialize the model
+First, we create a food web with 10 species and initialize the model
 
 ```{r delmas 1}
 set.seed(1234)
@@ -370,7 +381,7 @@ mod <- create_model_Scaled(nb_s = S,
                            BM = masses,
                            fw = fw)
 mod <- initialise_default_Scaled(mod)
-times <- seq(0, 500, by = 2)
+times <- seq(0, 300, by = 2)
 biomasses <- runif(S, 2, 3) # starting biomasses
 ```
 
