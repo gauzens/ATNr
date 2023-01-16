@@ -40,8 +40,6 @@ public:
   int nb_s;
   // number of basal species
   int nb_b;
-  // hill coefficient
-  double q;
 
   // extinction threshold
   double ext;
@@ -49,6 +47,8 @@ public:
   double K;
 
   
+  // hill coefficient
+  vec q;
   // metabolic rates
   vec X;
   vec total_X; // population metabolism
@@ -84,9 +84,9 @@ public:
   mat F;
   // consumption rates
   mat w;
-  mat wt;
+  // mat wt;
+  mat pow_bioms;
 
-  vec pow_bioms;
   vec pow_B0;
 
 
@@ -115,22 +115,24 @@ public:
     e.zeros(nb_s);
     r.zeros(nb_b);
     G.zeros(nb_b);
-    pow_bioms.zeros(nb_s);
+    
     low.zeros(n_cons);
     dB.zeros(nb_s);
     out_fluxes.zeros(nb_s);
     BM.ones(nb_s);
     max_feed.zeros(n_cons);
     c.zeros(n_cons);
+    q.zeros(n_cons);
     xy.zeros(n_cons);
     total_X.zeros(n_cons);
     B0.zeros(n_cons);
     pow_B0.zeros(n_cons);
     // matrices
+    pow_bioms.zeros(nb_s, n_cons);
     F.zeros(nb_s, n_cons);
     w.zeros(nb_s, n_cons);
     alpha.zeros(nb_b, nb_b);
-    wt = w.t();
+    // wt = w.t();
 
     animals = linspace<uvec>(nb_b, nb_s-1, n_cons);
     plants = linspace<uvec>(0, nb_b-1, nb_b);
@@ -146,7 +148,7 @@ public:
   
   void initialisations(){
     // intermediate matrices for the functional response:
-    wt = w.t(); // is that truly needed? I'm even not sure that transpose are calculated
+    // wt = w.t(); // is that truly needed? I'm even not sure that transpose are calculated
     xy = X(animals)%max_feed;
     pow_B0 = pow(B0, q);
   }
@@ -160,14 +162,16 @@ public:
     extinct = find(bioms < ext);
     bioms.elem(extinct).fill(0.0);
 
-    pow_bioms = pow(bioms, q);
+    pow_bioms.each_col() = bioms;
+    pow_bioms = pow(pow_bioms.each_row(), q.t());
+
     // Rcpp::Rcout << "aa " << std::endl;
     // calculate values for feeding rates
-    F = w.each_col() % pow_bioms;
+    F = w % pow_bioms;
     // Rcpp::Rcout << "bb " << std::endl;
     // at this point: Fij = wij * Bi
     // now compute the lower part of the ratio:
-    low = w.t()*pow_bioms + c%bioms(animals) + pow_B0;
+    low = sum(w%pow_bioms, 0).t() + c%bioms(animals) + pow_B0;
 
     // and make the division
     F.each_row() /=low.t();

@@ -23,12 +23,12 @@ public:
   double D;
 
   // half saturation density of nutrient, or nutrient uptake efficiency
-  double q;
   double ext;
   double out;
   int i;
 
 
+  NumericVector q;
   NumericVector X; // metabolic rates
   NumericVector e; // assimilation efficiencies
   NumericVector r; // growth rates of plants
@@ -104,7 +104,7 @@ public:
   S = NumericVector(nb_n); // maximal nutrient level
   // interference competition
   c = NumericVector(nb_s - nb_b); 
-  
+  q = NumericVector(nb_s - nb_b);
   // body masses
   BM = NumericVector(nb_s);
   log_BM = NumericVector(nb_s);
@@ -156,7 +156,6 @@ public:
   D = 0.25;
   out = 0;
   i = 0;
-  q = 0.0;
   ext = 0.0;
 
     }
@@ -189,9 +188,9 @@ public:
     int i;
 
     for (i=0; i<nb_s; i++){
-      tot += w(i, pred)*h(i,pred)*b(i,pred) * pow_bioms[i+nb_n];
+      tot += w(i, pred)*h(i,pred)*b(i,pred) * pow(bioms[i+nb_n], q[pred]);
     }
-    return ((w(prey, pred)*b(prey,pred)*pow_bioms(prey + nb_n)) / 
+    return ((w(prey, pred)*b(prey,pred)*pow(bioms(prey+ nb_n), q[pred])) / 
             ((1 + c(pred)*bioms(pred + nb_n + nb_b) + tot)*BM(pred+nb_b)));
   }
   
@@ -199,7 +198,7 @@ public:
   NumericVector ODE(NumericVector bioms, double t){ // for odeintr
     
     bioms[bioms < ext] = 0.0;
-    pow_bioms = pow(bioms, q);
+    // pow_bioms = pow(bioms, q);
     
     for (res = non_nut.begin(); res != non_nut.end(); res++){
       for (cons = animals.begin(); cons != animals.end(); cons++){

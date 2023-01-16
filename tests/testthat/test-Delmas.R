@@ -27,7 +27,6 @@ test_that("The two versions of Scaled converge", {
   # 5) define the desired integration time.
   model$ext = 1e-6
   model <- initialise_default_Scaled(model)
-  model$q <- 1.2
 
   
   # initialise properly model2

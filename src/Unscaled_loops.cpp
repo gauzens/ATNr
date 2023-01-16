@@ -50,7 +50,7 @@ public:
   IntegerVector animals;
   IntegerVector all;
 
-  NumericVector pow_bioms;
+  // NumericVector pow_bioms;
   
   // LogicalVector prey = fw[_,1] = 1;
   IntegerVector::iterator cons;
@@ -95,7 +95,7 @@ public:
     animals = Range(nb_b, nb_s - 1);
     all = Range(0, nb_s - 1);
 
-    pow_bioms = NumericVector(nb_s);
+    // pow_bioms = NumericVector(nb_s);
     
     // LogicalVector prey = fw[_,1] = 1;
     IntegerVector::iterator cons;

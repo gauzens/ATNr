@@ -68,7 +68,7 @@ public:
 
   // internal variables for optimisation
   // index of plants (optimisation purpose)
-  mat t_ah;
+  mat ah;
   mat pow_bioms;
     // contains lower part of the feeding rate ratio
   vec low;
@@ -112,7 +112,7 @@ public:
     F.zeros(nb_s, n_cons);
     alpha.zeros(nb_b, nb_b);
 	  // t_ah.zeros(n_cons, nb_s);
-    t_ah.zeros(nb_s, n_cons);
+    ah.zeros(nb_s, n_cons);
 
     animals = linspace<uvec>(nb_b, nb_s-1, n_cons);
     plants = linspace<uvec>(0, nb_b-1, nb_b);
@@ -133,7 +133,7 @@ public:
     // intermediate matrices for the functional response:
 
     // t_ah = (a%h).t();
-    t_ah = (a%h);
+    ah = (a%h);
   }
 
   
@@ -146,7 +146,7 @@ public:
     // calculate the upper part of the feeding rate function
     F = a % pow_bioms;
     // and the lower part
-  	low = sum(t_ah%pow_bioms,0).t() + c%bioms(animals) + 1;
+  	low = sum(ah%pow_bioms,0).t() + c%bioms(animals) + 1;
     // divide both to obtained the matrix of feeding rates
    	F.each_row() /=low.t();
 

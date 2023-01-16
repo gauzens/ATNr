@@ -17,8 +17,6 @@ public:
   int nb_s;
   // number of basal species
   int nb_b;
-  // hill coefficient
-  double q;
   // extinction threshold
   double ext;
   // carrying capacity of plants
@@ -45,6 +43,8 @@ public:
   NumericVector BM;
   // NumericVector log_BM;
     
+  // hill coefficient
+  NumericVector q;
   // vector of derivatives
   NumericVector dB;
   // 
@@ -67,7 +67,7 @@ public:
   IntegerVector animals;
   IntegerVector all_sp;
 
-  NumericVector pow_bioms;
+  // NumericVector pow_bioms;
   NumericVector pow_B0;
   
   // NumericVector zeros = NumericVector(nb_s); // accordingly to documentation that should work
@@ -81,8 +81,7 @@ public:
   int i;
 
   // temporary:
-  NumericVector low;
-  NumericVector tot2;
+
   NumericVector cs;
   
   Scaled_loops(int s, int b):
@@ -112,7 +111,7 @@ public:
   fw = LogicalMatrix(nb_s,nb_s); 
   
   B0 = NumericVector(nb_s-nb_b);
-
+  q = NumericVector(nb_s-nb_b);
   // plant competition
   alpha = NumericMatrix(nb_b, nb_b);
 
@@ -127,18 +126,15 @@ public:
   animals = Range(nb_b, nb_s - 1);
   all_sp = Range(0, nb_s - 1);
 
-  pow_bioms = NumericVector(nb_s);
-  
-
-  low = NumericVector(nb_s-nb_b);
-  tot2 = NumericVector(nb_s-nb_b);
+  // pow_bioms = NumericVector(nb_s);
   cs = NumericVector(nb_s-nb_b);
+  pow_B0 = NumericVector(nb_s - nb_b);
 
   K = 0.0;
   out = 0.0;
   i = 0;
   ext = 0.0;
-  q = 0.0;
+  // q = 0.0;
   s = 0.0;
   
   // NumericVector zeros = NumericVector(nb_s); // accordingly to documentation that should work
@@ -155,29 +151,20 @@ public:
   //   return(ptr);
   // }
 
-  void print(){
-    Rcout << "pow_bioms: "  << pow_bioms << std::endl;
-    // Rcout << "out_fluxes: "  <<  out << std::endl;
-    Rcout << "F: "  <<  F << std::endl;
-  }
-  
     
 
   double F_rate(int prey, int pred, NumericVector bioms){
     double tot = 0.0;
     double res;
-
+    int i;
     // is the result of w(_,pred) * pow_bioms reallocated at every call ad freed each time?
     // if yes, then I should make the intermediate vector a class attribute maybe?
-    
-    tot = sum(w(_,pred) * pow_bioms);
-    res = (w(prey, pred) * pow_bioms[prey]) / 
+    tot =0.0;
+    for (i=0; i<nb_s; i++){
+      tot += w(i,pred) * pow(bioms[i], q[pred]);
+    }
+    res = (w(prey, pred) * pow(bioms[prey], q[pred])) / 
            (pow_B0[pred] + c[pred]*bioms[pred+nb_b] + tot);
-    // low[pred] = pow_B0[pred] + c[pred]*bioms[pred+nb_b] + tot;
-    // tot2[pred] = tot;
-    // cs[pred] = c*bioms[pred+nb_b];
-    // Rcout << "    pow_bioms prey: " <<  pow_bioms[prey] << "   res: " << res << std::endl;;
-    // res = 0;
     return (res);
   }
 
@@ -188,10 +175,13 @@ public:
 
     checkUserInterrupt();
     bioms[bioms < ext] = 0.0;
-    pow_bioms = pow(bioms, q);
+    // pow_bioms = pow(bioms, q);
 
     // note: no need to be recalculated at each call of ODE
-    pow_B0 = pow(B0, q);
+    
+    for (cons = animals.begin(); cons != animals.end(); cons++){
+      pow_B0(*cons-nb_b) = pow(B0(*cons-nb_b), q(*cons-nb_b));
+    }
 
     // calculate the matrix of feeding rates
     // the if statement might prevent all loop optimisations
@@ -208,10 +198,7 @@ public:
         }
       }
     }
-    // Rcout << "low: " << low << std::endl;
-    // Rcpp::Rcout << "tot2 " << tot2 << std::endl;
-    // Rcpp::Rcout << "c " << cs << std::endl;
-    // Rcpp::Rcout << "B0 " << pow_B0 << std::endl;
+
     // derivates for plants
 
     // G = 1 - bioms[plants]*(double(nb_b)/K); multiplying a sclice of ea vector by something is not permitted? 
@@ -259,7 +246,6 @@ RCPP_MODULE(Scaled_loopsModule){
 using namespace Rcpp;
   class_<Scaled_loops>("Scaled_loops")
   .constructor<int, int>("constructor")
-  .method("print", &Scaled_loops::print)
   .method("ODE", &Scaled_loops::ODE)
   .field("nb_s", &Scaled_loops::nb_s)
   .field("nb_b", &Scaled_loops::nb_b)

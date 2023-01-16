@@ -45,7 +45,6 @@ public:
   // global nutrient turn over rate (rate of replenishment)
   // used in calculating change in nutrient concentration
   double D;
-  double q;
 
   double ext;
 
@@ -58,6 +57,7 @@ public:
   vec out_fluxes; // out fluxes for all species
   // body masses
   vec BM ;
+  vec q;
   
   // biomasses
   vec bioms;
@@ -86,7 +86,7 @@ public:
 
   // internal variables for optimisation
   vec G; // species specific growth factor Gi
-  vec pow_bioms;
+  mat pow_bioms;
   vec low;
   vec uptake;
   vec bioms_non_nut;
@@ -116,7 +116,6 @@ public:
       S.zeros(nb_n);
       G.zeros(nb_b);
       c.zeros(n_cons);
-      pow_bioms.zeros(nb_s);
       low.zeros(n_cons);
       dB.zeros(n_tot);
       uptake.zeros(nb_b);
@@ -124,8 +123,10 @@ public:
       bioms_non_nut.zeros(nb_s);
       BM.ones(nb_s);
       total_X.zeros(n_cons);
+      q.zeros(n_cons);
 
       // matrices
+      pow_bioms.zeros(nb_s, n_cons);
       b.zeros(nb_s, n_cons);
       h.zeros(nb_s, n_cons);
       F.zeros(nb_s, n_cons);
@@ -137,7 +138,6 @@ public:
 
       // scalars
       D = 0.0;
-      q = 0.0;
 
       // iterator
       res_end = G.end();
@@ -158,7 +158,7 @@ public:
     // adding efficiencies
     // wb_mat.each_col() *= e; !!! check that option later
     // wbh_mat: used in the below part of F, rows = cons, cols = res
-    wbh_mat = (w%b%h).t();
+    wbh_mat = (w%b%h);
   }
 
   void print(){
@@ -191,15 +191,16 @@ public:
     bioms.elem(extinct).zeros();
     // Rcpp::Rcout << bioms.t()  << std::endl;
     bioms_non_nut = bioms.elem(non_nut);
-    pow_bioms = pow(bioms_non_nut, q);
+    pow_bioms.each_col() = bioms_non_nut;
+    pow_bioms = pow(pow_bioms.each_row(), q.t());
 
     // calculate values for feeding rates
     // F contains first the upper part of the feeding rates
-    F = wb_mat.each_col() % pow_bioms;
+    F = wb_mat % pow_bioms;
 
     // wbh_mat*bioms: gives for each consumer i the sum over prey j of
     // wij*hij*bij*Bj
-    low = wbh_mat*pow_bioms + c%bioms(animals) + 1;
+    low = sum(wbh_mat%pow_bioms,0).t() + c%bioms(animals) + 1;
     low = low%BM(animals-nb_n);
 
     F.each_row() /=low.t();

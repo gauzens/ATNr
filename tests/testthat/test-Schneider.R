@@ -28,7 +28,6 @@ test_that("The two versions of Unscaled_nuts converge", {
   # 5) define the desired integration time.
   model$ext = 1e-6
   model <- initialise_default_Unscaled_nuts(model, L, temperature = temperature)
-  model$q <- 0.2
   model$S <- rep(60, n_nut)
   
   # initialise properly model2
