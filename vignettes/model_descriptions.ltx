@@ -32,7 +32,7 @@
 \maketitle
 
 This document presents the mathematical definitions of the different models available in \textit{ATNr}. ATN stands for Allometric Trophic Models. 
-This name refers to the fact that these models describe the dynamic of populations that interact trophically with interaction strength determined by biological rates (like attack rate, handling time,...) derived from allometric relationships (i.e. body mass relationships).
+This name refers to the fact that these models describe the dynamic of populations that interact trophically with interaction strength determined by biological rates (like attack rate, handling time, ...) derived from allometric relationships (i.e. body mass relationships).
 Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of trophically interacting species by estimating their growth rates at different point in time using a similar set of hypotheses:
 \begin{itemize}
 \item Growth rates of species are positively affected by what they consume (i.e. the models are based on energetic transfers between a resource and its consumer)
@@ -40,14 +40,11 @@ Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), diff
 \end{itemize}
 
 The growth rate of non basal species over time can be formalised by a set of differential equations:
-
 \begin{equation}
 \frac{dB_i}{dt} = B_i\sum_{j}F_{ji}e_{j} - \sum_{j}B_jF_{ij} - X_iB_i,
 \end{equation}
-
 where $\frac{dB_i}{dt}$ is the growth rate of the biomass of species $i$ at a point in time $t$, $B_i$ is the biomass of species $i$, $F_{ij}$ is the per capita feeding rate of species $j$ on species $i$ ($F_{ij}=0$ if $j$ does not feed on $i$), $e_{i}$ is the assimilation efficiency of resource $i$ when consumed and $X_i$ is the per gram metabolic rate of species $i$.  
 The growth rate of basal species is defined as:
-
 \begin{equation}
 \frac{dB_i}{dt} = r_iG_iB_i - \sum_{j}B_jF_{ij} - X_iB_i,
 \end{equation}
@@ -55,14 +52,11 @@ where $r_i$ is the mass-specific growth rate of species $i$, $G_i$ its net growt
 
 The three different versions of ATN models proposed in the package all derive from this set of equations, and only differ by how the feeding rate (i.e. species functional response) $F_{ij}$ of non basal species and net growth rate of basal species $G_i$ are calculated. For instance, a major difference in the calculation of $G_i$ among models is whether or not the dynamic of the nutrient pool is considered.\\
 
-Overall, the models currently proposed in the \textit{ATNr} package are restricted to trophic interactions. As it stands, the package does not offer the possibility to model processes such as immigration/emigration, and ontogenic shifts or to integrate other types of interactions like mutualism or socio-economic factors. However, the flexibility in the definition of the parameters associated with these processes allows users to address a large set of questions. For the different models, the package proposes a by-default parametrisation that was so far mainly used for theoretical studies \cite{schneider2016animal,binzer2016interactive}. It is however possible to adapt it to more specific usage (such as specific sets of species or ecosystem types). The use of allometric relationships permits to decrease the amount of parameters to estimate and the recent release of large datasets now allows for these more specific usages \cite{UiterwaalForage,Dell2011}.
+%Overall, the models currently proposed in the \textit{ATNr} package are restricted to trophic interactions. As it stands, the package does not offer the possibility to model processes such as immigration/emigration, and ontogenic shifts or to integrate other types of interactions like mutualism or socio-economic factors. However, the flexibility in the definition of the parameters associated with these processes allows users to address a large set of questions. For the different models, the package proposes a by-default parametrisation that was so far mainly used for theoretical studies \cite{schneider2016animal,binzer2016interactive}. It is however possible to adapt it to more specific usage (such as specific sets of species or ecosystem types). The use of allometric relationships permits to decrease the amount of parameters to estimate and the recent release of large datasets now allows for these more specific usages \cite{UiterwaalForage,Dell2011}.
 
 Overall, the models currently proposed in the \textit{ATNr} package provide the means to generate the biomass dynamics of populations depending on their trophic interactions. As it stands, the package is focused on such population dynamics in local communities, which excludes the modeling of spatial processes drive by immigration and emigration \cite{RyserLoosers}, ontogenetic shifts in stage- or size-structured populations \cite{DeRoos2008}, other types of interactions like mutualism \cite{Thebault2010a} or socio-economic factors \cite{werner2022biodiversity}. While the approach of bioenergetic population dynamic modeling is generally flexible to include all of these aspects, we have kept the model of the package relatively simple as adding any of these processes to the package would come at the cost of the necessity to parameterize them. However, the flexibility in the definition of the parameters associated with the processes in the current version of the model allows users to address a large set of questions related to the links between food web and community structure, behavioural aspects and environmental gradients, such as temperature or productivity. For the different models, the package proposes a by-default parametrisation that was so far mainly used for theoretical studies \cite{schneider2016animal,binzer2016interactive}. It is however possible to adapt it to more specific usage (such as specific sets of species or ecosystem types). The use of allometric relationships permits to decrease the amount of parameters to estimate and the recent release of large datasets now allows for these more specific usages \cite{UiterwaalForage,Dell2011}.
 
-
 Here we present the formulation of feeding rate and net growth rate used by the different models and depict how the different variables are usually defined by proposing a default parametrisation based on what is used in the literature. As a convention, for all parameters that depend on both resources and consumers, like $F_{ij}$, the first index refers to the resource and the second to the consumer. In other words, double subscripts read as ``\textit{from a resource to a consumer}''. This matches the data structure used in the package, where all matrices are defined such as rows represent resources and columns represent consumers.  
-\\,
-
 
 \section{Unscaled version}
 \label{section:binzer}
@@ -169,7 +163,7 @@ A summary of the above parameters and their derivation can be found in Tables \r
 \section{Scaled version}
 \label{section:delmas}
 
-This model, which corresponds to the one implemented in the julia package \texttt{BioEnergeticFoodWebs} (\cite{delmas2017simulations}) refers to the \textit{scaled} version of the ATN model. It means that the time unit of the different biological rates used (like metabolic rate, maximum feeding rate,...) are scaled to the growth rate of the smallest basal species (more details in \ref{subsection:Delmas_param_section}). This redefinition of the variables implies a redefinition of the equations describing the dynamics of species, which introduce the scaled metabolic rate $x_i$ and the maximum feeding rate of species relative to their metabolic rate $y_i$: 
+This model, which corresponds to the one implemented in the julia package \texttt{BioEnergeticFoodWebs} (\cite{delmas2017simulations}) refers to the \textit{scaled} version of the ATN model. It means that the time unit of the different biological rates used (like metabolic rate, maximum feeding rate, ...) are scaled to the growth rate of the smallest basal species (more details in \ref{subsection:Delmas_param_section}). This redefinition of the variables implies a redefinition of the equations describing the dynamics of species, which introduce the scaled metabolic rate $x_i$ and the maximum feeding rate of species relative to their metabolic rate $y_i$: 
 \begin{eqnarray}
 \frac{dB_i}{dt} &=& B_ir_iG_i  - x_iB_i - \sum_{j}x_jy_jB_jF_{ij}\\
 \frac{dB_i}{dt} &=& x_iy_iB_i\sum_{j}F_{ji}e_{j} - x_iB_i - \sum_{j}x_jy_jB_jF_{ij},

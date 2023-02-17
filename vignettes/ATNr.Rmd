@@ -21,7 +21,6 @@ oldpar <- par()
 
 The package *ATNr* defines the differential equations and parametrisation of different versions of the Allometric Trophic Network (ATN) model. It is structured around a model object that contains a function implementing the ordinary differential equations (ODEs) of the model and various attributes defining the different parameters to run the ODEs.
 
-
 Two different versions of the model are implemented: 
 
 * Scaled version: @delmas2017simulations
@@ -437,7 +436,6 @@ model_unscaled_nuts$nb_s = 40
 # sol <- lsoda_wrapper(times, biomasses, model_schneider)
 ```
 
-
 However, some modification can remain undetected. For instance, modifying species' body masses only won't raise any errors. However, a change in species body mass should be associated to a change in all the associated biological rates. The following code won't raise any errors, but will produce results relying on a model with an incoherent set of parameters and therefore wrong result:
 
 ```{r mistake 2, fig.width=6}
@@ -459,7 +457,6 @@ par(mar = c(4, 4, 1, 1))
 plot_odeweb(sol, model_unscaled_nuts$nb_s)
 ```
 
-
 In general, each time one of these key parameters is modified (`nb_s`, `nb_b`, `nb_n` for the Schneider model, `BM`, `fw`), it is strongly recommended to create a new model objects with the updated parameters:
 
 ```{r}
@@ -478,21 +475,16 @@ model_unscaled_nuts <- initialise_default_Unscaled_nuts(model_unscaled_nuts, L)
 sol <- lsoda_wrapper(times, biomasses, model_unscaled_nuts)
 ```
 
-
 Specifically to the Schneider model, changing the 'Lmatrix' requires to update the feeding rate (`$b`). 
 
 ## Changing the dimensions of vectors and matrix fields in a model object without doing it consistently.
 
 Changing the dimensions of a vector or matrix object somehow implies a change in the number of species (see section above). For instance, decreasing the length of the assimilation efficiencies vector `$e` should imply a consistent update of all the other parameters (handling times, attack rates, body masses, etc depending on the model). The function `remove_species` is made to properly remove species from model objects without having to manually regenerate all parameters. 
 
-
-### forget that the model objects are formally pointers to C++ classes
-
-This is associated to different issues: 
-
-## copying model to another model variable
+## Shallow copying models
 
 As built on Rcpp, the different models are only pointers to C++ objects. It means that this script:
+
 ```{r mistake 4}
 nb_s <- 30
 nb_n <- 2
@@ -520,12 +512,12 @@ model_2$q
 
 Therefore, to create a new model object based on another one, it is important to formally create one (either with one of the `create_model_` function, or using `new`). More information on copying variables using pointers here: https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
 
-### modifying a model object in a *apply function
+## Modifying a model object in a *apply function
 
-modifying a R variable inside a ```*apply``` function in does not modify it:
+Modifying a R variable inside a ```*apply``` function in does not modify it:
 
 ```{r}
-plus.3 = function(x, useless){
+plus.3 = function(x, useless) {
   y = x+3
   useless = useless + 1
   return(y)
@@ -556,6 +548,7 @@ model <- initialise_default_Unscaled_nuts(model, L, temperature = 20)
 ```
 
 and a function that takes this model object as an argument, setting the b matrix to 0:
+
 ```{r}
 # a function that sets all elements of model$b to 0
 a.fun <-  function(x, model){
@@ -573,7 +566,8 @@ y = lapply(x, a.fun, model)
 sum(model$b)
 ```
 
-However, this behaviour is not present when using a parrallel version of an apply function:
+This behaviour is still due to the fact that in a *apply function the model is shallow-copied and each iteration points in fact to the same object in memory.
+However, this behaviour is not present when using a parrallel version of an apply function, as in parallel computations the object is automatically deep-copied and passed to each task separately:
 
 ```{r, eval = FALSE}
 library(parallel)
@@ -582,7 +576,6 @@ model <- initialise_default_Unscaled_nuts(model, L, temperature = 20)
 y = mclapply(x, a.fun, model = model, mc.cores=5)
 sum(model$b)
 ```
-
 
 ```{r restore par, include=FALSE, echo=FALSE}
 par(oldpar)
