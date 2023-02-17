@@ -33,12 +33,13 @@
 
 This document presents the mathematical definitions of the different models available in \textit{ATNr}. ATN stands for Allometric Trophic Models. 
 This name refers to the fact that these models describe the dynamic of populations that interact trophically with interaction strength determined by biological rates (like attack rate, handling time,...) derived from allometric relationships (i.e. body mass relationships).
-Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of species by estimating their growth rates at different point in time using a similar set of hypotheses:
+Since the seminal work from Yodzis and Innes in 1992 (\cite{Yodzis_Innes}), different implementations were developed through time and the \textit{ATNr} package propose three versions that are classically used in food web studies. Despite their differences, all \textit{ATNr} models describe the biomass dynamic of trophically interacting species by estimating their growth rates at different point in time using a similar set of hypotheses:
 \begin{itemize}
 \item Growth rates of species are positively affected by what they consume (i.e. the models are based on energetic transfers between a resource and its consumer)
 \item Growth rates of species are negatively affected by consumers that feed upon them and by metabolic expenses. 
 \end{itemize}
-Overall, the growth rate of non basal species over time can be formalised by a set of differential equations:
+
+The growth rate of non basal species over time can be formalised by a set of differential equations:
 
 \begin{equation}
 \frac{dB_i}{dt} = B_i\sum_{j}F_{ji}e_{j} - \sum_{j}B_jF_{ij} - X_iB_i,
@@ -53,8 +54,14 @@ The growth rate of basal species is defined as:
 where $r_i$ is the mass-specific growth rate of species $i$, $G_i$ its net growth rate. \\
 
 The three different versions of ATN models proposed in the package all derive from this set of equations, and only differ by how the feeding rate (i.e. species functional response) $F_{ij}$ of non basal species and net growth rate of basal species $G_i$ are calculated. For instance, a major difference in the calculation of $G_i$ among models is whether or not the dynamic of the nutrient pool is considered.\\
+
+Overall, the models currently proposed in the \textit{ATNr} package are restricted to trophic interactions. As it stands, the package does not offer the possibility to model processes such as immigration/emigration, and ontogenic shifts or to integrate other types of interactions like mutualism or socio-economic factors. However, the flexibility in the definition of the parameters associated with these processes allows users to address a large set of questions. For the different models, the package proposes a by-default parametrisation that was so far mainly used for theoretical studies \cite{schneider2016animal,binzer2016interactive}. It is however possible to adapt it to more specific usage (such as specific sets of species or ecosystem types). The use of allometric relationships permits to decrease the amount of parameters to estimate and the recent release of large datasets now allows for these more specific usages \cite{UiterwaalForage,Dell2011}.
+
+Overall, the models currently proposed in the \textit{ATNr} package provide the means to generate the biomass dynamics of populations depending on their trophic interactions. As it stands, the package is focused on such population dynamics in local communities, which excludes the modeling of spatial processes drive by immigration and emigration \cite{RyserLoosers}, ontogenetic shifts in stage- or size-structured populations \cite{DeRoos2008}, other types of interactions like mutualism \cite{Thebault2010a} or socio-economic factors \cite{werner2022biodiversity}. While the approach of bioenergetic population dynamic modeling is generally flexible to include all of these aspects, we have kept the model of the package relatively simple as adding any of these processes to the package would come at the cost of the necessity to parameterize them. However, the flexibility in the definition of the parameters associated with the processes in the current version of the model allows users to address a large set of questions related to the links between food web and community structure, behavioural aspects and environmental gradients, such as temperature or productivity. For the different models, the package proposes a by-default parametrisation that was so far mainly used for theoretical studies \cite{schneider2016animal,binzer2016interactive}. It is however possible to adapt it to more specific usage (such as specific sets of species or ecosystem types). The use of allometric relationships permits to decrease the amount of parameters to estimate and the recent release of large datasets now allows for these more specific usages \cite{UiterwaalForage,Dell2011}.
+
+
 Here we present the formulation of feeding rate and net growth rate used by the different models and depict how the different variables are usually defined by proposing a default parametrisation based on what is used in the literature. As a convention, for all parameters that depend on both resources and consumers, like $F_{ij}$, the first index refers to the resource and the second to the consumer. In other words, double subscripts read as ``\textit{from a resource to a consumer}''. This matches the data structure used in the package, where all matrices are defined such as rows represent resources and columns represent consumers.  
-\\
+\\,
 
 
 \section{Unscaled version}
@@ -63,10 +70,17 @@ Here we present the formulation of feeding rate and net growth rate used by the 
 This version implements the model as in \cite{binzer2016interactive}. It does not scale the time of the biological rate according to the growth rate of the smallest basal species, explaining its denomination (see section \ref{section:delmas} for the scaled version). This model also does not include nutrient dynamics (see section \ref{section:schneider}).
 
 \subsection{functional response}
-In this version, the functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is written as:
+In this version, the functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is informed by 4 different ecological processes:
+
+\begin{itemize}
+\item Clearance rate a_{ij}, (sometimes described as attack rate). This parameter is  
+\item Growth rates of species are negatively affected by consumers that feed upon them and by metabolic expenses. 
+\end{itemize}
+
+is written as:
 
 \begin{equation}
-F_{ij} = \frac{a_{ij}B_i^q}{1 + c_jB_j + \sum_kh_{kj}a_{kj}B_k^q}.
+F_{ij} = \frac{a_{ij}B_i^{q_j}}{1 + c_jB_j + \sum_kh_{kj}a_{kj}B_k^{q_j}}.
 \end{equation}
 
 Here, $B_i$ is the biomass of species $i$, $a_{ij}$ is the attack rate of $j$ on $i$, $q$ is the hill exponent determining the shape of the functional response (for type II, $q = 1$; for type III, $q \in \left]1,2\right]$), $c$ sets the interference competition (the proportion of time that a consumer spends encountering con-specifics) and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. 

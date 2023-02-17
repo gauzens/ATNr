@@ -160,7 +160,7 @@ sol <- deSolve::lsoda(
 
 Not that the call of `model_unscaled_nuts$initialisation()` is important here as it pre-computes some variables to optimise code execution. This function is normally internally called by `lsoda_wrapper`. In case of an integration that does not rely on this wrapper function, the call to `$initialisation()` is needed for ALL the model types. 
 
-The package also contains a simple function to plot the time series obtained: plot_odeweb.
+The package also contains a simple function to plot the time series obtained: plot_odeweb. The colours only differentiate the species using their ranks in the food web matrix (from blue to red). 
 
 ```{r plot_odeweb, fig.width=4, fig.height=3, fig.align='center'}
 par(mar = c(4, 4, 1, 1))
@@ -486,6 +486,10 @@ Specifically to the Schneider model, changing the 'Lmatrix' requires to update t
 Changing the dimensions of a vector or matrix object somehow implies a change in the number of species (see section above). For instance, decreasing the length of the assimilation efficiencies vector `$e` should imply a consistent update of all the other parameters (handling times, attack rates, body masses, etc depending on the model). The function `remove_species` is made to properly remove species from model objects without having to manually regenerate all parameters. 
 
 
+### forget that the model objects are formally pointers to C++ classes
+
+This is associated to different issues: 
+
 ## copying model to another model variable
 
 As built on Rcpp, the different models are only pointers to C++ objects. It means that this script:
@@ -515,6 +519,69 @@ model_2$q
 ```
 
 Therefore, to create a new model object based on another one, it is important to formally create one (either with one of the `create_model_` function, or using `new`). More information on copying variables using pointers here: https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
+
+### modifying a model object in a *apply function
+
+modifying a R variable inside a ```*apply``` function in does not modify it:
+
+```{r}
+plus.3 = function(x, useless){
+  y = x+3
+  useless = useless + 1
+  return(y)
+}
+
+useless = 4:10
+useless2 = useless
+x = sapply(1:5, plus.3, useless)
+# the useless variable was not modified:
+useless == useless2
+```
+
+However, this is not the case anymore with a model object. If we consider a model object:
+
+```{r}
+
+n_species <- 20
+n_basal <- 5
+n_cons = n_species - n_basal
+n_nut <- 2
+masses <- 10 ^ c(sort(runif(n_basal, 0, 3)),
+                 sort(runif(n_species - n_basal, 2, 5)))
+L <- create_Lmatrix(masses, n_basal, Ropt = 100, gamma = 2, th = 0.01)
+fw <- L
+fw[fw > 0] <- 1
+model <- create_model_Unscaled_nuts(n_species, n_basal, n_nut, masses, fw)
+model <- initialise_default_Unscaled_nuts(model, L, temperature = 20)
+```
+
+and a function that takes this model object as an argument, setting the b matrix to 0:
+```{r}
+# a function that sets all elements of model$b to 0
+a.fun <-  function(x, model){
+  model$b = model$b*0
+  return(x+1)
+}
+```
+
+then, we can see that the global model object is indeed modified when the function is called by *apply:
+
+```{r, eval = FALSE}
+x = c(1,2)
+sum(model$b)
+y = lapply(x, a.fun, model)
+sum(model$b)
+```
+
+However, this behaviour is not present when using a parrallel version of an apply function:
+
+```{r, eval = FALSE}
+library(parallel)
+sum(model$b)
+model <- initialise_default_Unscaled_nuts(model, L, temperature = 20)
+y = mclapply(x, a.fun, model = model, mc.cores=5)
+sum(model$b)
+```
 
 
 ```{r restore par, include=FALSE, echo=FALSE}
