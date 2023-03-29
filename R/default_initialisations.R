@@ -203,6 +203,8 @@ initialise_default_Scaled <- function(model) {
   model$alpha <- matrix(0, nrow = model$nb_b, ncol = model$nb_b)
   diag(model$alpha) = 1
   
+  model$ext <- 1e-6
+  
   return(model)
 }
 
@@ -266,6 +268,8 @@ initialise_default_Unscaled <- function(model, temperature = 20){
   
   model$alpha <- matrix(0, nrow = model$nb_b, ncol = model$nb_b)
   diag(model$alpha) = 1
+  
+  model$ext <- 1e-6
 
   return(model)
 }
