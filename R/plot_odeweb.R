@@ -41,18 +41,26 @@
 #' sol <- lsoda_wrapper(times, biomasses, model, verbose = FALSE)
 #' plot_odeweb(sol, model$nb_s)
 #' }
-plot_odeweb <- function(x, nb_s) {
+plot_odeweb <- function(x, nb_n, nb_s, nb_f) {
   stopifnot((ncol(x) - 1) >= nb_s)
   pal <- grDevices::colorRampPalette(c("blue", "red"))(nb_s)
   pal <- grDevices::adjustcolor(pal, alpha.f = .5)
   plot(c(0, max(x[, 1])), #xlim
-       c(0, max(x[, c((ncol(x) - nb_s + 1) : ncol(x))])), #ylim
+       c(0, max(x[, c((ncol(x) - nb_s -nb_f + 1) : ncol(x))])), #ylim
        frame = FALSE,
        xlab = "Time",
        ylab = "Biomass",
        col = NA)
-  for (i in seq(ncol(x) - nb_s + 1, ncol(x))) {
+  for (i in seq(ncol(x) - nb_s - nb_f + 1, ncol(x) - nb_f)) {
     graphics::points(x[, 1], x[, i], col = pal[i - ncol(x) + nb_s], pch = 20, cex = .5)
     graphics::lines(x[, 1], x[, i], col = pal[i - ncol(x) + nb_s], lw = 1)
+  }
+  for (i in seq(ncol(x) - nb_f + 1, ncol(x))) {
+    graphics::points(x[, 1], x[, i], col = "black", pch = 20, cex = .5)
+    graphics::lines(x[, 1], x[, i], col = "black", lw = 1)
+  }
+  for (i in (target_species + nb_n + 1)) {
+    graphics::points(x[, 1], x[, i], col = "grey", pch = 20, cex = .5)
+    graphics::lines(x[, 1], x[, i], col = "grey", lw = 1.5)
   }
 }

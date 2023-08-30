@@ -54,5 +54,5 @@ run_checks <- function(model, verbose = TRUE) {
     if (verbose) message("All checks successfull")
   }
   # The following models are present for the testing unit only. NOt to be used
-  else if (!class(model) %in% c("Rcpp_Scaled_loops", "Rcpp_Unscaled_nuts_loops", "Rcpp_Unscaled_loops") ) stop(class(model)[1], " is not supported.")
+  else if (!class(model) %in% c("Rcpp_Scaled_loops", "Rcpp_Unscaled_nuts_loops", "Rcpp_Unscaled_loops", "Rcpp_Unscaled_nuts_eco") ) stop(class(model)[1], " is not supported.")
 }

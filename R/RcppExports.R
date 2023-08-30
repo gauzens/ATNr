@@ -93,6 +93,35 @@ NULL
 #' }
 NULL
 
+#' @name Unscaled_nuts
+#' @title Store parameters and functions associated to the unscaled version of ATN including nutrient dynamics
+#' @description Type the name of the class to see its methods
+#' @field nb_s Total number of species
+#' @field nb_b Number of basal species
+#' @field nb_n Number of nutrient pool
+#' @field c double: interference competition
+#' @field b Matrix of attack rates (dim = number of species * number of consumers)
+#' @field h Matrix of handling times (dim = number of species * number of consumers)
+#' @field X vector of metabolic rates (length = number of species)
+#' @field K matrix of plant nutrient efficiencies (dim = number of nutrients * number of plants)
+#' @field V matrix of plant relative nutrient content (dim = number of nutrients * number of plants)
+#' @field S Vector of maximum nutrient concentration (length = number of plants)
+#' @field r Vector of maximum growth rate of plant species (length = number of plant species)
+#' @field e Vector of assimilation efficiencies (length = number of species)
+#' @field BM Vector of body masses (length = number of species)
+#' @field dB Vector of local derivatives (length = number of species)
+#' @field fw Adjacency matrix of the food-web (dim = number of species * number of species)
+#' @field w Matrix of relative consumption rates (dim = number of species * number of consumers)
+#' @field F Matrix of per-capita feeding rates (dim = number of species * number of consumers)
+#' @field q hill exponent for the type of functional response
+#' @field ext Extinction threshold for species
+#' @field ODE Calculate the derivatives for the scaled version of the ATN model \itemize{
+#' \item Parameter: bioms -  Local species biomasses
+#' \item Parameter: t - Integration time point
+#' \item Returns a vector of growth rate for each species at time t
+#' }
+NULL
+
 #' @name Unscaled_nuts_loops
 #' @title Store parameters and functions associated to the unscaled version of ATN
 #' @description To not use. For testing purpose only. Please use Rcpp_Unscaled_nuts instead. 

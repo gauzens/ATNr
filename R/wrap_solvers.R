@@ -35,7 +35,10 @@ lsoda_wrapper <- function(t, y, model, verbose = FALSE, ...) {
     stopifnot(model$nb_s == length(y))
   } else if (is(model, "Rcpp_Unscaled_nuts")) {
     stopifnot(model$nb_s + model$nb_n == length(y))
-  } else {
+  } else if (is(model, "Rcpp_Unscaled_nuts_eco")) {
+    stopifnot(model$nb_s + model$nb_n + model$nb_f == length(y))
+  } 
+  else {
     stop("The model does not seem to be an ATNr model.")
   }
   
