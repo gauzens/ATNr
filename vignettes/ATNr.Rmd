@@ -567,7 +567,7 @@ sum(model$b)
 ```
 
 This behaviour is still due to the fact that in a *apply function the model is shallow-copied and each iteration points in fact to the same object in memory.
-However, this behaviour is not present when using a parrallel version of an apply function, as in parallel computations the object is automatically deep-copied and passed to each task separately:
+However, this behaviour is not present when using a parallel version of an apply function, as in parallel computations the object is automatically deep-copied and passed to each task separately:
 
 ```{r, eval = FALSE}
 library(parallel)
