@@ -18,7 +18,6 @@ Suggests:
     rmarkdown,
     knitr,
     testthat,
-    R.rsp
 VignetteBuilder: 
     knitr,
     R.rsp
