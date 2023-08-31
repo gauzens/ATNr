@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 
 ```{r, include=FALSE, echo=FALSE}
 oldpar <- par()
-if (!nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))) {
-  ## Possible values: 'TRUE' 'false', 'warn', 'error'
-  Sys.setenv("_R_CHECK_LIMIT_CORES_" = "TRUE")
-}
+# if (!nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))) {
+#   ## Possible values: 'TRUE' 'false', 'warn', 'error'
+#   Sys.setenv("_R_CHECK_LIMIT_CORES_" = "TRUE")
+# }
+Sys.setenv("OMP_NUM_THREADS" = 1)
 ```
 
 The package *ATNr* defines the differential equations and parametrisation of different versions of the Allometric Trophic Network (ATN) model. It is structured around a model object that contains a function implementing the ordinary differential equations (ODEs) of the model and various attributes defining the different parameters to run the ODEs.
