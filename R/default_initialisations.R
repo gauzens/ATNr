@@ -368,7 +368,7 @@ initialise_default_Unscaled_nuts_eco <- function(
   
   model$boat_eff = 0.1
   model$price_scaling = 1.3
-  model$price_exp = 1.2
+  model$price_exp = -0.7
   model$boat_cost = 0.1
   model$fishery_targets = targets
   
