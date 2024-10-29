@@ -35,7 +35,7 @@ create_matrix_parameter <- function(
   nb_s <- length(BM)
   M <- matrix(1, nrow = nb_s, ncol = nb_s)
   return(b0 * ((M * BM[, 1])^bprey * t(M * BM[, 1])^bpred) *
-               exp(-E * (T0 - T.K) / (k * T.K * T0)))
+               exp(E * (T0 - T.K) / (k * T.K * T0)))
 }
 #' @title Default model parameters as in Schneider et al. 2016
 #'
