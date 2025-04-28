@@ -1,3 +1,6 @@
+# Changes in version 1.1.1:
+  - Correction of the temperature effects on parameters depending on both predator and prey body masses 
+
 # Changes in version 1.1.0:
   - hill exponent q is now a vector. Each value gives the q of a specific consumer.
   - correcting bug in unscaled model: plant competition is now properly defined.
