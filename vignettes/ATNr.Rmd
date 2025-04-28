@@ -237,7 +237,7 @@ show_fw(fw, title = "L-matrix model food web")
 
 ## effect of temperature on species persistence
 
-_ATNr_ makes it relatively easy to vary one parameter to assess its effect on the population dynamics. For example, we can study how changes in temperatures from 15 to 30 Celsius degrees affects the number species to go extinct. 
+_ATNr_ makes it relatively easy to vary one parameter to assess its effect on the population dynamics. For example, we can study how changes in temperatures affect the number species to go extinct. 
 
 ```{r}
 set.seed(12)
