@@ -131,7 +131,7 @@ public:
       tot += h(i,pred)*a(i,pred) * pow(bioms[i], q[pred]);
     }
     return ((a(prey,pred)*pow(bioms[prey], q[pred])) / 
-            (1 + c(pred)*bioms(pred + nb_b) + tot));
+            ((1 + c(pred)*bioms(pred + nb_b) + tot)*BM(pred+nb_b)));
   }
   
   // NumericVector ODE(double t, NumericVector bioms, NumericVector p){  // for sundials

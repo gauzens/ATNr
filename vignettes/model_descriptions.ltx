@@ -74,7 +74,7 @@ In this version, the functional response $F_{ij}$ describing the feeding rate of
 is written as:
 
 \begin{equation}
-F_{ij} = \frac{a_{ij}B_i^{q_j}}{1 + c_jB_j + \sum_kh_{kj}a_{kj}B_k^{q_j}}.
+F_{ij} = \frac{a_{ij}B_i^{q_j}}{1 + c_jB_j + \sum_kh_{kj}a_{kj}B_k^{q_j}}\frac{1}{m_j}.
 \end{equation}
 
 Here, $B_i$ is the biomass of species $i$, $a_{ij}$ is the attack rate of $j$ on $i$, $q$ is the hill exponent determining the shape of the functional response (for type II, $q = 1$; for type III, $q \in \left]1,2\right]$), $c$ sets the interference competition (the proportion of time that a consumer spends encountering con-specifics) and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. 
@@ -269,7 +269,7 @@ For this model, described in \cite{schneider2016animal}, the definition of the f
 The functional response $F_{ij}$ describing the feeding rate of consumer $j$ on resource $i$ is written as: 
 
 \begin{equation}
-F_{ij} = \frac{w_{ij}b_{ij}B_i^q}{1 + c_jB_j + \sum_kw_{kj}h_{kj}a_{kj}B_k^q}\frac{1}{m_i}.
+F_{ij} = \frac{w_{ij}b_{ij}B_i^q}{1 + c_jB_j + \sum_kw_{kj}h_{kj}b_{kj}B_k^q}\frac{1}{m_j}.
 \end{equation}
 
 As before, $q$ is the hill exponent determining the shape of the functional response (type II while $q = 1$, type III when $q > 1$ and $q\leq2$), $c$ sets the interference competition and $h_{ij}$ is the handling time of consumer $j$ on resource $i$. Here, the attack rate $a_{ij}$ has been substituted by a resource specific capture coefficient $b_{ij}$ (see section \ref{subsection:schneider_params} on parameters for more details). $w_{ij}$ is $j$'s relative consumption rate when consuming $i$, such as $\sum_iw_{ij} = 1$. $m_i$ corresponds to the body mass of species $i$. 

@@ -147,9 +147,10 @@ public:
     F = a % pow_bioms;
     // and the lower part
   	low = sum(ah%pow_bioms,0).t() + c%bioms(animals) + 1;
+    low = low%BM(animals);
+
     // divide both to obtained the matrix of feeding rates
    	F.each_row() /=low.t();
-
     // now, compute outfluxes for every species:
   	out_fluxes = F*bioms(animals);
 
