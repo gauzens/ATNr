@@ -66,7 +66,8 @@ create_matrix_parameter <- function(
 initialise_default_Unscaled_nuts <- function(
   model,
   L.mat,
-  temperature = 20
+  temperature = 20,
+  uncertainties = FALSE
 ) {
   utils::data("schneider", envir = environment())
   schneider[["nb_s"]] <- model$nb_s
@@ -78,6 +79,29 @@ initialise_default_Unscaled_nuts <- function(
   # species. by default a predator split its foraging time equally between all
   # the prey sum of w values should be equal to 1 for a given predator.
   model$ext <- 1e-6
+  
+  # parameter values:
+  # clearance rate
+  b0 = 50,
+  bprey = 0.15
+  bpred = 0.47
+  sd.b.prey = ifelse(uncertainties, 0.03, 0)
+  sd.b.pred = ifelse(uncertainties, 0.04, 0)
+  E.b = -0.38,
+  
+  # handling time
+  h0 = 0.4,
+  hpred = -0.48
+  hprey = -0.66
+  sd.h.prey = ifelse(uncertainties, 0.03, 0)
+  sd.h.pred = ifelse(uncertainties, 0.02, 0)
+  E.h = 0.26,
+
+  # hill exponent:
+  q.mean = 1.5
+  q.sd = ifelse(uncertainties, 0.2, 0)
+  
+  
   w <- sweep(x = model$fw, MARGIN = 2, FUN = "/", colSums(model$fw))
   model$w <- w[, (model$nb_b + 1):model$nb_s]
 
@@ -100,22 +124,26 @@ initialise_default_Unscaled_nuts <- function(
 
   # species efficiencies
   model$e <- with(schneider, c(rep(e_P, nb_b), rep(e_A, nb_s - nb_b)))
-  # species specific capture rate (encounter rate * predaion success)
-  model$b <- with(schneider, create_matrix_parameter(BM, b0, bprey, bpred, E.b, T.K, T0, k)) * L.mat
+  # species specific capture rate (encounter rate * predation success)
+  vec.bprey = rnorm(model$nb_s, bprey, sd.b.prey)
+  vec.bpred = rnorm(model$nb_s, bpred, sd.b.pred)
+  model$b <- with(schneider, create_matrix_parameter(BM, b0, vec.bprey, vec.bpred, E.b, T.K, T0, k)) * L.mat
   model$b <- model$b[, (model$nb_b + 1):model$nb_s]
   # specific values for plants: BM^beta = 20
   model$b[1:model$nb_b, ] <-  with(schneider,
-    t(replicate(model$nb_b, 20 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred)) *
+    t(replicate(model$nb_b, 50 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred)) *
       L.mat[1:model$nb_b, (model$nb_b + 1):model$nb_s]
   )
 
   # interference competition
   model$c <- with(schneider, stats::rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-0.65 * (T0 - T.K) / (k * T.K * T0)))
   # handling time
-  model$h <- with(schneider, create_matrix_parameter(BM, h0, hprey, hpred, E.h, T.K, T0, k))
+  vec.hprey = rnorm(model$nb_s, hprey, sd.h.prey)
+  vec.hpred = rnorm(model$nb_s, hpred, sd.h.pred)
+  model$h <- with(schneider, create_matrix_parameter(BM, h0, vec.hprey, vec.hpred, E.h, T.K, T0, k))
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
   # Hill exponent
-  model$q <- stats::rnorm(model$nb_s - model$nb_b, 1.5, 0.2)
+  model$q <- stats::rnorm(model$nb_s - model$nb_b, q.mean, q.sd)
   # plant stoichiometry (relative content in  the nutrients) !!!!!!!!!! to update. here assume 2 nutrients only !!!!!!!
   model$V <- with(schneider,
                   matrix(stats::runif(nb_b * nb_n, 1, 2), nrow = nb_n, ncol = nb_b))

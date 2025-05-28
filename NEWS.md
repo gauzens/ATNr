@@ -1,5 +1,9 @@
+# Changes in version 2.0.0:
+  - Correction of the main equation for the unscaled model. Feeding rates are corrected by species body masses, diverging from how the equation is presented in Binzer et al. 2016.
+  - Added documentation on parametrisation of the different models (switching from individual based functional responses to biomass based).
+
 # Changes in version 1.1.1:
-  - Correction of the temperature effects on parameters depending on both predator and prey body masses 
+  - Correction of the temperature effects on parameters depending on both predator and prey body masses. 
 
 # Changes in version 1.1.0:
   - hill exponent q is now a vector. Each value gives the q of a specific consumer.
