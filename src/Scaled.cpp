@@ -163,7 +163,7 @@ public:
     bioms.elem(extinct).fill(0.0);
 
     pow_bioms.each_col() = bioms;
-    pow_bioms = pow(pow_bioms.each_row(), q.t());
+    pow_bioms = pow(pow_bioms, repmat(q.t(), pow_bioms.n_rows, 1));
 
     // Rcpp::Rcout << "aa " << std::endl;
     // calculate values for feeding rates
