@@ -142,7 +142,7 @@ public:
     extinct = find(bioms < ext);
     bioms.elem(extinct).fill(0.0);
     pow_bioms.each_col() = bioms;
-    pow_bioms = pow(pow_bioms.each_row(), q.t());
+    pow_bioms = pow(pow_bioms, repmat(q.t(), pow_bioms.n_rows, 1));
     // calculate the upper part of the feeding rate function
     F = a % pow_bioms;
     // and the lower part
