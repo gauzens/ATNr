@@ -192,8 +192,7 @@ public:
     // Rcpp::Rcout << bioms.t()  << std::endl;
     bioms_non_nut = bioms.elem(non_nut);
     pow_bioms.each_col() = bioms_non_nut;
-    pow_bioms = pow(pow_bioms.each_row(), q.t());
-
+    pow_bioms = pow(pow_bioms, repmat(q.t(), pow_bioms.n_rows, 1));
     // calculate values for feeding rates
     // F contains first the upper part of the feeding rates
     F = wb_mat % pow_bioms;
