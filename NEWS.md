@@ -1,4 +1,7 @@
 # Changes in version 1.1.1:
+  - Updating use of Armadillo pow function (became deprecated)
+
+# Changes in version 1.1.1:
   - Correction of the temperature effects on parameters depending on both predator and prey body masses 
 
 # Changes in version 1.1.0:

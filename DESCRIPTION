@@ -1,7 +1,7 @@
 Package: ATNr
 Type: Package
 Title: Run Allometric Trophic Networks Models
-Version: 1.1.1
+Version: 1.1.2
 Authors@R: 
     c(person("Benoit", "Gauzens", role = c("cre", "aut"), email = "benoit.gauzens@gmail.com"), 
       person("Emilio", "Berti", role = "aut"))
