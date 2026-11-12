@@ -257,7 +257,7 @@ initialise_default_Unscaled <- function(model, temperature = 20){
   model$a <- model$a * model$fw
   model$a <- model$a[, (model$nb_b + 1):model$nb_s]
 
-  model$h <- create_matrix_parameter(model$BM, exp(9.66), -0.45, 0.47, -0.26, T.K, T0, k)
+  model$h <- create_matrix_parameter(model$BM, exp(9.66), -0.45, 0.47, 0.26, T.K, T0, k)
   model$h <- model$h * model$fw
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
   model$q <- rep(1.2, model$nb_s - model$nb_b)
