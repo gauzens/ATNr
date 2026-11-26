@@ -33,8 +33,8 @@
 #   
 #   # feeding rates:
 #   b0 = 50,
-#   bprey = rnorm(1, 0.47, 0.03),
-#   bpred = rnorm(1, 0,15, 0.04),
+#   bprey = rnorm(1, 0.47, 0.04),
+#   bpred = rnorm(1, 0,15, 0.03),
 #   E.b = -0.38,
 #   # used in calculating change in biomass of Animal or Plant
 #   # NOTE called conversion efficiency in Schneider et al., 2016
