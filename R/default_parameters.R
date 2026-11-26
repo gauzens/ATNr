@@ -24,18 +24,18 @@
 #   # consumer interference, proportion of time a consumer spences encountering con-specifics
 #   mu_c = 0.8,
 #   sd_c = 0.2,
-#   E.c = -0.65,
+#   E.c = 0.65,
 #   # used in Handling Time (h)
 #   h0 = 0.4,
 #   hpred = rnorm(1,-0.48,0.03),
 #   hprey = rnorm(1,-0.66,0.02),
-#   E.h = 0.26,
+#   E.h = -0.26,
 #   
 #   # feeding rates:
 #   b0 = 50,
 #   bprey = rnorm(1, 0.47, 0.04),
 #   bpred = rnorm(1, 0,15, 0.03),
-#   E.b = -0.38,
+#   E.b = 0.38,
 #   # used in calculating change in biomass of Animal or Plant
 #   # NOTE called conversion efficiency in Schneider et al., 2016
 #   # assimilation efficiency herbivore
@@ -46,7 +46,7 @@
 #   x_P = 0.141, # ORIGINAL value 0.138 from Schneider et al., 2016
 #   # metabolic rate scaling constant of animals
 #   x_A = 0.314,  # NOTE ORIGINAL value 0.314 from Schneider, 0.305 From Ehmes et al., 2011
-#   E.x = -0.69,
+#   E.x = 0.69,
 #   expX = -0.305,
 #   
 #   #used in calculating change in nutrient concentration
