@@ -103,9 +103,9 @@ initialise_default_Unscaled_nuts <- function(
   # species specific capture rate (encounter rate * predaion success)
   model$b <- with(schneider, create_matrix_parameter(BM, b0, bprey, bpred, E.b, T.K, T0, k)) * L.mat
   model$b <- model$b[, (model$nb_b + 1):model$nb_s]
-  # specific values for plants: BM^beta = 20
+  # specific values for plants: BM^beta = 1, plants don't move
   model$b[1:model$nb_b, ] <-  with(schneider,
-    t(replicate(model$nb_b, 20 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred)) *
+    t(replicate(model$nb_b, b0 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred * exp(-E.b * (T0 - T.K) / (k * T.K * T0)))) *
       L.mat[1:model$nb_b, (model$nb_b + 1):model$nb_s]
   )
 
@@ -120,8 +120,7 @@ initialise_default_Unscaled_nuts <- function(
   model$V <- with(schneider,
                   matrix(stats::runif(nb_b * nb_n, 1, 2), nrow = nb_n, ncol = nb_b))
   model$V <- sweep(x = model$V, MARGIN = 2, FUN = "/", colSums(model$V))
-  # growth rate of plant species !!!!!!!!!!! temperature independant right now !!!!!!!!!!!!!!!
-  model$r <- with(schneider, BM[1:nb_b]^-0.25)
+
   # initialisation of the matrix of feeding rates.
   # all values are 0 for now. Updated at each call of the ODEs estimations.
   model$F <- with(schneider, matrix(0.0, nrow = nb_s, ncol = nb_s - nb_b))
