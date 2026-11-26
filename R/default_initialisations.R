@@ -35,7 +35,7 @@ create_matrix_parameter <- function(
   nb_s <- length(BM)
   M <- matrix(1, nrow = nb_s, ncol = nb_s)
   return(b0 * ((M * BM[, 1])^bprey * t(M * BM[, 1])^bpred) *
-               exp(E * (T0 - T.K) / (k * T.K * T0)))
+               exp(-E * (T0 - T.K) / (k * T.K * T0)))
 }
 #' @title Default model parameters as in Schneider et al. 2016
 #'
@@ -96,7 +96,7 @@ initialise_default_Unscaled_nuts <- function(
   # per gram metabolic rate
   model$X <- with(schneider,
                   c(rep(x_P, nb_b), rep(x_A, nb_s - nb_b)) *
-                    BM^-0.25 * exp(-0.69 * (T0 - T.K) / (k * T.K * T0)))
+                    BM^-0.25 * exp(-E.x * (T0 - T.K) / (k * T.K * T0)))
 
   # species efficiencies
   model$e <- with(schneider, c(rep(e_P, nb_b), rep(e_A, nb_s - nb_b)))
@@ -105,12 +105,12 @@ initialise_default_Unscaled_nuts <- function(
   model$b <- model$b[, (model$nb_b + 1):model$nb_s]
   # specific values for plants: BM^beta = 1, plants don't move
   model$b[1:model$nb_b, ] <-  with(schneider,
-    t(replicate(model$nb_b, b0 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred * exp(-E.b * (T0 - T.K) / (k * T.K * T0)))) *
+    t(replicate(model$nb_b, b0 * model$BM[(model$nb_b + 1):nrow(model$BM), 1]^bpred * exp(E.b * (T0 - T.K) / (k * T.K * T0)))) *
       L.mat[1:model$nb_b, (model$nb_b + 1):model$nb_s]
   )
 
   # interference competition
-  model$c <- with(schneider, stats::rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-0.65 * (T0 - T.K) / (k * T.K * T0)))
+  model$c <- with(schneider, stats::rnorm(nb_s - nb_b, mu_c, sd_c) * exp(-E.c * (T0 - T.K) / (k * T.K * T0)))
   # handling time
   model$h <- with(schneider, create_matrix_parameter(BM, h0, hprey, hpred, E.h, T.K, T0, k))
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
@@ -209,7 +209,7 @@ initialise_default_Scaled <- function(model) {
 
 
 
-#' @title Default parameters for the scaled version of ATN as in Binzer et al.
+#' @title Default parameters for the unscaled version of ATN as in Binzer et al.
 #'   2016, with updates from Gauzens et al. 2020
 #'
 #' @description Initialise the default parametrisation for the scaled version of
@@ -252,11 +252,11 @@ initialise_default_Unscaled <- function(model, temperature = 20){
   model$K <- 40 * model$BM[1:model$nb_b]^0.28 * exp(0.71 * (T0 - T.K) / (k * T.K * T0))
   # here attack rate decrease with consumer BM, and handling time increase with consumer BM
   # Is it an error in Binzer et al. ?
-  model$a <- create_matrix_parameter(model$BM, exp(-13.1), 0.25, -0.8, -0.38, T.K, T0, k)
+  model$a <- create_matrix_parameter(model$BM, exp(-13.1), 0.25, -0.8, 0.38, T.K, T0, k)
   model$a <- model$a * model$fw
   model$a <- model$a[, (model$nb_b + 1):model$nb_s]
 
-  model$h <- create_matrix_parameter(model$BM, exp(9.66), -0.45, 0.47, 0.26, T.K, T0, k)
+  model$h <- create_matrix_parameter(model$BM, exp(9.66), -0.45, 0.47, -0.26, T.K, T0, k)
   model$h <- model$h * model$fw
   model$h <- model$h[, (model$nb_b + 1):model$nb_s]
   model$q <- rep(1.2, model$nb_s - model$nb_b)
